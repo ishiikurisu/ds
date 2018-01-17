@@ -1,0 +1,132 @@
+{
+  "dolphins": {
+    "zig": {
+      "gender": "male",
+      "ties": [
+        "ripplefluke"
+      ]
+    },
+    "ripplefluke": {
+      "gender": "unknown",
+      "ties": [
+        "zig",
+        "feather",
+        "gallatin"
+      ]
+    },
+    "wave": {
+      "gender": "female",
+      "ties": [
+        "dn21",
+        "dn16"
+      ]
+    },
+    "feather": {
+      "gender": "male",
+      "ties": [
+        "dn16",
+        "dn21",
+        "jet",
+        "gallatin",
+        "web",
+        "ripplefluke"
+      ]
+    },
+    "dn16": {
+      "gender": "female",
+      "ties": [
+        "wave",
+        "web",
+        "feather",
+        "gallatin"
+      ]
+    },
+    "dn21": {
+      "gender": "male",
+      "ties": [
+        "feather",
+        "wave",
+        "jet",
+        "gallatin",
+        "web"
+      ]
+    },
+    "tr82": {
+      "gender": "unknown",
+      "ties": [
+        "web"
+      ]
+    },
+    "web": {
+      "gender": "male",
+      "ties": [
+        "tr82",
+        "dn16",
+        "dn21",
+        "upbang",
+        "sn90",
+        "sn89",
+        "feather",
+        "jet"
+      ]
+    },
+    "gallatin": {
+      "gender": "male",
+      "ties": [
+        "dn16",
+        "web",
+        "sn90",
+        "upbang",
+        "jet",
+        "dn21",
+        "feather"
+      ]
+    },
+    "jet": {
+      "gender": "male",
+      "ties": [
+        "rnr23",
+        "quasi",
+        "web",
+        "gallatin",
+        "dn21"
+      ]
+    },
+    "rnr23": {
+      "gender": "male",
+      "ties": [
+        "jet"
+      ]
+    },
+    "quasi": {
+      "gender": "male",
+      "ties": [
+        "jet"
+      ]
+    },
+    "sn90": {
+      "gender": "male",
+      "ties": [
+        "web",
+        "upbang",
+        "feather",
+        "gallatin"
+      ]
+    },
+    "upbang": {
+      "gender": "male",
+      "ties": [
+        "gallatin",
+        "web",
+        "sn90",
+        "dn21"
+      ]
+    },
+    "sn89": {
+      "gender": "unknown",
+      "ties": [
+        "web"
+      ]
+    }
+  }
+}
