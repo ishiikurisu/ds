@@ -6,8 +6,7 @@ def load(filename):
         outlet = json.loads(fp.read())
     return outlet
 
-def brandes2dolphins(inlet):
-    V = inlet['dolphins']
+def brandes2dolphins(V):
     cb = { v: 0 for v in V.keys() }
     for s in V.keys():
         S = []
@@ -19,7 +18,6 @@ def brandes2dolphins(inlet):
             if t is not s:
                 sig[t] = 0
                 d[t] = -1
-
         while len(Q) > 0:
             v = Q[0]
             del Q[0]
@@ -40,7 +38,6 @@ def brandes2dolphins(inlet):
                 delta[v] += (sig[v]/sig[w])*(1+delta[w])
             if w is not s:
                 cb[w] += delta[w]
-
     return cb
 
 def calculate_centrality(cb):
@@ -51,4 +48,4 @@ if __name__ == '__main__':
     betweenness = brandes2dolphins(dolphins)
     central = calculate_centrality(betweenness)
     print(betweenness, central)
-    print('the central dolphin is %s' % (dolphins['dolphins'][central]['gender']))
+    print('the central dolphin is %s' % (dolphins[central]['gender']))

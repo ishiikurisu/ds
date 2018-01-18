@@ -1,132 +1,302 @@
 {
-  "dolphins": {
-    "zig": {
-      "gender": "male",
-      "ties": [
-        "ripplefluke"
-      ]
-    },
-    "ripplefluke": {
-      "gender": "unknown",
-      "ties": [
-        "zig",
-        "feather",
-        "gallatin"
-      ]
-    },
-    "wave": {
-      "gender": "female",
-      "ties": [
-        "dn21",
-        "dn16"
-      ]
-    },
-    "feather": {
-      "gender": "male",
-      "ties": [
-        "dn16",
-        "dn21",
-        "jet",
-        "gallatin",
-        "web",
-        "ripplefluke"
-      ]
-    },
-    "dn16": {
-      "gender": "female",
-      "ties": [
-        "wave",
-        "web",
-        "feather",
-        "gallatin"
-      ]
-    },
-    "dn21": {
-      "gender": "male",
-      "ties": [
-        "feather",
-        "wave",
-        "jet",
-        "gallatin",
-        "web"
-      ]
-    },
-    "tr82": {
-      "gender": "unknown",
-      "ties": [
-        "web"
-      ]
-    },
-    "web": {
-      "gender": "male",
-      "ties": [
-        "tr82",
-        "dn16",
-        "dn21",
-        "upbang",
-        "sn90",
-        "sn89",
-        "feather",
-        "jet"
-      ]
-    },
-    "gallatin": {
-      "gender": "male",
-      "ties": [
-        "dn16",
-        "web",
-        "sn90",
-        "upbang",
-        "jet",
-        "dn21",
-        "feather"
-      ]
-    },
-    "jet": {
-      "gender": "male",
-      "ties": [
-        "rnr23",
-        "quasi",
-        "web",
-        "gallatin",
-        "dn21"
-      ]
-    },
-    "rnr23": {
-      "gender": "male",
-      "ties": [
-        "jet"
-      ]
-    },
-    "quasi": {
-      "gender": "male",
-      "ties": [
-        "jet"
-      ]
-    },
-    "sn90": {
-      "gender": "male",
-      "ties": [
-        "web",
-        "upbang",
-        "feather",
-        "gallatin"
-      ]
-    },
-    "upbang": {
-      "gender": "male",
-      "ties": [
-        "gallatin",
-        "web",
-        "sn90",
-        "dn21"
-      ]
-    },
-    "sn89": {
-      "gender": "unknown",
-      "ties": [
-        "web"
-      ]
-    }
+  "zig": {
+    "gender": "male",
+    "ties": [
+      "ripplefluke"
+    ]
+  },
+  "ripplefluke": {
+    "gender": "unknown",
+    "ties": [
+      "zig",
+      "feather",
+      "gallatin"
+    ]
+  },
+  "wave": {
+    "gender": "female",
+    "ties": [
+      "dn21",
+      "dn16"
+    ]
+  },
+  "feather": {
+    "gender": "male",
+    "ties": [
+      "dn16",
+      "dn21",
+      "jet",
+      "gallatin",
+      "web",
+      "ripplefluke"
+    ]
+  },
+  "dn16": {
+    "gender": "female",
+    "ties": [
+      "wave",
+      "web",
+      "feather",
+      "gallatin"
+    ]
+  },
+  "dn21": {
+    "gender": "male",
+    "ties": [
+      "feather",
+      "wave",
+      "jet",
+      "gallatin",
+      "web"
+    ]
+  },
+  "tr82": {
+    "gender": "unknown",
+    "ties": [
+      "web"
+    ]
+  },
+  "web": {
+    "gender": "male",
+    "ties": [
+      "tr82",
+      "dn16",
+      "dn21",
+      "upbang",
+      "sn90",
+      "sn89",
+      "feather",
+      "jet"
+    ]
+  },
+  "gallatin": {
+    "gender": "male",
+    "ties": [
+      "dn16",
+      "web",
+      "sn90",
+      "upbang",
+      "jet",
+      "dn21",
+      "feather"
+    ]
+  },
+  "jet": {
+    "gender": "male",
+    "ties": [
+      "rnr23",
+      "quasi",
+      "web",
+      "gallatin",
+      "dn21",
+      "mus",
+      "number1",
+      "beescratch"
+    ]
+  },
+  "rnr23": {
+    "gender": "male",
+    "ties": [
+      "jet"
+    ]
+  },
+  "quasi": {
+    "gender": "male",
+    "ties": [
+      "jet"
+    ]
+  },
+  "sn90": {
+    "gender": "male",
+    "ties": [
+      "web",
+      "upbang",
+      "feather",
+      "gallatin",
+      "beescratch"
+    ]
+  },
+  "upbang": {
+    "gender": "male",
+    "ties": [
+      "gallatin",
+      "web",
+      "sn90",
+      "dn21",
+      "beescratch",
+      "dn63",
+      "knit"
+    ]
+  },
+  "sn89": {
+    "gender": "female",
+    "ties": [
+      "web",
+      "sn100"
+    ]
+  },
+  "beescratch": {
+    "gender": "male",
+    "ties": [
+      "sn90",
+      "sn100",
+      "oscar",
+      "knit",
+      "notch",
+      "number1",
+      "jet",
+      "upbang"
+    ]
+  },
+  "number1": {
+    "gender": "male",
+    "ties": [
+      "jet",
+      "beescratch",
+      "mus",
+      "notch"
+    ]
+  },
+  "mus": {
+    "gender": "male",
+    "ties": [
+      "jet",
+      "number1",
+      "notch"
+    ]
+  },
+  "notch": {
+    "gender": "male",
+    "ties": [
+      "mus",
+      "number1",
+      "beescratch"
+    ]
+  },
+  "dn63": {
+    "gender": "male",
+    "ties": [
+      "upbang",
+      "sn90",
+      "pl",
+      "knit"
+    ]
+  },
+  "knit": {
+    "gender": "male",
+    "ties": [
+      "upbang",
+      "beescratch",
+      "dn63",
+      "pl"
+    ]
+  },
+  "sn100": {
+    "gender": "female",
+    "ties": [
+      "sn89",
+      "mn60",
+      "sn9",
+      "sn4",
+      "kringel",
+      "beescratch"
+    ]
+  },
+  "oscar": {
+    "gender": "male",
+    "ties": [
+      "beescratch",
+      "double",
+      "kringel",
+      "tr77",
+      "pl"
+    ]
+  },
+  "pl": {
+    "gender": "male",
+    "ties": [
+      "knit",
+      "dn63",
+      "oscar",
+      "tr77",
+      "sn96"
+    ]
+  },
+  "mn60": {
+    "gender": "male",
+    "ties": [
+      "trigger",
+      "topless",
+      "sm100"
+    ]
+  },
+  "zap": {
+    "gender": "unknown",
+    "ties": [
+      "haecksel",
+      "topless",
+      "ccl",
+      "double",
+      "sn100"
+    ]
+  },
+  "double": {
+    "gender": "female",
+    "ties": [
+      "zap",
+      "topless",
+      "ccl",
+      "oscar"
+    ]
+  },
+  "beak": {
+    "gender": "male",
+    "ties": [
+      "haecksel",
+      "sn9",
+      "fish",
+      "sn96",
+      "tr77"
+    ]
+  },
+  "tr77": {
+    "gender": "female",
+    "ties": [
+      "beak",
+      "kringel",
+      "fish",
+      "sn96",
+      "pl",
+      "oscar"
+    ]
+  },
+  "sn96": {
+    "gender": "male",
+    "ties": [
+      "pl",
+      "tr77",
+      "sn4",
+      "fish",
+      "bumper"
+    ]
+  },
+  "vau": {
+    "gender": "female",
+    "ties": [
+      "trigger",
+      "haecksel"
+    ]
+  },
+  "haecksel": {
+    "gender": "male",
+    "ties": [
+      "vau",
+      "mn63",
+      "jonah",
+      "topless",
+      "sn9",
+      "beak",
+      "zap"
+    ]
   }
 }
