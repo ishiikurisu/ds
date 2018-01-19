@@ -235,3 +235,61 @@ haecksel:
  - sn9
  - beak
  - zap
+topless:
+  gender: male
+  ties:
+  - haecksel
+  - trigger
+  - mn63
+  - patchback
+  - mn105
+  - jonah
+  - tr99
+  - sn4
+  - sn9
+  - double
+  - zap
+  - mn60
+sn9:
+  gender: female
+  ties:
+  - haecksel
+  - lsn103
+  - scabs
+  - sn4
+  - beak
+  - dn63
+  - sn100
+kringel:
+  gender: female
+  ties:
+  - tr99
+  - jonah
+  - hook
+  - sn63
+  - thumper
+  - tr77
+  - oscar
+  - double
+  - sn100
+ccl:
+  gender: female
+  ties:
+  - double
+  - zap
+  - grin
+fish:
+  gender: female
+  ties:
+  - patchback
+  - beak
+  - tr77
+  - sn96
+  - bumper
+bumper:
+  gender: male
+  ties:
+  - sn96
+  - fish
+  - thumper
+  - zipfel
