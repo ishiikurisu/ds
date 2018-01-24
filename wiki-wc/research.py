@@ -11,10 +11,14 @@ class Researcher:
     def study_from(self, start_point):
         self.pages.append(start_point)
         self.how_many = 1
+
         while len(self.pages) > 0:
             page = self.pages[0]
             del self.pages[0]
             self.study(page)
+            
+        if self.debug:
+            print('...')
 
     def study(self, page):
         html = urllib.request.urlopen(page).read()
@@ -30,11 +34,22 @@ class Researcher:
             except UnicodeEncodeError:
                 pass
 
-        # TODO Study current page
+        all_p = div.find_all('p')
+        content = ''
+        for p in all_p:
+            text = self.get_text(p)
+            content += '\n' + text
+        # TODO Analyze page content
+        self.analyze(content)
 
         if self.debug:
-            print('---')
-            print('page: %s' % (page))
+            try:
+                print('---')
+                print('page: %s' % (page))
+                print('content:')
+                print(content)
+            except UnicodeEncodeError:
+                pass
 
     def work_with(self, page):
         if self.how_many < self.limit:
@@ -50,6 +65,14 @@ class Researcher:
             href = a['href']
             if href.startswith('/wiki'):
                 outlet = 'https://wikipedia.org%s' % href
-        except Exception:
+        except KeyError:
             pass
         return outlet
+
+    def get_text(self, p):
+        text = ' '.join(text.strip() for text in p.find_all(text=True, recursive=True))
+        return text
+
+    def analyze(self, text):
+        # IDEA Create an analyzer class that will count words per document and give an opinion.
+        pass
