@@ -1,5 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup
+from multiprocessing import Process
 
 class Researcher:
     def __init__(self, limit):
@@ -11,16 +12,22 @@ class Researcher:
 
     def study_from(self, start_point):
         """Starts the main study loop from a starting wikipedia page"""
-        self.pages.append(start_point)
         self.how_many = 1
+        self.study(start_point)
+        processes = []
 
         while len(self.pages) > 0:
             page = self.pages[0]
             del self.pages[0]
-            # IDEA Try to turn this turn this into a parallel process
-            self.study(page)
+            process = Process(target=self.study, args=(page,))
+            process.start()
+            processes.append(process)
+
+        for process in processes:
+            process.join()
 
         if self.debug:
+            print('how many: %d' % (self.how_many))
             print('...')
 
     def study(self, page):
