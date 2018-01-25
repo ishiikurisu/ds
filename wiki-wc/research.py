@@ -1,6 +1,7 @@
 import urllib.request
 from bs4 import BeautifulSoup
 from multiprocessing import Process
+import document
 
 class Researcher:
     def __init__(self, limit):
@@ -9,22 +10,29 @@ class Researcher:
         self.debug = False
         self.pages = []
         self.how_many = 0
+        self.docs = []
+        self.visited = set()
 
     def study_from(self, start_point):
         """Starts the main study loop from a starting wikipedia page"""
+        self.docs = []
         self.how_many = 1
         self.study(start_point)
         processes = []
 
+        # downloading and extracting information
         while len(self.pages) > 0:
             page = self.pages[0]
             del self.pages[0]
             process = Process(target=self.study, args=(page,))
             process.start()
             processes.append(process)
-
         for process in processes:
             process.join()
+
+
+        # generating final files
+        # TODO Generate a list of all words in their weights in all visited documents
 
         if self.debug:
             print('how many: %d' % (self.how_many))
@@ -36,6 +44,7 @@ class Researcher:
         html = urllib.request.urlopen(page).read()
         soup = BeautifulSoup(html, 'html.parser')
         div = soup.find('div', {'id': 'mw-content-text'})
+        self.visited.add(page)
 
         links = div.find_all('a')
         for link in links:
@@ -65,9 +74,10 @@ class Researcher:
 
     def try_to_add(self, page):
         """Tries to add another page to the study process."""
-        if self.how_many < self.limit:
+        if (self.how_many < self.limit) and (page not in self.visited):
             self.pages.append(page)
             self.how_many += 1
+            self.visited.add(page)
 
     def get_link(self, a):
         """Gets a link from a Beautiful Soup anchor element."""
