@@ -9,9 +9,7 @@ class Researcher:
         self.limit = limit
         self.debug = False
         self.pages = []
-        self.how_many = 0
-        self.docs = []
-        self.visited = set()
+        
 
     def study_from(self, start_point):
         """Starts the main study loop from a starting wikipedia page"""
@@ -29,7 +27,6 @@ class Researcher:
             processes.append(process)
         for process in processes:
             process.join()
-
 
         # generating final files
         # TODO Generate a list of all words in their weights in all visited documents
@@ -60,7 +57,6 @@ class Researcher:
         for p in all_p:
             text = self.get_text(p)
             content += '\n' + text
-        # TODO Analyze page content
         self.analyze(content)
 
         if self.debug:
@@ -97,4 +93,5 @@ class Researcher:
     def analyze(self, text):
         """Studies the content of the text as proposed in this study."""
         # IDEA Create an analyzer class that will count words per document and give an opinion.
-        pass
+        doc = document.Document(text)
+        self.docs.append(doc)
