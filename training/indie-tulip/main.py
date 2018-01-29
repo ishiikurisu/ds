@@ -1,5 +1,6 @@
 import sys
 from tulip import tlp
+from tulipgui import tlpgui
 
 def load_csv_to_tulip(csvfilename):
     graph = None
@@ -27,16 +28,29 @@ def load_csv_to_tulip(csvfilename):
                         graph.addEdge(source, target)
             line_no += 1
 
-    if graph is not None:
-        for n in graph.getNodes():
-            print(n)
-        for e in graph.getEdges():
-            print(e)
-
     return graph
+
+
+def coloring_nodes(graph):
+    """This is an example algorithm, that colors nodes depending on their degree"""
+    blue = tlp.Color(0,0,255)
+    green = tlp.Color(0,255,0)
+    viewColor = graph.getColorProperty("viewColor")
+
+    for n in graph.getNodes():
+        if graph.deg(n) > 3:
+            viewColor[n] = blue
+        else:
+            viewColor[n] = green
+
+def save_graph(graph, outputname):
+    tlp.saveGraph(graph, outputname)
 
 if __name__ == '__main__':
     print('# Indie Tulip')
+    print('loading data...')
     graph = load_csv_to_tulip(sys.argv[1])
-    # TODO Save file as a tulip file
-    # TODO Analyze graph and genererate a plot with Tulip
+    print('studying data...')
+    coloring_nodes(graph)
+    print('saving results...')
+    save_graph(graph, sys.argv[2])
