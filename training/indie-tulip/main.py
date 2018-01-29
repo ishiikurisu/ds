@@ -32,16 +32,25 @@ def load_csv_to_tulip(csvfilename):
 
 
 def coloring_nodes(graph):
-    """This is an example algorithm, that colors nodes depending on their degree"""
+    """This is an example algorithm that colors nodes depending on their degree"""
     blue = tlp.Color(0,0,255)
     green = tlp.Color(0,255,0)
     viewColor = graph.getColorProperty("viewColor")
+    viewMetric = graph.getDoubleProperty("viewMetric")
 
-    for n in graph.getNodes():
-        if graph.deg(n) > 3:
-            viewColor[n] = blue
-        else:
-            viewColor[n] = green
+    params = tlp.getDefaultPluginParameters('Betweenness Centrality', graph)
+    success, about = graph.applyDoubleAlgorithm('Betweenness Centrality', params)
+    if success:
+        for n in graph.getNodes():
+            betweenness = viewMetric[n]
+            if betweenness > 10:
+                viewColor[n] = blue
+            else:
+                viewColor[n] = green
+    else:
+        print(about)
+        return
+
 
 def save_graph(graph, outputname):
     tlp.saveGraph(graph, outputname)
