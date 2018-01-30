@@ -19,8 +19,8 @@ def load_csv_to_tulip(csvfilename):
                     })
                     nodes.append(node)
             else:
-                fields = list(map(lambda s: s.strip(), line.split(';')))
-                edges = map(lambda s: float(s.strip()), filter(lambda s: len(s) > 0, fields[1:]))
+                fields = [s.strip() for s in line.split(';')]
+                edges = map(float, filter(lambda s: len(s) > 0, fields[1:]))
                 source = nodes[line_no-1]
                 for col_no, edge in enumerate(edges):
                     if edge > 0:
@@ -33,27 +33,23 @@ def load_csv_to_tulip(csvfilename):
 
 def coloring_nodes(graph):
     """This is an example algorithm that colors nodes depending on their degree"""
-    blue = tlp.Color(0,0,255)
-    green = tlp.Color(0,255,0)
+    blue = tlp.Color(0, 0, 255)
+    green = tlp.Color(0, 255, 0)
     viewColor = graph.getColorProperty("viewColor")
     viewMetric = graph.getDoubleProperty("viewMetric")
+    success, about = graph.applyDoubleAlgorithm(
+        'Betweenness Centrality', 
+        tlp.getDefaultPluginParameters('Betweenness Centrality', graph))
 
-    params = tlp.getDefaultPluginParameters('Betweenness Centrality', graph)
-    success, about = graph.applyDoubleAlgorithm('Betweenness Centrality', params)
     if success:
         for n in graph.getNodes():
-            betweenness = viewMetric[n]
-            if betweenness > 10:
-                viewColor[n] = blue
-            else:
-                viewColor[n] = green
+            viewColor[n] = blue if viewMetric[n] > 10 else green
     else:
         print(about)
-        return
 
 
-def save_graph(graph, outputname):
-    tlp.saveGraph(graph, outputname)
+def save_graph(graph, tulipfilename):
+    tlp.saveGraph(graph, tulipfilename)
 
 if __name__ == '__main__':
     print('# Indie Tulip')
