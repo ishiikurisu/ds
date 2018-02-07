@@ -29,20 +29,21 @@ def export_gexf(rotulos,similaridades,nome_arquivo,threshold,excluir_negativos):
 
     """
 
-    tbl = dict.fromkeys(i for i in xrange(sys.maxunicode) if unicodedata.category(unichr(i)).startswith('P'))
+    tbl = dict.fromkeys(i for i in range(sys.maxunicode) if unicodedata.category(chr(i)).startswith('P'))
 
     arquivo = codecs.open(nome_arquivo + ".gexf","w","utf-8")
     arquivo.write('<?xml version="1.0" encoding="UTF-8"?>\n')
     arquivo.write('<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2">\n')
     arquivo.write('\t<graph mode="static" defaultedgetype="directed">\n')
     arquivo.write('\t\t\t<nodes>\n')
-
     arquivo.flush()
+
     cont=0
-    for key in rotulos.keys():
+    docs = list(rotulos.keys())
+    for key in docs:
         rotulo = rotulos[key]
         rotulo = rotulo.translate(tbl)
-        arquivo.write(u"\t\t\t\t<node id=\"%d\" label=\"%s\"/>\n" % (key,rotulo))
+        arquivo.write(u"\t\t\t\t<node id=\"%d\" label=\"%s\"/>\n" % (docs.index(key), rotulo))
 
         cont = cont+1
         if cont == 50:
@@ -51,16 +52,15 @@ def export_gexf(rotulos,similaridades,nome_arquivo,threshold,excluir_negativos):
 
     arquivo.write('\t\t\t</nodes>\n')
     arquivo.write('\t\t\t<edges>\n')
-
     arquivo.flush()
+
     cont=0
     for similaridade in similaridades:
-
         if(excluir_negativos and (similaridade[2] < 0)):
             continue
 
         if abs(similaridade[2]) >= threshold:
-            arquivo.write("\t\t\t\t<edge source=\"%d\" target=\"%d\" weight=\"%f\" />\n" % (similaridade[0],similaridade[1],similaridade[2]))
+            arquivo.write("\t\t\t\t<edge source=\"%d\" target=\"%d\" weight=\"%f\" />\n" % (docs.index(similaridade[0]),docs.index(similaridade[1]),similaridade[2]))
 
         cont = cont+1
         if cont == 50:
@@ -70,7 +70,6 @@ def export_gexf(rotulos,similaridades,nome_arquivo,threshold,excluir_negativos):
     arquivo.write('\t\t\t</edges>\n')
     arquivo.write('\t</graph>\n')
     arquivo.write('</gexf>')
-
     arquivo.close() # you can omit in most cases as the destructor will call it
 
 def export_gexf_termos(rotulos,similaridades,nome_arquivo,threshold,excluir_negativos):
@@ -89,21 +88,19 @@ def export_gexf_termos(rotulos,similaridades,nome_arquivo,threshold,excluir_nega
 
     """
 
-    tbl = dict.fromkeys(i for i in xrange(sys.maxunicode) if unicodedata.category(unichr(i)).startswith('P'))
+    tbl = dict.fromkeys(i for i in range(sys.maxunicode) if unicodedata.category(chr(i)).startswith('P'))
 
     arquivo = codecs.open(nome_arquivo + ".gexf","w","utf-8")
     arquivo.write('<?xml version="1.0" encoding="UTF-8"?>\n')
     arquivo.write('<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2">\n')
     arquivo.write('\t<graph mode="static" defaultedgetype="directed">\n')
     arquivo.write('\t\t\t<nodes>\n')
-
     arquivo.flush()
+
     cont=0
     cont2=0;
     for key in rotulos:
-
         arquivo.write(u"\t\t\t\t<node id=\"%d\" label=\"%s\"/>\n" % (cont2,key))
-
         cont = cont+1
         cont2 = cont2+1
         if cont == 50:
@@ -112,17 +109,15 @@ def export_gexf_termos(rotulos,similaridades,nome_arquivo,threshold,excluir_nega
 
     arquivo.write('\t\t\t</nodes>\n')
     arquivo.write('\t\t\t<edges>\n')
-
     arquivo.flush()
+
     cont=0
-
     for similaridade in similaridades:
-
         if(excluir_negativos and (similaridade[2] < 0)):
             continue
 
         if abs(similaridade[2]) >= threshold:
-            label = unicode(' - '.join((similaridade[0],similaridade[1])));
+            label = ' - '.join((similaridade[0],similaridade[1]))
             arquivo.write("\t\t\t\t<edge source=\"%d\" target=\"%d\" weight=\"%f\" label=\"%s\" />\n" % (rotulos.index(similaridade[0]),rotulos.index(similaridade[1]),similaridade[2],label))
 
         cont = cont+1
@@ -133,5 +128,4 @@ def export_gexf_termos(rotulos,similaridades,nome_arquivo,threshold,excluir_nega
     arquivo.write('\t\t\t</edges>\n')
     arquivo.write('\t</graph>\n')
     arquivo.write('</gexf>')
-
     arquivo.close() # you can omit in most cases as the destructor will call it

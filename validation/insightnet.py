@@ -2,6 +2,7 @@ import sys
 import mat
 import sim
 import time
+import gex
 
 def calcular_lsa(conjunto):
     """
@@ -21,14 +22,14 @@ def calcular_lsa(conjunto):
     U, S, Vt = mat.svd(tfidf)
     matriz_documento_documento, _, _ = sim.calcular_similaridade_documentos(U, S, Vt, len(docs))
     similaridades = sim.obter_similaridades(docs, matriz_documento_documento)
-    # TODO Exportar para o Gephi.
+    gex.export_gexf(documentos, similaridades, nomear_saida(conjunto, 'doc'), 0, False)
 
     # Analisando termos
     # =================
     U, S, Vt = mat.svd(tfidf.T)
     matriz_termo_termo, _, _ = sim.calcular_similaridade_documentos(U, S, Vt, len(termos))
     similaridades = sim.obter_similaridades(termos, matriz_termo_termo)
-    # TODO Exportar dados para o Gephi.
+    gex.export_gexf_termos(termos, similaridades, nomear_saida(conjunto, 'termo'), 0, False)
 
     # Salvando outros dados relevantes
     # ================================
@@ -70,6 +71,9 @@ def gerar_csv(cols, lins, m):
         saida += '{0};{1}\n'.format(lin, ';'.join(map(lambda v: '%.4f' % (v), m[:, y])))
 
     return saida
+
+def nomear_saida(entrada, caracteristica):
+    return '{0}-{1}'.format('.'.join(entrada.split('.')[0:-1]), caracteristica)
 
 if __name__ == '__main__':
     then = time.time()
