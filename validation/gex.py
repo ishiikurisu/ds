@@ -1,6 +1,7 @@
 import unicodedata
 import sys
 import codecs
+import re
 
 SOBRE = """
 Este script foi copiado do arquivo `gerador_gexf`. O trabalho aqui é traduzir este código de
@@ -41,8 +42,7 @@ def export_gexf(rotulos,similaridades,nome_arquivo,threshold,excluir_negativos):
     cont=0
     docs = list(rotulos.keys())
     for key in docs:
-        rotulo = rotulos[key]
-        rotulo = rotulo.translate(tbl)
+        rotulo = re.sub(r'[<>]', '', rotulos[key].translate(tbl))
         arquivo.write(u"\t\t\t\t<node id=\"%d\" label=\"%s\"/>\n" % (docs.index(key), rotulo))
 
         cont = cont+1
