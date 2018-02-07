@@ -4,8 +4,7 @@ import codecs
 import re
 
 SOBRE = """
-Este script foi copiado do arquivo `gerador_gexf`. O trabalho aqui é traduzir este código de
-Python 2 para Python 3.
+Este script foi copiado do arquivo `gerador_gexf`.
 """
 
 # -----------------------------------------------------------------------------
@@ -35,7 +34,7 @@ def export_gexf(rotulos,similaridades,nome_arquivo,threshold,excluir_negativos):
     arquivo = codecs.open(nome_arquivo + ".gexf","w","utf-8")
     arquivo.write('<?xml version="1.0" encoding="UTF-8"?>\n')
     arquivo.write('<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2">\n')
-    arquivo.write('\t<graph mode="static" defaultedgetype="directed">\n')
+    arquivo.write('\t<graph mode="static" defaultedgetype="undirected">\n')
     arquivo.write('\t\t\t<nodes>\n')
     arquivo.flush()
 
@@ -93,7 +92,7 @@ def export_gexf_termos(rotulos,similaridades,nome_arquivo,threshold,excluir_nega
     arquivo = codecs.open(nome_arquivo + ".gexf","w","utf-8")
     arquivo.write('<?xml version="1.0" encoding="UTF-8"?>\n')
     arquivo.write('<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2">\n')
-    arquivo.write('\t<graph mode="static" defaultedgetype="directed">\n')
+    arquivo.write('\t<graph mode="static" defaultedgetype="undirected">\n')
     arquivo.write('\t\t\t<nodes>\n')
     arquivo.flush()
 
