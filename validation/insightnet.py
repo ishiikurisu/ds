@@ -50,13 +50,15 @@ def carregar_documentos(entrada):
     saida = {}
 
     with open(entrada, 'r') as fp:
-        primeira_linha = True
+        no_linha = 0
         for linha in fp:
-            if primeira_linha:
-                primeira_linha = False
-            else:
-                campos = linha.strip().split('\t')
-                saida[campos[0]] = campos[2]
+            if no_linha > 0:
+                try:
+                    campos = linha.strip().split('\t')
+                    saida[campos[0]] = campos[2]
+                except IndexError:
+                    print('linha {0} corrompida!'.format(no_linha+1))
+            no_linha += 1
 
     return saida
 
