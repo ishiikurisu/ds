@@ -9,7 +9,7 @@ class Researcher:
         self.limit = limit
         self.debug = False
         self.pages = []
-        
+        self.visited = set()
 
     def study_from(self, start_point):
         """Starts the main study loop from a starting wikipedia page"""
