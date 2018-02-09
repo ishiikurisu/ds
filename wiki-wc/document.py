@@ -5,8 +5,8 @@ def get_stopwords():
 
 def extract_words(text):
 	stopwords = get_stopwords()
-	all_words = re.split(r'\s', re.sub(r'[^A-Za-z ]', '', text))
-	some_words = filter(lambda s: s not in stopwords, all_words)
+	all_words = map(lambda s: s.lower(), re.split(r'\s', re.sub(r'[^A-Za-z ]', ' ', text)))
+	some_words = filter(lambda s: (s not in stopwords) and (len(s) > 0), all_words)
 	return list(some_words)
 
 class Document:

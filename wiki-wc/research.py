@@ -1,7 +1,7 @@
 import urllib.request
 from bs4 import BeautifulSoup
-from multiprocessing import Process
 import document
+import calculator
 
 class Researcher:
     def __init__(self, limit):
@@ -11,6 +11,7 @@ class Researcher:
         self.pages = []
         self.visited = set()
 
+    # MAIN ENTRY POINT
     def study_from(self, start_point):
         """Starts the main study loop from a starting wikipedia page"""
         self.docs = []
@@ -19,15 +20,12 @@ class Researcher:
         self.study(start_point)
         processes = []
 
+        # IDEA Make this loop run on parallel
         # downloading and extracting information
         while len(self.pages) > 0:
             page = self.pages[0]
             del self.pages[0]
-            process = Process(target=self.study, args=(page,))
-            process.start()
-            processes.append(process)
-        for process in processes:
-            process.join()
+            self.study(page)
 
         # generating final files
         self.analyze()
@@ -55,9 +53,6 @@ class Researcher:
             text = self.get_text(p)
             content += '\n' + text
         self.include(content)
-
-        if self.debug:
-
 
     def try_to_add(self, page):
         """Tries to add another page to the study process."""
@@ -89,5 +84,14 @@ class Researcher:
 
     def analyze(self):
         """Analyzes all the documents after the download is completed."""
-        # TODO Complete me!
-        pass
+        terms, td_matrix = calculator.build_term_frequency_matrix(self.docs)
+        if self.debug:
+            print('--- # Analysis')
+            print('how many: %d' % (self.how_many))
+            print('terms: >')
+            print(terms)
+            print('td_matrix: >')
+            print(td_matrix)
+        # TODO Build TF.IDF matrix
+        # TODO Calculate D*D matrix
+        # TODO Export D*D matrix to CSV
