@@ -14,6 +14,7 @@ class Researcher:
     def study_from(self, start_point):
         """Starts the main study loop from a starting wikipedia page"""
         self.docs = []
+        self.register = document.Document('')
         self.how_many = 1
         self.study(start_point)
         processes = []
@@ -29,11 +30,7 @@ class Researcher:
             process.join()
 
         # generating final files
-        # TODO Generate a list of all words in their weights in all visited documents
-
-        if self.debug:
-            print('how many: %d' % (self.how_many))
-            print('...')
+        self.analyze()
 
     def study(self, page):
         """Study a page by parsing its HTML, adding the next pages to be followed
@@ -57,16 +54,10 @@ class Researcher:
         for p in all_p:
             text = self.get_text(p)
             content += '\n' + text
-        self.analyze(content)
+        self.include(content)
 
         if self.debug:
-            try:
-                print('---')
-                print('page: %s' % (page))
-                print('content:')
-                print(content)
-            except UnicodeEncodeError:
-                pass
+
 
     def try_to_add(self, page):
         """Tries to add another page to the study process."""
@@ -90,8 +81,13 @@ class Researcher:
         """Gets the text from a beautiful soup paragraph element."""
         return ' '.join(text.strip() for text in p.find_all(text=True, recursive=True))
 
-    def analyze(self, text):
+    def include(self, text):
         """Studies the content of the text as proposed in this study."""
-        # IDEA Create an analyzer class that will count words per document and give an opinion.
         doc = document.Document(text)
         self.docs.append(doc)
+        self.register.include(doc)
+
+    def analyze(self):
+        """Analyzes all the documents after the download is completed."""
+        # TODO Complete me!
+        pass
