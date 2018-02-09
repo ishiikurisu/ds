@@ -22,7 +22,7 @@ def calcular_lsa(conjunto):
     U, S, Vt = mat.svd(tfidf)
     matriz_documento_documento, _, _ = sim.calcular_similaridade_documentos(U, S, Vt, len(docs))
     similaridades = sim.obter_similaridades(docs, matriz_documento_documento)
-    gex.export_gexf(documentos, similaridades, nomear_saida(conjunto, 'doc'), 0.15, True)
+    gex.export_gexf(documentos, similaridades, nomear_saida(conjunto, 'doc'), 0, False)
 
     # Analisando termos
     # =================
