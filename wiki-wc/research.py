@@ -85,13 +85,13 @@ class Researcher:
     def analyze(self):
         """Analyzes all the documents after the download is completed."""
         terms, td_matrix = calculator.build_term_frequency_matrix(self.docs)
+        tfidf = calculator.calculate_tfidf(td_matrix)
         if self.debug:
             print('--- # Analysis')
             print('how many: %d' % (self.how_many))
             print('terms: >')
             print(terms)
-            print('td_matrix: >')
-            print(td_matrix)
-        # TODO Build TF.IDF matrix
+            print('tfidf matrix: >')
+            print(tfidf)
         # TODO Calculate D*D matrix
         # TODO Export D*D matrix to CSV

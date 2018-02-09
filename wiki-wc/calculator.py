@@ -12,7 +12,6 @@ def build_term_frequency_matrix(docs):
             terms.add(word)
     terms = sorted(terms)
 
-    print([len(docs), len(terms)])
     matrix = numpy.zeros([len(docs), len(terms)])
     for i, doc in enumerate(docs):
         for j, term in enumerate(terms):
@@ -20,3 +19,15 @@ def build_term_frequency_matrix(docs):
                 matrix[i, j] = doc.bag[term]
 
     return terms, matrix
+
+def calculate_tfidf(tf):
+    """Calculates a TF.IDF matrix from a Term * Document matrix."""
+    N, T = tf.shape
+    tfidf = numpy.zeros_like(tf)
+
+    for t in range(T):
+        df = sum(tf[:, t])
+        for d in range(N):
+            tfidf[d, t] = tf[d, t] * numpy.log(N/df)
+
+    return tfidf
