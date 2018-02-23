@@ -9,16 +9,18 @@ def load_csv(filename):
 
     return table
 
+def mapl(f, x):
+    return list(map(f, x))
+
 def load_table_from_file(filename):
     """
     Loads the actions, criteria and the ranking table from a CSV file saved
     on filename. If the file name is not valid, all variables return empty.
     """
     contents = load_csv(filename)
-    actions = [ line[0] for line in contents[2:] ]
-    criteria = list(filter(lambda s: len(s) > 0, contents[0]))
-    table = contents
-    # TODO Fill table
+    actions = [line[0] for line in contents[2:]]
+    criteria = [s for s in contents[0] if len(s) > 0]
+    table = [mapl(int, l[1:]) for l in contents[2:]]
     return actions, criteria, table
 
 def get_weights_from_file(filename):
