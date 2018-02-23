@@ -1,13 +1,23 @@
 import sys
 
+def load_csv(filename):
+    table = []
+
+    with open(filename, 'r') as fp:
+        for line in fp:
+            table.append(line.strip().split(';'))
+
+    return table
+
 def load_table_from_file(filename):
     """
     Loads the actions, criteria and the ranking table from a CSV file saved
     on filename. If the file name is not valid, all variables return empty.
     """
     actions, criteria, table = [], [], []
+    contents = load_csv(filename)
+    table = contents
 
-    # TODO Create a CSV loading function
     # TODO Populate variables
 
     return actions, criteria, table
