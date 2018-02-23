@@ -1,6 +1,6 @@
-;Preço;Consumo;Conforto;Manutenção
-Pesos;1;2;4;3
-VW Gol;2;3;3;4
-Fiat Uno;1;1;4;1
-Chevrolet Celta;3;2;2;3
-Ford Fiesta;4;4;1;2
+;Preço;Consumo;Conforto;Manutenção;Direção
+Pesos;1;2;5;3;4
+VW Gol;2;3;3;4;3
+Fiat Uno;1;1;4;1;4
+Chevrolet Celta;3;2;2;3;2
+Ford Fiesta;4;4;1;2;1
