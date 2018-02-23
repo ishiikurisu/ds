@@ -1,3 +1,5 @@
+import numpy as np
+
 class Promethee:
     def __init__(self, actions, criteria):
         """
@@ -12,17 +14,30 @@ class Promethee:
         """
         Defines new weights for this Promethee tool.
         """
-        print(weights)
         self.weights = weights
 
     def recommend(self, table):
         """
         Based on the previously set actions, criteria, and weights, chooses
         the best option using the ranking table.
+        `table` must be a matrix with `len(actions)` x `len(criteria)`
+        dimensions.
         """
-        # TODO Implement me!
         outlet = []
         outlet = self.actions
+
+        # Calculating preferences
+        n = len(self.actions)
+        prefs = np.zeros([n, n])
+        for a, _ in enumerate(self.actions):
+            for b, _ in enumerate(self.actions):
+                p = 0
+                for j in range(len(self.criteria)):
+                    p += (table[a][j] - table[b][j]) * self.weights[j]
+                prefs[a][b] = p
+        print(prefs)
+
+        # TODO Calculate flow
         return outlet
 
 def roc(ranking):
