@@ -36,6 +36,6 @@ if __name__ == '__main__':
     actions, criteria, table = load_table_from_file(tablename)
     weights = get_weights_from_file(tablename)
     promethee = prometheeroc.Promethee(actions, criteria)
-    promethee.set_weights(weights)
+    promethee.set_weights(prometheeroc.roc(weights))
     best_options = promethee.recommend(table)
     print(best_options)
