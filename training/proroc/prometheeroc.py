@@ -24,7 +24,6 @@ class Promethee:
         dimensions.
         """
         outlet = []
-        outlet = self.actions
 
         # Calculating preferences
         n = len(self.actions)
@@ -36,7 +35,13 @@ class Promethee:
                     p += (table[a][j] - table[b][j]) * self.weights[j]
                 prefs[a][b] = p
 
-        # TODO Calculate flow
+        # Calcuting flow
+        phi_p = lambda a: [prefs[a][b] for b in range(n)]
+        phi_m = lambda a: [prefs[b][a] for b in range(n)]
+        flow = [(sum(phi_p(a)) - sum(phi_m(a)))/n for a in range(n)]
+
+        # Packing results
+        outlet = list(map(lambda it: it[0], sorted(zip(self.actions, flow), key=lambda it: it[1])))
         return outlet
 
 def roc(ranking):
