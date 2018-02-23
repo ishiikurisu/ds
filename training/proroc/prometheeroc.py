@@ -35,7 +35,6 @@ class Promethee:
                 for j in range(len(self.criteria)):
                     p += (table[a][j] - table[b][j]) * self.weights[j]
                 prefs[a][b] = p
-        print(prefs)
 
         # TODO Calculate flow
         return outlet
