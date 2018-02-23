@@ -1,4 +1,5 @@
 import sys
+import prometheeroc
 
 def load_csv(filename):
     table = []
@@ -34,8 +35,7 @@ if __name__ == '__main__':
     tablename = sys.argv[1]
     actions, criteria, table = load_table_from_file(tablename)
     weights = get_weights_from_file(tablename)
-
-    print(actions)
-    print(criteria)
-    print(weights)
-    print(table)
+    promethee = prometheeroc.Promethee(actions, criteria)
+    promethee.set_weights(weights)
+    best_options = promethee.recommend(table)
+    print(best_options)
