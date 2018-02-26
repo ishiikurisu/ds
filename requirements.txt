@@ -2,3 +2,5 @@ bs4
 scipy
 tulip-python
 tulipgui-python
+pandas
+xlrd
