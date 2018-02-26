@@ -1,4 +1,5 @@
 var fs = require("fs");
+var excel = require("./excel");
 
 /**
  * The main procedure of this project.
@@ -34,11 +35,13 @@ function loadConfig(src) {
 function getAllIndividualIds(config) {
     var ids = new Set();
     var requiredYears = config['years'];
+    var dir = config['working'];
 
     Object.keys(requiredYears).forEach(year => {
         var excelname = config['years'][year]
-        console.log("studying " + year + " with " + excelname);
-        // TODO Load Excel spreadsheet
+        console.log("studying " + year + " with " + dir + excelname);
+        var currentIds = excel.getIds(excelname);
+        console.log(currentIds);
     });
 
     // TODO Store ids in a file

@@ -6,6 +6,9 @@
   "scripts": {
     "test": "node app.js"
   },
+  "dependencies": {
+    "exceljs": "https://github.com/guyonroche/exceljs"
+  },
   "author": "Cristiano Silva Jr.",
   "license": "SEE LICENSE IN LICENSE"
 }
