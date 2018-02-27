@@ -39,16 +39,38 @@ def extract_coordinations(config, ids):
 
     print('# Getting all coordinations')
     for year in years:
-        print('Getting coordinations from {0}:'.format(year))
+        print('Getting coordinations from {0}'.format(year))
         excelname = config['years'][year]
         current_coordinations = excel.get_coordinations(ids, src + excelname)
         coordinations[year] = current_coordinations
 
     return coordinations
 
+def consolidate_coordinations(config, ids, coordinations):
+    years = config['years']
+    src = config['working']
+    output = src + 'output.csv'
+
+    print('# Consolidating data')
+    with open(output, 'w') as fp:
+        # Writting header
+        line = 'ids;' + ';'.join(years) + '\n'
+        fp.write(line)
+
+        # Writting remaing lines
+        for current_id in ids:
+            line = '{0}'.format(current_id)
+            for year in years:
+                coordination = 'nope'
+                if current_id in coordinations[year]:
+                    coordination = coordinations[year][current_id]
+                line += ';{0}'.format(coordination)
+            fp.write(line + '\n')
+
+
 if __name__ == '__main__':
     config = load_config(sys.argv[1])
     ids = get_all_ids(config)
     save_all_ids(ids, config)
     coordinations = extract_coordinations(config, ids)
-    # TODO Consolidate information from all ids
+    consolidate_coordinations(config, ids, coordinations)

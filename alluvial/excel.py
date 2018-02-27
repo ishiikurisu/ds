@@ -29,7 +29,6 @@ def get_coordinations(ids, excelname):
         current_id = sheet.iat[row, 7]
         situation = sheet.iat[row, 0]
         if (situation == '51') or (situation == '11'):
-            print(current_id)
             coordinations[current_id] = sheet.iat[row, 31]
 
     return coordinations
