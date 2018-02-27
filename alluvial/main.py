@@ -18,11 +18,13 @@ def get_all_ids(config):
     for year in years:
         print('Getting ids from {0}'.format(year))
         excelname = config['years'][year]
-        currentIds = excel.get_ids(src + excelname)
+        current_ids = excel.get_ids(src + excelname)
+        for current_id in current_ids:
+            ids.add(current_id)
 
     return ids
 
 if __name__ == '__main__':
     config = load_config(sys.argv[1])
     ids = get_all_ids(config)
-    print(ids)
+    # TODO Store ids in separate file

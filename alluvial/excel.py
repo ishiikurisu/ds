@@ -3,8 +3,9 @@ import pandas as pd
 def get_ids(excelname):
     """Gets all ids from a structured excel file."""
     ids = []
-    xls = pd.ExcelFile(excelname)
-    # TODO Understand spreadsheet structure
-    sheet = xls.parse(xls.sheet_names[0])
-    print(sheet.head)
+    sheet = pd.read_excel(excelname)
+
+    for row in range(3, sheet.shape[0]):
+        ids.append(sheet.iat[row, 7])
+
     return ids
