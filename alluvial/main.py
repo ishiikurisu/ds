@@ -24,7 +24,15 @@ def get_all_ids(config):
 
     return ids
 
+def save_all_ids(ids, config):
+    csvname = config['working'] + 'ids.csv'
+    content = ''.join(map(lambda s: '{0}\n'.format(s), ids))
+    with open(csvname, 'w') as fp:
+        fp.write(content)
+    return csvname
+
 if __name__ == '__main__':
     config = load_config(sys.argv[1])
     ids = get_all_ids(config)
-    # TODO Store ids in separate file
+    save_all_ids(ids, config)
+    # TODO Consolidate information from all ids
