@@ -31,6 +31,8 @@ def validate_by_program(sheet, row, program='nan'):
 
     if (result == 'FV') and (program == current_program):
         outlet = True
+    elif (result == 'FV') and (program == 'IGNORE'):
+        outlet = True
 
     return outlet
 
@@ -47,6 +49,20 @@ def get_coordinations(ids, excelname):
         current_id = sheet.iat[row, 7]
         if validate_by_situation(sheet, row) and (type(current_id) is str):
             coordination = sheet.iat[row, 31]
+            coordinations[current_id] = coordination
+
+    return coordinations
+
+def get_coordinations_by_program(excelname, ids, program='IGNORE'):
+    """Testing if I can flow programs over time."""
+    # XXX This is an experimental function!
+    coordinations = {}
+    sheet = pd.read_excel(excelname)
+
+    for row in range(4, sheet.shape[0]):
+        current_id = sheet.iat[row, 7]
+        if validate_by_program(sheet, row, program) and (type(current_id) is str):
+            coordination = sheet.iat[row, 12]
             coordinations[current_id] = coordination
 
     return coordinations
