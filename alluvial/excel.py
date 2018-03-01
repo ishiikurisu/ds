@@ -10,6 +10,30 @@ def get_ids(excelname):
 
     return ids
 
+def validate_by_situation(sheet, row):
+    """Validate the current candidate by analyzing their descriptive situation."""
+    # column 0 contains the situation's code
+    # column 1 contains the situation's description
+    # column 31 contains the coordination
+    outlet = False
+    situation = sheet.iat[row, 0]
+    if (situation == '51') or (situation == '11'):
+        coordination = sheet.iat[row, 31]
+        if type(coordination) is str:
+            outlet = True
+    return outlet
+
+def validate_by_program(sheet, row, program='nan'):
+    """Validates the current candidate by analyzing their process result."""
+    result = str(sheet.iat[row, 4])
+    current_program = str(sheet.iat[row, 12])
+    outlet = False
+
+    if (result == 'FV') and (program == current_program):
+        outlet = True
+
+    return outlet
+
 def get_coordinations(ids, excelname):
     """
     Relates all given ids to a coordination in the given excel sheet given the
@@ -19,16 +43,11 @@ def get_coordinations(ids, excelname):
     coordinations = {}
     sheet = pd.read_excel(excelname)
 
-    # column 0 contains the situation's code
-    # column 1 contains the situation's description
-    # column 31 contains the coordination
     for row in range(4, sheet.shape[0]):
         current_id = sheet.iat[row, 7]
-        situation = sheet.iat[row, 0]
-        if (situation == '51') or (situation == '11'):
+        if validate_by_situation(sheet, row) and (type(current_id) is str):
             coordination = sheet.iat[row, 31]
-            if type(coordination) is str:
-                coordinations[current_id] = coordination
+            coordinations[current_id] = coordination
 
     return coordinations
 
@@ -38,11 +57,8 @@ def get_ids_from_program(excelname, program):
     sheet = pd.read_excel(excelname)
 
     for row in range(4, sheet.shape[0]):
-        current_id = sheet.iat[row, 7]
-        result = str(sheet.iat[row, 4])
-        current_program = str(sheet.iat[row, 12])
-
-        if (result == 'FV') and (program == current_program):
+        if validate_by_program(sheet, row, program):
+            current_id = sheet.iat[row, 7]
             ids.add(current_id)
 
     return ids
