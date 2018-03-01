@@ -18,8 +18,13 @@ def get_all_valid_ids(config):
 
     return ids
 
+def save_all_valid_ids(config, valid_ids):
+    csvname = config['working'] + 'valid.csv'
+    with open(csvname, 'w') as fp:
+        for valid_id in valid_ids:
+            fp.write('{0};\n'.format(valid_id))
+
 if __name__ == '__main__':
     config = flow.load_config(sys.argv[1])
     valid_ids = get_all_valid_ids(config)
-    # TODO Save valid ids in file
-    print(valid_ids)
+    save_all_valid_ids(config, valid_ids)

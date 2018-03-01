@@ -22,9 +22,6 @@ def get_coordinations(ids, excelname):
     # column 0 contains the situation's code
     # column 1 contains the situation's description
     # column 31 contains the coordination
-    sit = sheet.iat[3, 0]
-    dsc = sheet.iat[3, 1]
-    cor = sheet.iat[3, 31]
     for row in range(4, sheet.shape[0]):
         current_id = sheet.iat[row, 7]
         situation = sheet.iat[row, 0]
