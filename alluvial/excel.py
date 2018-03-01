@@ -34,3 +34,18 @@ def get_coordinations(ids, excelname):
                 coordinations[current_id] = coordination
 
     return coordinations
+
+def get_ids_from_program(excelname, program):
+    """Get all approved ids from a given program."""
+    ids = set()
+    sheet = pd.read_excel(excelname)
+
+    for row in range(4, sheet.shape[0]):
+        current_id = sheet.iat[row, 7]
+        result = str(sheet.iat[row, 4])
+        current_program = str(sheet.iat[row, 12])
+
+        if (result == 'FV') and (program == current_program):
+            ids.add(current_id)
+
+    return ids

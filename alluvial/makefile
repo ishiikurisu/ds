@@ -1,6 +1,11 @@
-.PHONY: default
-default: test
+.PHONY: default all
+default: collect
+# default: all
+all: flow collect
 
-.PHONY: test
-test:
-	python main.py $(WHERE)
+.PHONY: flow collect
+flow:
+	python flow.py $(WHERE)
+
+collect:
+	python collect.py $(WHERE)
