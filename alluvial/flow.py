@@ -32,19 +32,22 @@ def save_all_ids(ids, config):
         fp.write(content)
     return csvname
 
-def extract_coordinations(config, ids):
+def extract_coordinations(config):
     coordinations = {}
     years = config['years']
     src = config['working']
+    ids = set()
 
     print('# Getting all coordinations')
     for year in years:
         print('Getting coordinations from {0}'.format(year))
         excelname = config['years'][year]
-        current_coordinations = excel.get_coordinations(ids, src + excelname)
+        current_coordinations = excel.get_coordinations_by_program(src + excelname)
         coordinations[year] = current_coordinations
+        for current_id in current_coordinations:
+            ids.add(current_id)
 
-    return coordinations
+    return ids, coordinations
 
 def consolidate_coordinations(config, ids, coordinations):
     years = config['years']
@@ -70,7 +73,5 @@ def consolidate_coordinations(config, ids, coordinations):
 
 if __name__ == '__main__':
     config = load_config(sys.argv[1])
-    ids = get_all_ids(config)
-    save_all_ids(ids, config)
-    coordinations = extract_coordinations(config, ids)
+    ids, coordinations = extract_coordinations(config)
     consolidate_coordinations(config, ids, coordinations)

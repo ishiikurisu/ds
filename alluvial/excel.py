@@ -53,7 +53,7 @@ def get_coordinations(ids, excelname):
 
     return coordinations
 
-def get_coordinations_by_program(excelname, ids, program='IGNORE'):
+def get_coordinations_by_program(excelname, program='IGNORE'):
     """Testing if I can flow programs over time."""
     # XXX This is an experimental function!
     coordinations = {}
