@@ -1,5 +1,9 @@
 import pandas as pd
 
+#############
+# UTILITIES #
+#############
+
 def get_ids(excelname):
     """Gets all ids from a structured excel file."""
     ids = []
@@ -9,6 +13,10 @@ def get_ids(excelname):
         ids.append(sheet.iat[row, 7])
 
     return ids
+
+###############
+# VALIDATIONS #
+###############
 
 def validate_by_situation(sheet, row):
     """Validate the current candidate by analyzing their descriptive situation."""
@@ -25,7 +33,9 @@ def validate_by_situation(sheet, row):
     return outlet
 
 def validate_by_program(sheet, row, program='nan'):
-    """Validates the current candidate by analyzing their process result."""
+    """
+    Validates the current candidate by analyzing their process result and their program.
+    """
     result = str(sheet.iat[row, 4])
     current_program = str(sheet.iat[row, 12])
     outlet = False
@@ -36,6 +46,14 @@ def validate_by_program(sheet, row, program='nan'):
         outlet = True
 
     return outlet
+
+def validate_by_result(sheet, row):
+    """Validates the current candidate by analyzing their process result."""
+    return str(sheet.iat[row, 4]) == 'FV'
+
+###############
+# EXCEL LOOPS #
+###############
 
 def get_coordinations(excelname):
     """
@@ -65,6 +83,18 @@ def group_programs_by_id(excelname, program='IGNORE'):
             programs[current_id] = sheet.iat[row, 12]
 
     return programs
+
+def group_coordinations_by_id(excelname):
+    """Relates a id to the coordination it belongs to if it given as favorable."""
+    coordinations = {}
+    sheet = pd.read_excel(excelname)
+
+    for row in range(4, sheet.shape[0]):
+        current_id = sheet.iat[row, 7]
+        if validate_by_result(sheet, row) and (type(current_id) is str):
+            coordinations[current_id] = sheet.iat[row, 13]
+
+    return coordinations
 
 def get_ids_from_program(excelname, program):
     """Get all approved ids from a given program."""
