@@ -14,6 +14,7 @@ def validate_by_situation(sheet, row):
     """Validate the current candidate by analyzing their descriptive situation."""
     # column 0 contains the situation's code
     # column 1 contains the situation's description
+    # column 12 contains the program which the researcher belongs to
     # column 31 contains the coordination
     outlet = False
     situation = sheet.iat[row, 0]
@@ -36,7 +37,7 @@ def validate_by_program(sheet, row, program='nan'):
 
     return outlet
 
-def get_coordinations(ids, excelname):
+def get_coordinations(excelname):
     """
     Relates all given ids to a coordination in the given excel sheet given the
     id has a valid scholarship. Returns a dictionary relating the id and their
@@ -53,19 +54,17 @@ def get_coordinations(ids, excelname):
 
     return coordinations
 
-def get_coordinations_by_program(excelname, program='IGNORE'):
-    """Testing if I can flow programs over time."""
-    # XXX This is an experimental function!
-    coordinations = {}
+def group_programs_by_id(excelname, program='IGNORE'):
+    """Relates a id to the program it belongs to if it given as favorable."""
+    programs = {}
     sheet = pd.read_excel(excelname)
 
     for row in range(4, sheet.shape[0]):
         current_id = sheet.iat[row, 7]
         if validate_by_program(sheet, row, program) and (type(current_id) is str):
-            coordination = sheet.iat[row, 12]
-            coordinations[current_id] = coordination
+            programs[current_id] = sheet.iat[row, 12]
 
-    return coordinations
+    return programs
 
 def get_ids_from_program(excelname, program):
     """Get all approved ids from a given program."""

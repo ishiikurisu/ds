@@ -32,24 +32,25 @@ def save_all_ids(ids, config):
         fp.write(content)
     return csvname
 
-def extract_coordinations(config):
-    coordinations = {}
+def extract_groups(config):
+    groups = {}
     years = config['years']
     src = config['working']
     ids = set()
 
-    print('# Getting all coordinations')
+    print('# Getting all groups for each id')
     for year in years:
-        print('Getting coordinations from {0}'.format(year))
+        print('Getting programs from {0}'.format(year))
         excelname = config['years'][year]
-        current_coordinations = excel.get_coordinations_by_program(src + excelname)
-        coordinations[year] = current_coordinations
-        for current_id in current_coordinations:
+        # current_groups = excel.get_coordinations(src + excelname)
+        current_groups = excel.group_programs_by_id(src + excelname)
+        groups[year] = current_groups
+        for current_id in current_groups:
             ids.add(current_id)
 
-    return ids, coordinations
+    return ids, groups
 
-def consolidate_coordinations(config, ids, coordinations):
+def consolidate_groups(config, ids, groups):
     years = config['years']
     src = config['working']
     output = src + 'output.csv'
@@ -64,14 +65,15 @@ def consolidate_coordinations(config, ids, coordinations):
         for current_id in ids:
             line = '{0}'.format(current_id)
             for year in years:
-                coordination = 'nope'
-                if current_id in coordinations[year]:
-                    coordination = coordinations[year][current_id]
-                line += ';{0}'.format(coordination)
+                group = 'nope'
+                if current_id in groups[year]:
+                    group = groups[year][current_id]
+                line += ';{0}'.format(group)
             fp.write(line + '\n')
+        print('{0} ids written'.format(len(ids)))
 
 
 if __name__ == '__main__':
     config = load_config(sys.argv[1])
-    ids, coordinations = extract_coordinations(config)
-    consolidate_coordinations(config, ids, coordinations)
+    ids, groups = extract_groups(config)
+    consolidate_groups(config, ids, groups)
