@@ -38,14 +38,22 @@ def extract_groups(config):
     src = config['working']
     ids = set()
 
-    print('# Getting all groups for each id')
+    print('# Getting all groups for each id during 3 years')
+    year_count = 0
     for year in years:
+        # Grouping years
+        if (year_count % 3) == 0:
+            current_reference_year = year
+            groups[current_reference_year] = {}
+        year_count += 1
+
+        # Extracting information from current year
         print('Getting programs from {0}'.format(year))
         excelname = config['years'][year]
         # current_groups = excel.get_coordinations(src + excelname)
         current_groups = excel.group_programs_by_id(src + excelname)
-        groups[year] = current_groups
         for current_id in current_groups:
+            groups[current_reference_year][current_id] = current_groups[current_id]
             ids.add(current_id)
 
     return ids, groups
@@ -53,18 +61,18 @@ def extract_groups(config):
 def consolidate_groups(config, ids, groups):
     years = config['years']
     src = config['working']
-    output = src + 'output.csv'
+    output = src + 'triads.csv'
 
     print('# Consolidating data')
     with open(output, 'w') as fp:
         # Writting header
-        line = 'ids;' + ';'.join(years) + '\n'
+        line = 'ids;' + ';'.join(groups.keys()) + '\n'
         fp.write(line)
 
         # Writting remaing lines
         for current_id in ids:
             line = '{0}'.format(current_id)
-            for year in years:
+            for year in groups:
                 group = 'nope'
                 if current_id in groups[year]:
                     group = groups[year][current_id]
