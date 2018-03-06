@@ -64,7 +64,7 @@ def consolidate_groups(config, ids, groups):
         for current_id in ids:
             line = '{0}'.format(current_id)
             for year in years:
-                group = 'nope'
+                group = ''
                 if current_id in groups[year]:
                     group = groups[year][current_id]
                 line += ';{0}'.format(group)
