@@ -1,6 +1,7 @@
 {
     "working": "./",
     "program": "neurosciences",
+    "paycheck": "paycheck.xls",
     "years": {
         "2015": "2015.xls",
         "2016": "2016.xls",
