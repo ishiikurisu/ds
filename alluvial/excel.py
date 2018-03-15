@@ -107,3 +107,37 @@ def get_ids_from_program(excelname, program):
             ids.add(current_id)
 
     return ids
+
+############
+# PAYCHECK #
+############
+
+def extract_periods_from_paycheck(excelname, years):
+    """
+    Extracts the ids and the valid periods from the paycheck. Requires the path to the excel
+    spreadsheet with the desired information and the relevant years for study. Returns a hashmap
+    where each key is an id and ea0ch value is a set containing all years when that id received
+    something.
+    """
+    # column 2 contains ids
+    # column 6 contains period beginning
+    # column 7 contains period ending
+    outlet = {}
+    sheet = pd.read_excel(excelname)
+    limit = sheet.shape[0]
+    first_valid_year = years[0]
+    last_valid_year = years[-1]
+
+    for row in range(0, limit):
+        # BUG Pandas is reading the id as a number
+        current_id = str(sheet.iat[row, 2])
+        beginning = sheet.iat[row, 6].year
+        ending = sheet.iat[row, 7].year
+        if (beginning >= first_valid_year) and (beginning <= last_valid_year):
+            ending = last_valid_year if last_valid_year < ending else ending
+            if current_id not in outlet:
+                outlet[current_id] = set()
+            for year in range(beginning, ending+1):
+                outlet[current_id].add(year)
+
+    return outlet
