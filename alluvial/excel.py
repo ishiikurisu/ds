@@ -116,9 +116,10 @@ def extract_periods_from_paycheck(excelname, years):
     """
     Extracts the ids and the valid periods from the paycheck. Requires the path to the excel
     spreadsheet with the desired information and the relevant years for study. Returns a hashmap
-    where each key is an id and ea0ch value is a set containing all years when that id received
-    something.
+    where each key is an id and each value is a dictionary relating every valid year with a
+    process identification
     """
+    # column 0 contains process ids
     # column 2 contains ids
     # column 6 contains period beginning
     # column 7 contains period ending
@@ -129,15 +130,16 @@ def extract_periods_from_paycheck(excelname, years):
     last_valid_year = years[-1]
 
     for row in range(0, limit):
-        current_id = str(sheet.iat[row, 2])
+        process_id = sheet.iat[row, 0]
+        person_id = str(sheet.iat[row, 2])
         beginning = sheet.iat[row, 6].year
         ending = sheet.iat[row, 7].year
         if (beginning >= first_valid_year) and (beginning <= last_valid_year):
-            if len(current_id) < 11:
-                current_id = ('0'*(11-len(current_id))) + current_id
-            if current_id not in outlet.keys():
-                outlet[current_id] = set()
+            if len(person_id) < 11:
+                person_id = ('0'*(11-len(person_id))) + person_id
+            if person_id not in outlet.keys():
+                outlet[person_id] = {}
             for year in range(beginning, ending):
-                outlet[current_id].add(year)
+                outlet[person_id][year] = process_id
 
     return outlet
