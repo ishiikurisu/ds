@@ -3,7 +3,7 @@ import excel
 import flow
 
 def get_years(config):
-    return sorted([int(y) for y in config['years'].keys()][1:])
+    return sorted([int(y) for y in config['years'].keys()])
 
 def get_everything(config):
     """
@@ -21,7 +21,7 @@ def save_stuff(config, periods_by_id):
     with open(src, 'w') as fp:
         fp.write('ids;{0}\n'.format(';'.join(map(str, years))))
         for current_id in periods_by_id:
-            line = '{0};'.format(current_id)
+            line = "'{0}';".format(current_id)
             valid_years = map(lambda year: '1' if year in periods_by_id[current_id] else ' ', years)
             line += ';'.join(valid_years)
             fp.write(line + '\n')

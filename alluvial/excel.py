@@ -129,15 +129,15 @@ def extract_periods_from_paycheck(excelname, years):
     last_valid_year = years[-1]
 
     for row in range(0, limit):
-        # BUG Pandas is reading the id as a number
         current_id = str(sheet.iat[row, 2])
         beginning = sheet.iat[row, 6].year
         ending = sheet.iat[row, 7].year
         if (beginning >= first_valid_year) and (beginning <= last_valid_year):
-            ending = last_valid_year if last_valid_year < ending else ending
-            if current_id not in outlet:
+            if len(current_id) < 11:
+                current_id = ('0'*(11-len(current_id))) + current_id
+            if current_id not in outlet.keys():
                 outlet[current_id] = set()
-            for year in range(beginning, ending+1):
+            for year in range(beginning, ending):
                 outlet[current_id].add(year)
 
     return outlet
