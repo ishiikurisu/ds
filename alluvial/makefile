@@ -17,5 +17,5 @@ collect_from_paycheck:
 
 .PHONY: consultant
 consultant:
-	FLASK_APP = consultant.py
+	# Do not forget to set the environment variables before running!
 	flask run

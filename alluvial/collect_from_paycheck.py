@@ -33,8 +33,14 @@ def turn_processes_to_coordinations(processes):
 
     for year in processes:
         process = processes[year].replace('/', '').replace('-', '')
-        query = "http://localhost:5000/consult/{0}".format(process)
-        coordination = urllib.request.urlopen(query).read().decode('utf-8')
+
+        if process not in memo:
+            query = "http://localhost:5000/consult/{0}".format(process)
+            coordination = urllib.request.urlopen(query).read().decode('utf-8')
+            memo[process] = coordination
+        else:
+            coordination = memo[process]
+
         outlet[year] = coordination if len(coordination) < 5 else 'ghost'
 
     return outlet
