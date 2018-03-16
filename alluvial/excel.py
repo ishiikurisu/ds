@@ -14,6 +14,27 @@ def get_ids(excelname):
 
     return ids
 
+def relate_coordinations_and_processes(config):
+    """
+    Loads all process ids from all years in configuration files and relate them to the
+    coordination they belong to. Returns a dictionary.
+    """
+    outlet = {}
+    src = config['working']
+    years = config['years']
+
+    for year in years:
+        excelname = src + years[year]
+        sheet = pd.read_excel(excelname, skiprows=range(3))
+        # column 0 contains the process number
+        # column 14 contains the coordination
+        for row in range(1, sheet.shape[0]):
+            process = sheet.iat[row, 0].replace('/', '').replace('-', '')
+            coordination = sheet.iat[row, 14]
+            outlet[process] = coordination
+
+    return outlet
+
 ###############
 # VALIDATIONS #
 ###############
