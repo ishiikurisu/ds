@@ -4,3 +4,4 @@ tulip-python
 tulipgui-python
 pandas
 xlrd
+Flask

@@ -14,3 +14,8 @@ flow3:
 
 collect_from_paycheck:
 	python collect_from_paycheck.py $(WHERE)
+
+.PHONY: consultant
+consultant:
+	FLASK_APP = consultant.py
+	flask run
