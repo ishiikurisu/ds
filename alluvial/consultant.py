@@ -13,6 +13,10 @@ app = flask.Flask(__name__)
 def home():
     return 'Hello! What do you want to do today?'
 
+@app.route("/health")
+def health():
+    return 'ok'
+
 @app.route("/consult/<process>")
 def consult(process):
     outlet = 'give me a valid process number, please!'
