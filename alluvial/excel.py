@@ -160,7 +160,10 @@ def extract_periods_from_paycheck(excelname, years):
                 person_id = ('0'*(11-len(person_id))) + person_id
             if person_id not in outlet.keys():
                 outlet[person_id] = {}
-            for year in range(beginning, ending):
-                outlet[person_id][year] = process_id
+            if beginning == ending:
+                outlet[person_id][beginning] = process_id
+            else:
+                for year in range(beginning, ending):
+                    outlet[person_id][year] = process_id
 
     return outlet
