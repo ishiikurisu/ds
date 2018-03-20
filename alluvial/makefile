@@ -2,20 +2,24 @@
 default: collect_from_paycheck
 all: flow collect_from_raw flow3
 
+PY = python3
+ifeq ($(OS), Windows_NT)
+	PY = python
+endif
+
 .PHONY: flow collect_from_raw flow3 collect_from_paycheck
 flow:
-	python flow.py $(WHERE)
+	$(PY) flow.py $(WHERE)
 
 collect_from_raw:
-	python collect_from_raw.py $(WHERE)
+	$(PY) collect_from_raw.py $(WHERE)
 
 flow3:
-	python flow3.py $(WHERE)
+	$(PY) flow3.py $(WHERE)
 
 collect_from_paycheck:
-	python collect_from_paycheck.py $(WHERE)
+	$(PY) collect_from_paycheck.py $(WHERE)
 
 .PHONY: consultant
 consultant:
-	# Do not forget to set the environment variables before running!
-	flask run
+	FLASK_APP=consultant.py flask run

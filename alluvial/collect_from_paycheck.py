@@ -59,7 +59,14 @@ def save_stuff(config, periods_by_id):
             processes = periods_by_id[current_id]
             if consultant_available:
                 coordinations = turn_processes_to_coordinations(processes)
-                valid_years = map(lambda year: coordinations[year] if year in coordinations else ' ', years)
+                valid_years = []
+                appeared = False
+                for year in years:
+                    coordination = 'never' if not appeared else ' '
+                    if year in coordinations:
+                        appeared = True
+                        coordination = coordinations[year]
+                    valid_years.append(coordination)
             else:
                 valid_years = map(lambda year: processes[year] if year in processes else ' ', years)
             fp.write("'{0}';{1}\n".format(current_id, ';'.join(valid_years)))
