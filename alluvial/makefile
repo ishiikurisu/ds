@@ -1,5 +1,5 @@
 .PHONY: default all
-default: collect_from_paycheck
+default: collect_from_source
 all: flow collect_from_raw flow3
 
 PY = python3
@@ -7,7 +7,7 @@ ifeq ($(OS), Windows_NT)
 	PY = python
 endif
 
-.PHONY: flow collect_from_raw flow3 collect_from_paycheck
+.PHONY: flow collect_from_raw flow3 collect_from_paycheck collect_from_source
 flow:
 	$(PY) flow.py $(WHERE)
 
@@ -19,6 +19,9 @@ flow3:
 
 collect_from_paycheck:
 	$(PY) collect_from_paycheck.py $(WHERE)
+
+collect_from_source:
+	$(PY) collect_from_source.py $(WHERE)
 
 .PHONY: consultant
 consultant:
