@@ -66,6 +66,10 @@ def get_stuff(config):
     years = list(sorted(years))
     return years, data
 
+def get_output(config):
+    """Generates an output file name from the source for this procedure."""
+    return config['working'] + 'source.csv'
+
 def save_stuff(config, years, data):
     """
     Saves relevant data to a "source.csv" file in the working folder set in the configuration
