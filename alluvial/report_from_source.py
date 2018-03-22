@@ -14,11 +14,11 @@ def generate_report(source_output):
         for line in fp:
             stuff = line.strip().split('\t')
             if first_line:
-                fields = stuff
-                report = { field: {} for field in fields[1:] }
+                fields = stuff[1:]
+                report = { field: {} for field in fields }
                 first_line = False
             else:
-                for i, field in enumerate(fields[1:]):
+                for i, field in enumerate(fields):
                     info = stuff[i+1]
                     if info not in report[field]:
                         report[field][info] = 0
@@ -30,12 +30,24 @@ def save_report(report, config):
     """
     Saves the generated report on a relevant file as described by the configuration structure.
     """
-    # TODO Implement me!
-    pass
+    with open(config['working'] + 'source_report.csv', 'w') as fp:
+        fp.write('year\tnever\tnope\tinside\n')
+        for year in report.keys():
+            results = report[year]
+            never = 0
+            nope = 0
+            inside = 0
+            for state, count in results.items():
+                if state == 'never':
+                    never += count
+                elif state == 'nope':
+                    nope += count
+                else:
+                    inside += count
+            fp.write('{0}\t{1}\t{2}\t{3}\n'.format(year, never, nope, inside))
 
 if __name__ == '__main__':
     config = flow.load_config(sys.argv[1])
     source_output = cfs.get_output(config)
     report = generate_report(source_output)
-    print(report)
     save_report(report, config)
