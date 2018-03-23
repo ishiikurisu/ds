@@ -129,6 +129,24 @@ def get_ids_from_program(excelname, program):
 
     return ids
 
+def get_ids_from_csv_table(csvname):
+    """Gets all ids from a normally structured excel file. Returns None if there is no id field."""
+    ids = []
+
+    with open(csvname, 'r') as fp:
+        first_line = True
+        for line in fp:
+            if first_line:
+                fields = line.strip().split('\t')
+                id_field = fields.index('CPF')
+                first_line = False
+            else:
+                person_id = line.strip().split('\t')[id_field]
+                person_id = ('0'*(11-len(person_id))) + person_id
+                ids.append(person_id)
+
+    return ids
+
 ############
 # PAYCHECK #
 ############
