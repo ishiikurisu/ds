@@ -139,7 +139,6 @@ def get_coordinations_from_csv(csvname):
                 for year in range(start_year, end_year):
                     ids[current_id][year] = coordination
 
-    print('discarded {0} ids'.format(invalid))
     return ids
 
 def group_programs_by_id(excelname, program='IGNORE'):

@@ -1,5 +1,5 @@
 .PHONY: default all
-default: collect_from_raw
+default: compares_sources
 all: flow collect_from_raw flow3
 
 PY = python3
@@ -26,7 +26,7 @@ collect_from_source:
 report_from_source: collect_from_source
 	$(PY) report_from_source.py $(WHERE)
 
-compares_sources:
+compares_sources: collect_from_source collect_from_raw
 	$(PY) compare_sources.py $(WHERE)
 
 .PHONY: consultant
