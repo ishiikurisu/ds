@@ -35,6 +35,13 @@ def relate_coordinations_and_processes(config):
 
     return outlet
 
+def fix_id(inlet):
+    """
+    Fix a id in number format to a valid string.
+    """
+    outlet = str(inlet)
+    return ('0'*(11-len(outlet))) + outlet
+
 ###############
 # VALIDATIONS #
 ###############
@@ -93,6 +100,48 @@ def get_coordinations(excelname):
 
     return coordinations
 
+def get_coordinations_from_csv(csvname):
+    """
+    Relates all ids to a coordination given a TSV sheet. Returns a
+    dictionary relating the id and their coordination (or None lest an invalid
+    state) for each year.
+    """
+    ids = {}
+    invalid = 0
+
+    with open(csvname, 'r') as fp:
+        first_line = True
+        for line in fp:
+            fields = line.strip().split('\t')
+            if first_line:
+                id_field = fields.index('CPF')
+                from_field = fields.index('Data Início Processo')
+                to_field = fields.index('Data Término Processo')
+                coordination_field = fields.index('Código Comitê Assessor')
+                process_field = fields.index('Código Processo Formatado')
+                first_line = False
+            else:
+                try:
+                    current_id = fix_id(fields[id_field])
+                    start_year = int(fields[from_field].split('/')[2])
+                    end_year = int(fields[to_field].split('/')[2])
+                    coordination = fields[coordination_field]
+                except:
+                    invalid += 1
+
+                if start_year < 1970:
+                    start_year = int(fields[process_field].split('/')[-1].split('-')[0])
+                if start_year == end_year:
+                    end_year += 1
+                if current_id not in ids:
+                    ids[current_id] = {}
+
+                for year in range(start_year, end_year):
+                    ids[current_id][year] = coordination
+
+    print('discarded {0} ids'.format(invalid))
+    return ids
+
 def group_programs_by_id(excelname, program='IGNORE'):
     """Relates a id to the program it belongs to if it given as favorable."""
     programs = {}
@@ -141,8 +190,7 @@ def get_ids_from_csv_table(csvname):
                 id_field = fields.index('CPF')
                 first_line = False
             else:
-                person_id = line.strip().split('\t')[id_field]
-                person_id = ('0'*(11-len(person_id))) + person_id
+                person_id = fix_id(line.strip().split('\t')[id_field])
                 ids.append(person_id)
 
     return ids
@@ -174,8 +222,7 @@ def extract_periods_from_paycheck(excelname, years):
         beginning = sheet.iat[row, 6].year
         ending = sheet.iat[row, 7].year
         if (beginning >= first_valid_year) and (beginning <= last_valid_year):
-            if len(person_id) < 11:
-                person_id = ('0'*(11-len(person_id))) + person_id
+            person_id = fix_id(person_id) if len(person_id) < 11 else person_id
             if person_id not in outlet.keys():
                 outlet[person_id] = {}
             if beginning == ending:

@@ -2,37 +2,48 @@ import sys
 import excel
 import flow
 
-def get_all_valid_ids(config):
-    """Stores in memory a list with ids based on the configuration."""
+def get_year_range_from_ids(ids):
+    start_year = 2018
+    end_year = 1968
+
+    for _, years in ids.items():
+        ly = list(years.keys())
+        start_year = min(ly + [start_year])
+        end_year = max(ly + [end_year])
+
+    return [y for y in range(start_year, end_year+1)]
+
+def get_stuff(config):
+    """Retrieves collected data from raw (aka Emerson's) table."""
     ids = {}
-    years = config['years']
-    src = config['working']
-    valid_program = config['program']
+    src = config['working'] + config['raw']
+    ids = excel.get_coordinations_from_csv(src)
+    years = get_year_range_from_ids(ids)
+    return years, ids
 
-    for year in years:
-        print('Getting ids from {0}'.format(year))
-        excelname = config['years'][year]
-        current_ids = excel.get_ids_from_program(src + excelname, valid_program)
-        for current_id in current_ids:
-            if current_id not in ids:
-                ids[current_id] = set()
-            ids[current_id].add(year)
-
-    return ids
-
-def save_all_valid_ids(config, valid_ids):
-    csvname = config['working'] + 'valid.csv'
-    years = config['years']
+def save_stuff(config, years, box):
+    """Save collected stuff to a file"""
+    csvname = config['working'] + 'emerson/processed.csv'
 
     with open(csvname, 'w') as fp:
-        fp.write('id;' + ';'.join(years) + '\n')
-        for valid_id in valid_ids:
-            p = valid_ids[valid_id] # of participation
-            fp.write('{0};{1}\n'.format(valid_id,
-                                        ';'.join(map(lambda y: '1' if y in p else ' ',
-                                                     years))))
+        fp.write('id\t' + '\t'.join(map(str, years)) + '\n')
+        for current_id in box:
+            stuff = box[current_id]
+            appeared = False
+            outlet = []
+
+            for year in years:
+                state = 'never'
+                if year in stuff:
+                    state = stuff[year]
+                    appeared = True
+                elif appeared:
+                    state = 'nope'
+                outlet.append(state)
+
+            fp.write("'{0}'\t{1}\n".format(current_id, '\t'.join(outlet)))
 
 if __name__ == '__main__':
     config = flow.load_config(sys.argv[1])
-    valid_ids = get_all_valid_ids(config)
-    save_all_valid_ids(config, valid_ids)
+    years, box = get_stuff(config)
+    save_stuff(config, years, box)

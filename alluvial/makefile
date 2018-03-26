@@ -1,5 +1,5 @@
 .PHONY: default all
-default: compares_sources
+default: collect_from_raw
 all: flow collect_from_raw flow3
 
 PY = python3
