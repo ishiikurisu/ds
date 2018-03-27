@@ -1,5 +1,5 @@
 import sys
-import flow
+import util
 import collect_from_source as cfs
 
 def generate_report(source_output):
@@ -47,7 +47,7 @@ def save_report(report, config):
             fp.write('{0}\t{1}\t{2}\t{3}\n'.format(year, never, nope, inside))
 
 if __name__ == '__main__':
-    config = flow.load_config(sys.argv[1])
+    config = util.load_config(sys.argv[1])
     source_output = cfs.get_output(config)
     report = generate_report(source_output)
     save_report(report, config)

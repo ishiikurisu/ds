@@ -1,15 +1,14 @@
 import sys
-import flow
 import collect_from_source as cfs
 import collect_from_raw as cfr
-import excel
+import util
 
 def get_ids_from_source(config):
     _, data = cfs.get_stuff(config)
     return set(data.keys())
 
 def get_ids_from_committee(config):
-    ids = excel.get_ids_from_csv_table(config['working'] + 'emerson/emerson.csv')
+    ids = util.get_ids_from_csv_table(config['working'] + 'emerson/emerson.csv')
     return set(ids)
 
 def get_ids_from_raw(config):
@@ -26,7 +25,7 @@ def save_stuff(config, src_ids, cmt_ids):
                                                 1 if current_id in cmt_ids else 0))
 
 if __name__ == '__main__':
-    config = flow.load_config(sys.argv[1])
+    config = util.load_config(sys.argv[1])
     source_ids = get_ids_from_source(config)
     raw_ids = get_ids_from_raw(config)
     save_stuff(config, source_ids, raw_ids)

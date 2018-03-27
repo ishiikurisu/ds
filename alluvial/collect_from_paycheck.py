@@ -1,6 +1,5 @@
 import sys
-import excel
-import flow
+import util
 import urllib.request
 
 
@@ -15,7 +14,7 @@ def get_everything(config):
     """
     src = config['working'] + config['paycheck']
     years = get_years(config)
-    return excel.extract_periods_from_paycheck(src, years)
+    return util.extract_periods_from_paycheck(src, years)
 
 def check_for_consultant():
     """
@@ -72,6 +71,6 @@ def save_stuff(config, periods_by_id):
             fp.write("'{0}';{1}\n".format(current_id, ';'.join(valid_years)))
 
 if __name__ == '__main__':
-    config = flow.load_config(sys.argv[1])
+    config = util.load_config(sys.argv[1])
     periods_by_id = get_everything(config)
     save_stuff(config, periods_by_id)

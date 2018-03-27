@@ -1,11 +1,10 @@
 import os
 import flask
-import flow
-import excel
+import util
 
 # main objects
-config = flow.load_config(os.environ['WHERE'])
-coordinations_by_process = excel.relate_coordinations_and_processes(config)
+config = util.load_config(os.environ['WHERE'])
+coordinations_by_process = util.relate_coordinations_and_processes(config)
 app = flask.Flask(__name__)
 
 # app routings

@@ -1,5 +1,5 @@
 import sys
-import flow
+import util
 
 def get_years_from_line(line, fields):
     """
@@ -94,6 +94,6 @@ def save_stuff(config, years, data):
             fp.write(line)
 
 if __name__ == '__main__':
-    config = flow.load_config(sys.argv[1])
+    config = util.load_config(sys.argv[1])
     years, data = get_stuff(config)
     save_stuff(config, years, data)
