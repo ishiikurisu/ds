@@ -20,11 +20,12 @@ def get_stuff(config):
     years = get_year_range_from_ids(ids)
     return years, ids
 
+def get_output(config):
+    return config['working'] + 'emerson/processed.csv'
+
 def save_stuff(config, years, box):
     """Save collected stuff to a file"""
-    csvname = config['working'] + 'emerson/processed.csv'
-
-    with open(csvname, 'w') as fp:
+    with open(get_output(config), 'w') as fp:
         fp.write('id\t' + '\t'.join(map(str, years)) + '\n')
         for current_id in box:
             stuff = box[current_id]
