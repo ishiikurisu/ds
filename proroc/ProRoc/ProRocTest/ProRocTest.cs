@@ -39,5 +39,46 @@ namespace ProRocTest
                 Assert.True((answer[i] >= correct[i]*0.99) && (answer[i] <= correct[i] * 1.01));
             }
         }
+
+        [Test]
+        public void TestPrometheeModelWorksCorrectly()
+        {
+            string[] criteria = new string[]
+            {
+                "price",
+                "comsuption",
+                "comfort",
+                "maintainance",
+                "steering"
+            };
+            string[] actions = new string[]
+            {
+                "vw gol",
+                "fiat uno",
+                "chevy celta",
+                "ford fiesta"
+            };
+            string[] correct = new string[]
+            {
+                "fiat uno",
+                "vw gol",
+                "chevy celta",
+                "ford fiesta"
+            };
+            var weights = new double[] { 5, 4, 1, 3, 2 };
+            var rankings = new double[][]
+            {
+                new double[] { 3, 2, 2, 1, 2 },
+                new double[] { 4, 4, 1, 4, 1 },
+                new double[] { 2, 3, 3, 2, 3 },
+                new double[] { 1, 1, 4, 3, 4 }
+            };
+
+            var decisions = Model.Promethee(actions, criteria, weights, rankings);
+            for (int i = 0; i < actions.Length; ++i)
+            {
+                Assert.AreEqual(correct[i], decisions[i]);
+            }
+        }
     }
 }

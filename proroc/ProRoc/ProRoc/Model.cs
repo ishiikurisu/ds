@@ -36,5 +36,66 @@ namespace ProRoc
 
             return w;
         }
+
+        /// <summary>
+        /// Uses the PROMETHEE model to assess the best action.
+        /// </summary>
+        /// <param name="actions">The list of possible actions to be taken.</param>
+        /// <param name="criteria">The list of criteria to be taken.</param>
+        /// <param name="weights">The list of weights for each criteria. Should have the same
+        /// length as the criteria array.</param>
+        /// <param name="table">The rankings for each criteria, thus comparing each action.
+        /// Should have the same number of lines as the actions array and the same number of
+        /// columns as the criteria one.</param>
+        /// <returns>The list of actions, now ordered by their scores. The first item is the best
+        /// choice, while the last item is the worst choice given the current parameters.</returns>
+        [ExcelFunction(Description = "Uses the PROMETHEE model to assess the best action.")]
+        public static string[] Promethee(string[] actions, string[] criteria, double[] weights, double[][] table)
+        {
+            string[] outlet;
+            int n = actions.Length;
+
+            // Calculating preferences
+            var prefs = new double[n, n];
+            for (int a = 0; a < actions.Length; a++)
+            {
+                for (int b = 0; b < actions.Length; b++)
+                {
+                    double p = 0;
+                    for (int j = 0; j < criteria.Length; ++j)
+                    {
+                        p += (table[a][j] - table[b][j]) * weights[j];
+                    }
+                    prefs[a, b] = p;
+                }
+            }
+
+            // Calculating flow
+            var flow = new double[n];
+            for (int a = 0; a < n; a++)
+            {
+                double phi_p = 0;
+                double phi_m = 0;
+
+                for (int b = 0; b < n; b++)
+                {
+                    phi_p += prefs[a, b];
+                    phi_m += prefs[b, a];
+                }
+
+                flow[a] = (phi_p - phi_m) / n;
+            }
+
+            // Packing results
+            var results = new Dictionary<double, string>();
+            for (int i = 0; i < n; i++)
+            {
+                results[flow[i]] = actions[i];
+            }
+            Array.Sort(flow);
+            outlet = flow.Select(f => results[f]).ToArray();
+
+            return outlet;
+        }
     }
 }
