@@ -49,7 +49,7 @@ namespace ProRoc
         /// columns as the criteria one.</param>
         /// <returns>The flow for each action in given order.</returns>
         [ExcelFunction(Description = "Uses the PROMETHEE model to assess the best action.")]
-        public static double[] Promethee(string[] actions, string[] criteria, double[] weights, double[][] table)
+        public static double[] Promethee(string[] actions, string[] criteria, double[] weights, double[,] table)
         {
             int n = actions.Length;
 
@@ -62,7 +62,7 @@ namespace ProRoc
                     double p = 0;
                     for (int j = 0; j < criteria.Length; ++j)
                     {
-                        p += (table[a][j] - table[b][j]) * weights[j];
+                        p += (table[a, j] - table[b, j]) * weights[j];
                     }
                     prefs[a, b] = p;
                 }
