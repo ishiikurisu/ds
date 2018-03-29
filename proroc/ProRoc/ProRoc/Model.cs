@@ -47,12 +47,10 @@ namespace ProRoc
         /// <param name="table">The rankings for each criteria, thus comparing each action.
         /// Should have the same number of lines as the actions array and the same number of
         /// columns as the criteria one.</param>
-        /// <returns>The list of actions, now ordered by their scores. The first item is the best
-        /// choice, while the last item is the worst choice given the current parameters.</returns>
+        /// <returns>The flow for each action in given order.</returns>
         [ExcelFunction(Description = "Uses the PROMETHEE model to assess the best action.")]
-        public static string[] Promethee(string[] actions, string[] criteria, double[] weights, double[][] table)
+        public static double[] Promethee(string[] actions, string[] criteria, double[] weights, double[][] table)
         {
-            string[] outlet;
             int n = actions.Length;
 
             // Calculating preferences
@@ -86,22 +84,7 @@ namespace ProRoc
                 flow[a] = (phi_p - phi_m) / n;
             }
 
-            // Packing results
-            var results = new Dictionary<double, string>();
-            for (int i = 0; i < n; i++)
-            {
-                results[flow[i]] = actions[i];
-            }
-            Array.Sort(flow);
-            outlet = flow.Select(f => results[f]).ToArray();
-
-            // Checking output
-            for (int i = 0; i < outlet.Length; ++i)
-            {
-                Console.WriteLine($"{i+1}. {outlet[i]}: {flow[i]}");
-            }
-
-            return outlet;
+            return flow;
         }
     }
 }

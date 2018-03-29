@@ -58,12 +58,12 @@ namespace ProRocTest
                 "chevy celta",
                 "ford fiesta"
             };
-            string[] correct = new string[]
+            double[] correct = new double[]
             {
-                "ford fiesta",
-                "vw gol",
-                "chevy celta",
-                "fiat uno"
+                -11,
+                27,
+                -1,
+                -15
             };
             var weights = new double[] { 5, 4, 1, 3, 2 };
             var rankings = new double[][]
