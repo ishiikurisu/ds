@@ -60,10 +60,10 @@ namespace ProRocTest
             };
             string[] correct = new string[]
             {
-                "fiat uno",
+                "ford fiesta",
                 "vw gol",
                 "chevy celta",
-                "ford fiesta"
+                "fiat uno"
             };
             var weights = new double[] { 5, 4, 1, 3, 2 };
             var rankings = new double[][]

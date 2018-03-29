@@ -95,6 +95,12 @@ namespace ProRoc
             Array.Sort(flow);
             outlet = flow.Select(f => results[f]).ToArray();
 
+            // Checking output
+            for (int i = 0; i < outlet.Length; ++i)
+            {
+                Console.WriteLine($"{i+1}. {outlet[i]}: {flow[i]}");
+            }
+
             return outlet;
         }
     }
