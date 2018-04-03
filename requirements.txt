@@ -5,3 +5,7 @@ tulipgui-python
 pandas
 xlrd
 Flask
+numpy
+argparse
+unidecode
+networkx
