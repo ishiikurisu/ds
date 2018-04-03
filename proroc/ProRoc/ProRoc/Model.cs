@@ -49,8 +49,10 @@ namespace ProRoc
         /// columns as the criteria one.</param>
         /// <returns>The flow for each action in given order.</returns>
         [ExcelFunction(Description = "Uses the PROMETHEE model to assess the best action.")]
-        public static double[] Promethee(string[] actions, string[] criteria, double[] weights, double[,] table)
+        public static double[] Promethee(object[] inActions, object[] inCriteria, double[] weights, double[,] table)
         {
+            string[] actions = inActions as string[];
+            string[] criteria = inCriteria as string[];
             int n = actions.Length;
 
             // Calculating preferences
