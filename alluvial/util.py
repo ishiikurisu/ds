@@ -146,7 +146,9 @@ def get_coordinations_from_csv(csvname):
                     ids[current_id] = {}
 
                 for year in range(start_year, end_year):
-                    ids[current_id][year] = coordination
+                    current = ids[current_id].get(year)
+                    if (current == None) or (current == '0'):
+                        ids[current_id][year] = coordination
 
     return ids
 
