@@ -1,5 +1,5 @@
 .PHONY: default all
-default: report_from_raw
+default: filter
 all: compare_sources
 
 PY = python3
@@ -27,6 +27,9 @@ report_from_raw: collect_from_raw
 compares_sources: collect_from_source collect_from_raw
 	$(PY) compare_sources.py $(WHERE)
 
-.PHONY: consultant
+.PHONY: consultant filter
+filter:
+	$(PY) filter.py $(WHERE) $(TARGET)
+
 consultant:
 	FLASK_APP=consultant.py flask run
