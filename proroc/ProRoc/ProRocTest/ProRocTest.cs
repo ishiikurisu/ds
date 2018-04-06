@@ -74,7 +74,7 @@ namespace ProRocTest
                 { 1, 1, 4, 3, 4 }
             };
 
-            var decisions = Model.Promethee(actions, criteria, weights, rankings);
+            var decisions = Model.Promethee(weights, rankings);
             for (int i = 0; i < actions.Length; ++i)
             {
                 Assert.AreEqual(correct[i], decisions[i]);
@@ -85,21 +85,6 @@ namespace ProRocTest
         [Test]
         public void TestIfBothPrometheeAndRocWorkTogether()
         {
-            string[] criteria = new string[]
-            {
-                "price",
-                "comsuption",
-                "comfort",
-                "maintainance",
-                "steering"
-            };
-            string[] actions = new string[]
-            {
-                "vw gol",
-                "fiat uno",
-                "chevy celta",
-                "ford fiesta"
-            };
             double[] correct = new double[]
             {
                 -1.23,
@@ -116,8 +101,8 @@ namespace ProRocTest
                 { 1, 1, 4, 3, 4 }
             };
 
-            var answer = Model.Promethee(actions, criteria, Model.Roc(weights), rankings);
-            for (int i = 0; i < actions.Length; ++i)
+            var answer = Model.Promethee(Model.Roc(weights), rankings);
+            for (int i = 0; i < 4; ++i)
             {
                 Console.WriteLine($"{answer[i]} =? {correct[i]}");
                 Assert.True((answer[i] >= correct[i] * 0.995) && (answer[i] <= correct[i] * 1.005));
