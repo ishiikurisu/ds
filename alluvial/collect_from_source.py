@@ -32,7 +32,12 @@ def treat_line(line, fields, data={}):
         if current_id not in data:
             data[current_id] = {}
         for year in range(start, ending):
-            data[current_id][year] = coordination
+            current = data[current_id].get(year)
+            if current is None:
+                data[current_id][year] = coordination
+            else:
+                # XXX How to deal with that?
+                pass
 
     return data
 
