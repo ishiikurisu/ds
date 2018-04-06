@@ -36,7 +36,7 @@ namespace ProRocTest
 
             for (int i = 0; i < input.Length; ++i)
             {
-                Assert.True((answer[i] >= correct[i]*0.99) && (answer[i] <= correct[i] * 1.01));
+                Assert.True((answer[i] >= correct[i]*0.995) && (answer[i] <= correct[i] * 1.005));
             }
         }
 
@@ -60,17 +60,17 @@ namespace ProRocTest
             };
             double[] correct = new double[]
             {
-                -11,
-                27,
-                -1,
-                -15
+                0,
+                24,
+                -6,
+                -18
             };
             var weights = new double[] { 5, 4, 1, 3, 2 };
             var rankings = new double[,]
             {
-                { 3, 2, 2, 1, 2 },
+                { 2, 3, 2, 3, 3 },
                 { 4, 4, 1, 4, 1 },
-                { 2, 3, 3, 2, 3 },
+                { 3, 2, 3, 2, 2 },
                 { 1, 1, 4, 3, 4 }
             };
 
@@ -78,6 +78,49 @@ namespace ProRocTest
             for (int i = 0; i < actions.Length; ++i)
             {
                 Assert.AreEqual(correct[i], decisions[i]);
+            }
+
+        }
+
+        [Test]
+        public void TestIfBothPrometheeAndRocWorkTogether()
+        {
+            string[] criteria = new string[]
+            {
+                "price",
+                "comsuption",
+                "comfort",
+                "maintainance",
+                "steering"
+            };
+            string[] actions = new string[]
+            {
+                "vw gol",
+                "fiat uno",
+                "chevy celta",
+                "ford fiesta"
+            };
+            double[] correct = new double[]
+            {
+                -1.23,
+                -1.28,
+                0.60,
+                1.90
+            };
+            var weights = new double[] { 5, 4, 1, 3, 2 };
+            var rankings = new double[,]
+            {
+                { 3, 2, 2, 1, 2 },
+                { 4, 4, 1, 4, 1 },
+                { 2, 3, 3, 2, 2 },
+                { 1, 1, 4, 3, 4 }
+            };
+
+            var answer = Model.Promethee(actions, criteria, Model.Roc(weights), rankings);
+            for (int i = 0; i < actions.Length; ++i)
+            {
+                Console.WriteLine($"{answer[i]} =? {correct[i]}");
+                Assert.True((answer[i] >= correct[i] * 0.995) && (answer[i] <= correct[i] * 1.005));
             }
         }
     }
