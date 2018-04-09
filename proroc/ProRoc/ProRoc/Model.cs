@@ -1,6 +1,7 @@
 ﻿using ExcelDna.Integration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,29 +41,32 @@ namespace ProRoc
         /// <summary>
         /// Uses the PROMETHEE model to assess the best action.
         /// </summary>
-        /// <param name="actions">The list of possible actions to be taken.</param>
-        /// <param name="criteria">The list of criteria to be taken.</param>
         /// <param name="weights">The list of weights for each criteria. Should have the same
         /// length as the criteria array.</param>
         /// <param name="table">The rankings for each criteria, thus comparing each action.
-        /// Should have the same number of lines as the actions array and the same number of
-        /// columns as the criteria one.</param>
+        /// Should have the same number of lines as actions and the same number of
+        /// columns as criteria.</param>
         /// <returns>The flow for each action in given order.</returns>
         [ExcelFunction(Description = "Uses the PROMETHEE model to assess the best action.")]
-        public static double[] Promethee(object[] inActions, object[] inCriteria, double[] weights, double[,] table)
+        public static double[] Promethee(double[] weights, double[,] table)
         {
-            string[] actions = inActions as string[];
-            string[] criteria = inCriteria as string[];
-            int n = actions.Length;
+            int n = table.GetLength(0);
+            var flow = new double[n];
+
+            // Fact checking
+            if (table.GetLength(1) != weights.GetLength(0))
+            {
+                return flow;
+            }
 
             // Calculating preferences
             var prefs = new double[n, n];
-            for (int a = 0; a < actions.Length; a++)
+            for (int a = 0; a < table.GetLength(0); a++)
             {
-                for (int b = 0; b < actions.Length; b++)
+                for (int b = 0; b < table.GetLength(0); b++)
                 {
                     double p = 0;
-                    for (int j = 0; j < criteria.Length; ++j)
+                    for (int j = 0; j < table.GetLength(1); ++j)
                     {
                         p += (table[a, j] - table[b, j]) * weights[j];
                     }
@@ -71,7 +75,6 @@ namespace ProRoc
             }
 
             // Calculating flow
-            var flow = new double[n];
             for (int a = 0; a < n; a++)
             {
                 double phi_p = 0;

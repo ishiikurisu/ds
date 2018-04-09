@@ -31,13 +31,13 @@ def treat_line(line, fields, data={}):
     if len(current_id) == 11:
         if current_id not in data:
             data[current_id] = {}
+            data[current_id + '*'] = {}
         for year in range(start, ending):
             current = data[current_id].get(year)
             if current is None:
                 data[current_id][year] = coordination
             else:
-                # XXX How to deal with that?
-                pass
+                data[current_id + '*'][year] = coordination
 
     return data
 
