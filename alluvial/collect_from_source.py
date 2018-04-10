@@ -16,8 +16,11 @@ def parse_line(stuff, fields, data={}):
         data[cpf] = {}
     if year not in data[cpf]:
         data[cpf][year] = ''
-    # TODO Improve this coordination stacking
-    data[cpf][year] += coordination
+    if coordination not in data[cpf][year]:
+        # There is a decision to be taken here. I can't just stack stuff
+        # because I can't generate an alluvial with this kind of data.
+        # What do I do?
+        data[cpf][year] += coordination
 
     return year, data
 
