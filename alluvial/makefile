@@ -1,5 +1,5 @@
 .PHONY: default all
-default: filter
+default: collect_from_source
 all: compare_sources
 
 PY = python3
