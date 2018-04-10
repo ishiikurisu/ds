@@ -82,6 +82,20 @@ def save_stuff(config, years, data):
                     appeared = True
                 elif appeared:
                     state = 'nope'
+
+                if (len(state) > 2) and (state not in ['never', 'nope']):
+                    # XXX What if there are transitions in consecutive years?
+                    next_state = str(coordinations.get(year+1))
+                    previous_state = str(coordinations.get(year-1))
+                    if next_state in state:
+                        state = next_state
+                    elif previous_state in state:
+                        state = previous_state
+                    else:
+                        state = state.replace(previous_state, '').replace(next_state, '')
+                if (len(state) > 2) and ('00' in state):
+                    state = state.replace("00", '')
+
                 states.append(state)
             fp.write("'{0}'\t{1}\n".format(cpf, '\t'.join(states)))
 
