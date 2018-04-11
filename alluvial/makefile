@@ -1,6 +1,5 @@
 .PHONY: default all
-default: collect_from_source
-all: compare_sources
+default: filter
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -24,7 +23,7 @@ report_from_source: collect_from_source
 report_from_raw: collect_from_raw
 	$(PY) report_from_raw.py $(WHERE)
 
-compares_sources: collect_from_source collect_from_raw
+compare_sources: collect_from_source collect_from_raw
 	$(PY) compare_sources.py $(WHERE)
 
 .PHONY: consultant filter
