@@ -87,25 +87,33 @@ namespace ProRocTest
         {
             double[] correct = new double[]
             {
-                -1.23,
+                -1.23333333,
                 -1.28,
-                0.60,
-                1.90
+                0.60666666666,
+                1.906666666666
             };
             var weights = new double[] { 5, 4, 1, 3, 2 };
             var rankings = new double[,]
             {
                 { 3, 2, 2, 1, 2 },
                 { 4, 4, 1, 4, 1 },
-                { 2, 3, 3, 2, 2 },
+                { 2, 3, 3, 2, 3 },
                 { 1, 1, 4, 3, 4 }
             };
 
             var answer = Model.Promethee(Model.Roc(weights), rankings);
             for (int i = 0; i < 4; ++i)
             {
-                Console.WriteLine($"{answer[i]} =? {correct[i]}");
-                Assert.True((answer[i] >= correct[i] * 0.995) && (answer[i] <= correct[i] * 1.005));
+                Console.WriteLine($"{answer[i]} in ({correct[i]*0.995} {correct[i] * 1.005})?");
+                if (answer[i] < 0)
+                {
+                    Assert.True((answer[i] <= correct[i] * 0.995) && (answer[i] >= correct[i] * 1.005));
+                }
+                else
+                {
+                    Assert.True((answer[i] >= correct[i] * 0.995) && (answer[i] <= correct[i] * 1.005));
+                }
+                
             }
         }
 
