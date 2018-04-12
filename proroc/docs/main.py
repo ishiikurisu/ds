@@ -37,5 +37,7 @@ if __name__ == '__main__':
     weights = get_weights_from_file(tablename)
     promethee = prometheeroc.Promethee(actions, criteria)
     promethee.set_weights(prometheeroc.roc(weights))
-    best_options = promethee.recommend(table)
-    print(best_options)
+    scores = promethee.recommend(table)
+    best_options = sorted(zip(actions, scores), key=lambda it: it[1])
+    for option in best_options:
+        print('{0}: {1}'.format(option[0], option[1]))

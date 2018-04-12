@@ -41,7 +41,7 @@ class Promethee:
         flow = [(sum(phi_p(a)) - sum(phi_m(a)))/n for a in range(n)]
 
         # Packing results
-        return [it[0] for it in sorted(zip(self.actions, flow), key=lambda it: it[1])]
+        return flow
 
 def roc(ranking):
     """
