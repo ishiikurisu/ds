@@ -27,7 +27,7 @@ compare_sources: collect_from_source collect_from_raw
 	$(PY) compare_sources.py $(WHERE)
 
 .PHONY: consultant filter
-filter: collect_from_source collect_from_raw
+filter: collect_from_source
 	$(PY) filter.py $(WHERE) $(TARGET)
 
 consultant:
