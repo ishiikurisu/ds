@@ -108,5 +108,22 @@ namespace ProRocTest
                 Assert.True((answer[i] >= correct[i] * 0.995) && (answer[i] <= correct[i] * 1.005));
             }
         }
+
+        [Test]
+        public void TestMatrixToStringConvertion()
+        {
+            var rankings = new double[,]
+            {
+                { 3, 2, 2, 1, 2 },
+                { 4, 4, 1, 4, 1 },
+                { 2, 3, 3, 2, 2 },
+                { 1, 1, 4, 3, 4 }
+            };
+            var output = "3 2 2 1 2\n"
+                       + "4 4 1 4 1\n"
+                       + "2 3 3 2 2\n"
+                       + "1 1 4 3 4\n";
+            Assert.AreEqual(output, Model.Matrix2String(rankings));
+        }
     }
 }

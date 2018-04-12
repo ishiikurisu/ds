@@ -91,5 +91,27 @@ namespace ProRoc
 
             return flow;
         }
+
+        /// <summary>
+        /// Turns a matrix into a string for debugging purposes.
+        /// </summary>
+        /// <param name="matrix">The input matrix</param>
+        /// <returns></returns>
+        public static string Matrix2String(double[,] matrix)
+        {
+            string outlet = "";
+
+            for (int i = 0; i < matrix.GetLength(0); ++i)
+            {
+                string line = matrix[i, 0].ToString();
+                for (int j = 1; j < matrix.GetLength(1); ++j)
+                {
+                    line += $" {matrix[i, j]}";
+                }
+                outlet += line + "\n";
+            }
+
+            return outlet;
+        }
     }
 }
