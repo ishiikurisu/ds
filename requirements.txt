@@ -11,3 +11,5 @@ unidecode
 networkx
 imageio
 matplotlib
+scikit-learn
+nltk
