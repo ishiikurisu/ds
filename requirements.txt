@@ -9,3 +9,5 @@ numpy
 argparse
 unidecode
 networkx
+imageio
+matplotlib
