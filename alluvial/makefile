@@ -32,3 +32,6 @@ filter: collect_from_source
 
 consultant:
 	FLASK_APP=consultant.py flask run
+
+docs:
+	pandoc -f markdown -t docx -o $(DOC:.md=.docx) $(DOC)
