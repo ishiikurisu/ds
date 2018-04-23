@@ -6,7 +6,7 @@ ifeq ($(OS), Windows_NT)
 	PY = python
 endif
 
-.PHONY: collect_from_source filter
+.PHONY: collect_from_source filter get-ids
 
 collect_from_source:
 	$(PY) collect_from_source.py $(WHERE)
@@ -16,3 +16,6 @@ filter: collect_from_source
 
 docs:
 	pandoc -f markdown -t docx -o $(DOC:.md=.docx) $(DOC)
+
+get-ids:
+	$(PY) get-ids.py $(TARGET) $(TARGET:.csv=.txt)
