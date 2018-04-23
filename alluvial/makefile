@@ -1,5 +1,5 @@
 .PHONY: default
-default: filter
+default: get-keywords
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -19,3 +19,6 @@ docs:
 
 get-ids:
 	$(PY) get-ids.py $(TARGET) $(TARGET:.csv=.txt)
+
+get-keywords:
+	$(PY) get-keywords.py $(WHERE)
