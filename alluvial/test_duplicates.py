@@ -62,7 +62,7 @@ def relate_names_and_ids(source, debug=False):
                 first_line = False
             else:
                 try:
-                    idn, name = parse_line(stuff, fields)
+                    idn, name, coordination = parse_line(stuff, fields)
 
                     if name not in names2ids:
                         names2ids[name] = set()
