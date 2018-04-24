@@ -27,4 +27,4 @@ consultant:
 	FLASK_APP=consultant.py flask run
 
 test_duplicates:
-	$(PY) test_duplicates.py $(WHERE)
+	$(PY) test_duplicates.py $(WHERE) $(OP)

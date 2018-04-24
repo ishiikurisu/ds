@@ -36,7 +36,7 @@ def get_stuff(config):
     max_year = 1000
     data = {}
 
-    with open(config['working'] + config['source'], 'r', encoding='utf-8') as fp:
+    with open(get_input(config), 'r', encoding='utf-8') as fp:
         first_line = True
 
         for line in fp:
@@ -57,6 +57,9 @@ def get_stuff(config):
     years = list(range(min_year, max_year+1))
 
     return years, data
+
+def get_input(config):
+    return config['working'] + config['source']
 
 def get_output(config):
     """

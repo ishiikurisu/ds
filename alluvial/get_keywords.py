@@ -1,12 +1,7 @@
 # -*- coding: cp1252 -*-
 import sys
 import util
-from os import listdir
-from os.path import isfile, join
 import xml.etree.ElementTree
-
-def get_all_cv_from(cv_dir):
-    return [cv_dir + f for f in listdir(cv_dir) if isfile(join(cv_dir, f))]
 
 def get_keywords_from_all_cv(all_cv, debug=False):
     outlet = {}
@@ -73,6 +68,6 @@ if __name__ == '__main__':
     type = 'ARTIGOS-PUBLICADOS'
     config = util.load_config(sys.argv[1])
     cv_folder = config['working'] + config['cv dir']
-    all_cv = get_all_cv_from(cv_folder)
+    all_cv = util.get_all_files(cv_folder)
     keywords_by_pubs = get_keywords_from_all_cv(all_cv, debug=True)
     save_keywords_by_year_for_bump(cv_folder, keywords_by_pubs)

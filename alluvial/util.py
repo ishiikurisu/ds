@@ -1,5 +1,7 @@
 import pandas as pd
 import json
+from os import listdir
+from os.path import isfile, join
 
 #############
 # UTILITIES #
@@ -18,3 +20,6 @@ def fix_id(inlet):
     """
     outlet = str(inlet)
     return ('0'*(11-len(outlet))) + outlet
+
+def get_all_files(src):
+    return [src + f for f in listdir(src) if isfile(join(src, f))]

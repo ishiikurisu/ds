@@ -1,7 +1,11 @@
 import sys
 import util
-import get_keywords as gk
 import xml.etree.ElementTree
+import collect_from_source as cfs
+
+#################
+# CV OPERATIONS #
+#################
 
 def get_name_frequency(all_cv, debug=False):
     outlet = {}
@@ -30,11 +34,69 @@ def get_name_frequency(all_cv, debug=False):
 
     return outlet
 
+#################
+# ID OPERATIONS #
+#################
+
+def parse_line(stuff, fields):
+    cpf = util.fix_id(stuff[fields.index('CPF')])
+    nome = stuff[fields.index('Nome Beneficiário')]
+
+    if cpf == '0'*11:
+        raise ValueError
+
+    return cpf, nome
+
+def relate_names_and_ids(source, debug=False):
+    names2ids = {}
+    ids2names = {}
+
+    with open(source, 'r', encoding='utf-8') as fp:
+        first_line = True
+        fields = None
+        for line in fp:
+            stuff = line.strip().split('\t')
+            if first_line:
+                fields = stuff
+                first_line = False
+            else:
+                try:
+                    idn, name = parse_line(stuff, fields)
+
+                    if name not in names2ids:
+                        names2ids[name] = set()
+                    names2ids[name].add(idn)
+                    if (debug) and (len(names2ids[name]) > 1):
+                        print('{0} is a repeated name!'.format(name))
+
+                    if idn not in ids2names:
+                        ids2names[idn] = set()
+                    ids2names[idn].add(name)
+                    if (debug) and (len(ids2names[idn]) > 1):
+                        print('{0} cant write their name!'.format(name))
+
+                except ValueError:
+                    print('discarded entry!')
+
+    return names2ids, ids2names
+
+
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
-    cv_folder = config['working'] + config['cv dir']
-    all_cv = gk.get_all_cv_from(cv_folder) # IDEA Move this function to `util`
-    names = get_name_frequency(all_cv, debug=True)
-    print('---')
-    print(names)
-    print('...')
+    if sys.argv[2] == 'CV':
+        cv_folder = config['working'] + config['cv dir']
+        all_cv = util.get_all_files(cv_folder)
+        names = get_name_frequency(all_cv, debug=True)
+        print('---')
+        print(names)
+        print('...')
+    elif sys.argv[2] == 'ID':
+        source = cfs.get_input(config)
+        names2ids, ids2names = relate_names_and_ids(source, debug=True)
+        print('--- # Name -> #Ids')
+        for name in names2ids:
+            print('{0}: {1}'.format(name, len(names2ids[name])))
+        print('--- # Id -> #names')
+        for idn in ids2names:
+            print('{0}: {1}'.format(idn, len(ids2names[idn])))
+        print('...')
