@@ -41,11 +41,12 @@ def get_name_frequency(all_cv, debug=False):
 def parse_line(stuff, fields):
     cpf = util.fix_id(stuff[fields.index('CPF')])
     nome = stuff[fields.index('Nome Beneficiário')]
+    coordination = stuff[fields.index('Código Comitê Assessor')]
 
     if cpf == '0'*11:
         raise ValueError
 
-    return cpf, nome
+    return cpf, nome, coordination
 
 def relate_names_and_ids(source, debug=False):
     names2ids = {}
@@ -67,7 +68,7 @@ def relate_names_and_ids(source, debug=False):
                         names2ids[name] = set()
                     names2ids[name].add(idn)
                     if (debug) and (len(names2ids[name]) > 1):
-                        print('{0} is a repeated name!'.format(name))
+                        print('{0} is a repeated name in {1}!'.format(name, coordination))
 
                     if idn not in ids2names:
                         ids2names[idn] = set()
