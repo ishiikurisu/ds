@@ -1,12 +1,12 @@
 .PHONY: default
-default: get-keywords
+default: test_duplicates
 
 PY = python3
 ifeq ($(OS), Windows_NT)
 	PY = python
 endif
 
-.PHONY: collect_from_source filter get-ids
+.PHONY: collect_from_source filter get_ids consultant test_duplicates
 
 collect_from_source:
 	$(PY) collect_from_source.py $(WHERE)
@@ -18,7 +18,13 @@ docs:
 	pandoc -f markdown -t docx -o $(DOC:.md=.docx) $(DOC)
 
 get-ids:
-	$(PY) get-ids.py $(TARGET) $(TARGET:.csv=.txt)
+	$(PY) get_ids.py $(TARGET) $(TARGET:.csv=.txt)
 
 get-keywords:
-	$(PY) get-keywords.py $(WHERE)
+	$(PY) get_keywords.py $(WHERE)
+
+consultant:
+	FLASK_APP=consultant.py flask run
+
+test_duplicates:
+	$(PY) test_duplicates.py $(WHERE)
