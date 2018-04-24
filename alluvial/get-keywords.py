@@ -18,6 +18,7 @@ def get_keywords_from_all_cv(all_cv, debug=False):
             root = xml.etree.ElementTree.parse(cv).getroot()
         except Exception as e:
             print('Problems with {0}: {1}'.format(cv, e))
+            continue
         producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
         if producao_bibliografica is not None:
             artigos_publicados = producao_bibliografica.find('ARTIGOS-PUBLICADOS')
@@ -38,13 +39,13 @@ def get_keywords_from_all_cv(all_cv, debug=False):
                                             outlet[keyword] = []
                                         outlet[keyword].append(ano)
                         else:
-                            print('Problems with {0}: Sem palavras chave'.format(cv, ))
+                            print('Problems with {0}: no keywords'.format(cv))
                     except ValueError:
-                        print('Problems with {0}: ano inválido'.format(cv, ))
+                        print('Problems with {0}: invalid year'.format(cv))
             else:
-                print('Problems with {0}: sem artigos publicados'.format(cv, ))
+                print('Problems with {0}: no published articles'.format(cv))
         else:
-            print('Problems with {0}: Sem produção bibliográfica'.format(cv, ))
+            print('Problems with {0}: no bibliographic production'.format(cv))
 
     return outlet
 
