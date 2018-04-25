@@ -9,7 +9,7 @@ def parse_line(stuff, fields, data={}):
 
     # Fact checking
     if cpf == '0'*11:
-        raise ValueError
+        return -1, data
 
     # Parsing data
     if cpf not in data:
@@ -45,14 +45,12 @@ def get_stuff(config):
                 fields = stuff
                 first_line = False
             else:
-                try:
-                    year, data = parse_line(stuff, fields, data)
+                year, data = parse_line(stuff, fields, data)
+                if year > 0:
                     if year > max_year:
                         max_year = year
                     elif year < min_year:
                         min_year = year
-                except ValueError:
-                    print('discarded entry!')
 
     years = list(range(min_year, max_year+1))
 
