@@ -1,5 +1,5 @@
 .PHONY: default
-default: collect_from_source
+default: test_consultant
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -23,8 +23,11 @@ get-ids:
 get-keywords:
 	$(PY) get_keywords.py $(WHERE)
 
-consultant:
+consultant: collect_from_source
 	FLASK_APP=consultant.py flask run
 
 test_duplicates:
 	$(PY) test_duplicates.py $(WHERE) $(OP)
+
+test_consultant: collect_from_source
+	$(PY) test_consultant.py
