@@ -12,7 +12,7 @@ def get_keywords_from_all_cv(all_cv, debug=False):
         try:
             root = xml.etree.ElementTree.parse(cv).getroot()
         except Exception as e:
-            print('Problems with {0}: {1}'.format(cv, e))
+            if debug: print('Problems with {0}: {1}'.format(cv, e))
             continue
         producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
         if producao_bibliografica is not None:
@@ -34,13 +34,13 @@ def get_keywords_from_all_cv(all_cv, debug=False):
                                             outlet[keyword] = []
                                         outlet[keyword].append(ano)
                         else:
-                            print('Problems with {0}: no keywords'.format(cv))
+                            if debug: print('Problems with {0}: no keywords'.format(cv))
                     except ValueError:
-                        print('Problems with {0}: invalid year'.format(cv))
+                        if debug: print('Problems with {0}: invalid year'.format(cv))
             else:
-                print('Problems with {0}: no published articles'.format(cv))
+                if debug: print('Problems with {0}: no published articles'.format(cv))
         else:
-            print('Problems with {0}: no bibliographic production'.format(cv))
+            if debug: print('Problems with {0}: no bibliographic production'.format(cv))
 
     return outlet
 
@@ -63,11 +63,14 @@ def save_keywords_by_year_for_bump(where, what):
                 fp.write('{0}\t{1}\t{2}\n'.format(keyword,
                                                   str(year),
                                                   str(appears[year])))
+def get_all_cv_files(config):
+    cv_folder = config['working'] + config['cv dir']
+    return util.get_all_files(cv_folder)
 
 if __name__ == '__main__':
     type = 'ARTIGOS-PUBLICADOS'
     config = util.load_config(sys.argv[1])
     cv_folder = config['working'] + config['cv dir']
     all_cv = util.get_all_files(cv_folder)
-    keywords_by_pubs = get_keywords_from_all_cv(all_cv, debug=True)
+    keywords_by_pubs = get_keywords_from_all_cv(all_cv)
     save_keywords_by_year_for_bump(cv_folder, keywords_by_pubs)

@@ -29,5 +29,5 @@ consultant: collect_from_source
 test_duplicates:
 	$(PY) test_duplicates.py $(WHERE) $(OP)
 
-test_consultant: collect_from_source
-	$(PY) test_consultant.py
+test_consultant: collect_from_source get-keywords
+	$(PY) test_consultant.py $(WHERE)
