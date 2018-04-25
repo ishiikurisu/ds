@@ -1,5 +1,5 @@
 .PHONY: default
-default: test_duplicates
+default: collect_from_source
 
 PY = python3
 ifeq ($(OS), Windows_NT)

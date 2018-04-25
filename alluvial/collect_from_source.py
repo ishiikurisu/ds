@@ -2,14 +2,15 @@
 import sys
 import util
 
-def parse_line(stuff, fields, data={}):
+def parse_line(stuff, fields, data={}, names={}):
     year = int(stuff[fields.index('Data Ano Pagamento')])
     cpf = util.fix_id(stuff[fields.index('CPF')])
     coordination = stuff[fields.index('Código Comitê Assessor')]
+    name = stuff[fields.index('Nome Beneficiário')]
 
     # Fact checking
     if cpf == '0'*11:
-        return -1, data
+        return -1, data, names
 
     # Parsing data
     if cpf not in data:
@@ -22,7 +23,10 @@ def parse_line(stuff, fields, data={}):
         # What do I do?
         data[cpf][year] += coordination
 
-    return year, data
+    # Parsing name
+    names[cpf] = name
+
+    return year, data, names
 
 def get_stuff(config):
     """
@@ -35,6 +39,7 @@ def get_stuff(config):
     min_year = 3000
     max_year = 1000
     data = {}
+    names = {}
 
     with open(get_input(config), 'r', encoding='utf-8') as fp:
         first_line = True
@@ -45,7 +50,7 @@ def get_stuff(config):
                 fields = stuff
                 first_line = False
             else:
-                year, data = parse_line(stuff, fields, data)
+                year, data, names = parse_line(stuff, fields, data, names)
                 if year > 0:
                     if year > max_year:
                         max_year = year
@@ -54,7 +59,7 @@ def get_stuff(config):
 
     years = list(range(min_year, max_year+1))
 
-    return years, data
+    return years, data, names
 
 def get_input(config):
     return config['working'] + config['source']
@@ -66,12 +71,12 @@ def get_output(config):
     inlet = config['working'] + config['source']
     return '.'.join(inlet.split('.')[0:-1]) + '_processed.csv'
 
-def save_stuff(config, years, data):
+def save_stuff(config, years, data, names):
     """
     Stores data in memory
     """
-    with open(get_output(config), 'w') as fp:
-        fp.write('CPF\t{0}\n'.format('\t'.join(map(str, years))))
+    with open(get_output(config), 'w', encoding='utf-8') as fp:
+        fp.write('CPF\tNome\t{0}\n'.format('\t'.join(map(str, years))))
         for cpf in data:
             states = []
             appeared = False
@@ -98,9 +103,9 @@ def save_stuff(config, years, data):
                     state = state.replace("00", '')
 
                 states.append(state)
-            fp.write("'{0}'\t{1}\n".format(cpf, '\t'.join(states)))
+            fp.write("'{0}'\t{1}\t{2}\n".format(cpf, names[cpf], '\t'.join(states)))
 
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
-    years, data = get_stuff(config)
-    save_stuff(config, years, data)
+    years, data, names = get_stuff(config)
+    save_stuff(config, years, data, names)
