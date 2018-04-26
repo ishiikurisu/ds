@@ -3,44 +3,57 @@ import sys
 import util
 import xml.etree.ElementTree
 
+def get_keywords_from_cv(cv, debug=False):
+    outlet = {}
+
+    if debug: print('--- # {0}'.format(cv))
+    root = None
+    try:
+        root = xml.etree.ElementTree.parse(cv).getroot()
+    except Exception as e:
+        if debug: print('Problems with {0}: {1}'.format(cv, e))
+        return outlet
+    # TODO Extract stuff other than bibliographic production
+    producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
+    if producao_bibliografica is not None:
+        artigos_publicados = producao_bibliografica.find('ARTIGOS-PUBLICADOS')
+        todos_artigos = artigos_publicados.findall('ARTIGO-PUBLICADO')
+        if todos_artigos is not None:
+            for artigo_publicado in todos_artigos:
+                dados_basicos = artigo_publicado.find('DADOS-BASICOS-DO-ARTIGO')
+                try:
+                    ano = int(dados_basicos.get('ANO-DO-ARTIGO'))
+                    palavras_chave = artigo_publicado.find('PALAVRAS-CHAVE')
+                    if palavras_chave is not None:
+                        for key in palavras_chave.attrib:
+                            value = palavras_chave.attrib[key]
+                            keywords = map(lambda k: k.strip(), value.upper().split(';'))
+                            for keyword in keywords:
+                                if len(keyword) > 0:
+                                    if keyword not in outlet:
+                                        outlet[keyword] = []
+                                    outlet[keyword].append(ano)
+                    else:
+                        if debug: print('Problems with {0}: no keywords'.format(cv))
+                except ValueError:
+                    if debug: print('Problems with {0}: invalid year'.format(cv))
+        else:
+            if debug: print('Problems with {0}: no published articles'.format(cv))
+    else:
+        if debug: print('Problems with {0}: no bibliographic production'.format(cv))
+
+    return outlet
+
 def get_keywords_from_all_cv(all_cv, debug=False):
     outlet = {}
 
     for cv in all_cv:
-        if debug: print('--- # {0}'.format(cv))
-        root = None
-        try:
-            root = xml.etree.ElementTree.parse(cv).getroot()
-        except Exception as e:
-            if debug: print('Problems with {0}: {1}'.format(cv, e))
-            continue
-        producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
-        if producao_bibliografica is not None:
-            artigos_publicados = producao_bibliografica.find('ARTIGOS-PUBLICADOS')
-            todos_artigos = artigos_publicados.findall('ARTIGO-PUBLICADO')
-            if todos_artigos is not None:
-                for artigo_publicado in todos_artigos:
-                    dados_basicos = artigo_publicado.find('DADOS-BASICOS-DO-ARTIGO')
-                    try:
-                        ano = int(dados_basicos.get('ANO-DO-ARTIGO'))
-                        palavras_chave = artigo_publicado.find('PALAVRAS-CHAVE')
-                        if palavras_chave is not None:
-                            for key in palavras_chave.attrib:
-                                value = palavras_chave.attrib[key]
-                                keywords = map(lambda k: k.strip(), value.upper().split(';'))
-                                for keyword in keywords:
-                                    if len(keyword) > 0:
-                                        if keyword not in outlet:
-                                            outlet[keyword] = []
-                                        outlet[keyword].append(ano)
-                        else:
-                            if debug: print('Problems with {0}: no keywords'.format(cv))
-                    except ValueError:
-                        if debug: print('Problems with {0}: invalid year'.format(cv))
-            else:
-                if debug: print('Problems with {0}: no published articles'.format(cv))
-        else:
-            if debug: print('Problems with {0}: no bibliographic production'.format(cv))
+        stuff = get_keywords_from_cv(cv, debug)
+        for keyword in stuff:
+            for year in stuff[keyword]:
+                if keyword not in outlet:
+                    outlet[keyword] = []
+                outlet[keyword].append(year)
 
     return outlet
 

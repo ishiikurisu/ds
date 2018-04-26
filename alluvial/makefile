@@ -1,5 +1,5 @@
 .PHONY: default
-default: test_consultant
+default: get_relevant_keywords
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -31,3 +31,6 @@ test_duplicates:
 
 test_consultant: collect_from_source get-keywords
 	$(PY) test_consultant.py $(WHERE)
+
+get_relevant_keywords: collect_from_source get-keywords
+	$(PY) get_relevant_keywords.py $(WHERE)
