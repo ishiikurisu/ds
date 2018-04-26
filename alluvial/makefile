@@ -1,5 +1,5 @@
 .PHONY: default
-default: get_relevant_keywords
+default: filter_keywords
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -34,3 +34,6 @@ test_consultant: collect_from_source get-keywords
 
 get_relevant_keywords: collect_from_source get-keywords
 	$(PY) get_relevant_keywords.py $(WHERE)
+
+filter_keywords: get_relevant_keywords
+	$(PY) filter_keywords.py $(WHERE)

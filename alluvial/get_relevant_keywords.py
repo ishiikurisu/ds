@@ -15,6 +15,9 @@ def validate_years(flow, first_year, function):
 
     return years
 
+def get_output(config):
+    return config['working'] + config['cv dir'] + 'keywords.csv'
+
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
     consultant.setup(sys.argv[1])
@@ -58,7 +61,7 @@ if __name__ == '__main__':
     all_keywords = outlet
 
     # Saving data
-    with open(config['working'] + config['cv dir'] + 'keywords.csv', 'w', encoding='utf-8') as fp:
+    with open(get_output(config), 'w', encoding='utf-8') as fp:
         fp.write('keyword\tquantity\tyear\n')
         for keyword in all_keywords:
             for year in all_keywords[keyword]:
