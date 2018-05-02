@@ -6,7 +6,7 @@ ifeq ($(OS), Windows_NT)
 	PY = python
 endif
 
-.PHONY: collect_from_source filter get_ids consultant test_duplicates
+.PHONY: collect_from_source filter get_ids consultant test_duplicates get_keywords
 
 collect_from_source:
 	$(PY) collect_from_source.py $(WHERE)
@@ -20,7 +20,7 @@ docs:
 get-ids:
 	$(PY) get_ids.py $(TARGET) $(TARGET:.csv=.txt)
 
-get-keywords:
+get_keywords:
 	$(PY) get_keywords.py $(WHERE)
 
 consultant: collect_from_source
@@ -29,10 +29,10 @@ consultant: collect_from_source
 test_duplicates:
 	$(PY) test_duplicates.py $(WHERE) $(OP)
 
-test_consultant: collect_from_source get-keywords
+test_consultant: collect_from_source get_keywords
 	$(PY) test_consultant.py $(WHERE)
 
-get_relevant_keywords: collect_from_source get-keywords
+get_relevant_keywords: test_consultant
 	$(PY) get_relevant_keywords.py $(WHERE)
 
 filter_keywords: get_relevant_keywords
