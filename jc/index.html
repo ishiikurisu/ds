@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/solarized.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement('link');
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css': 'css/print/paper.css';
+			document.getElementsByTagName('head')[0].appendChild(link);
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Getting Things Done</h1>
+					<p>Cristiano Silva Jr.</p>
+				</section>
+				<section>
+					<section>
+						<h2>Contextualização</h2>
+						<!-- Peter Drucker e o trabalho informacional -->
+						<!-- GTD * SCRUM -->
+					</section>
+					<section>
+						<img src="clutter_2x.png" alt="E necessidade...">
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>GTD em 2 minutos...</h2>
+						<ul>
+							<li>Tirar da cabeça</li>
+							<li>Organizar</li>
+							<li>Checar mais tarde</li>
+						</ul>
+					</section>
+					<section>
+						<blockquote>Your mind is for having ideas, not holding them.</blockquote>
+						<p>David Allen</p>
+					</section>
+					<section>
+						Cognição situada
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>GTD em 5 ações:</h2>
+						<ol>
+							<li>Capturar</li>
+							<li>Processar</li>
+							<li>Organizar</li>
+							<li>Refletir</li>
+							<li>Engajar</li>
+						</ol>
+					</section>
+					<section>
+						<em>Capturar</em> porque somos bons em formar padrões, não lembrar
+						<!-- por Estigmergia -->
+					</section>
+					<section>
+						<em>Processar</em> e <em>organizar</em> em calendários, listas de afazeres, projetos...
+						<!-- Demanda ação ou não? -->
+						<!-- Falar das listas de próximas ações, calendários, referência, aguardando resposta, talvez e projetos -->
+					</section>
+					<section>
+						<em>Refletir</em> porque sabemos que promessa de ano novo nunca dá certo.
+						<!-- Falar sobre o contexto > tempo > energia > prioridade -->
+						<!-- Ação situada, como esperado da estigmergia! -->
+					</section>
+					<section>
+						<h2>Engajar!</h2>
+						<p>Afinal de contas, estamos fazendo isso para completar alguma coisa!</p>
+						<!-- Falar sobre a natureza tripla do trabalho -->
+					</section>
+				</section>
+				<section>
+					<section>
+						<a href="https://vidaorganizada.com/2016/08/19/como-usar-gtd/"><h2><u>GTD em um diagrama</u></h2></a>
+					</section>
+					<section>
+						Como saber o que descartar?
+						<!-- Falar sobre a analogia do avião -->
+					</section>
+					<section>
+						Você realmente está sob o controle das coisas?
+						<!-- Falar sobre a diretora e o motorista de caminhão e a natureza do trabalho => controle por feedback -->
+					</section>
+					<section>
+						E quem não usa GTD?
+						<!-- Falar sobre como somos ruins em estigmergia -->
+					</section>
+				</section>
+				<section>
+					<h2>Conclusão</h2>
+				</section>
+				<section>
+					<h2>Obrigado!</h2>
+				</section>
+				<section>
+					<h3>Referências</h3>
+					<ul>
+						<li>David Allen: "Getting Things Done: The Art of Stress-Free Productivity"</li>
+						<li>Francis Heylighen & Clément Vidal: "Getting Things Done: The Science behind Stress-Free Productivity"</li>
+						<li>Gilly Leshed & Phoebe Sengers: "'I Lie to Myself that I Have Freedom in My Own Schedule': Productivity Tools and Experiences of Busyness"</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				pdfMaxPagesPerSlide: 1,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
