@@ -1,5 +1,5 @@
 .PHONY: default
-default: balance
+default: filter
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -11,7 +11,7 @@ endif
 collect_from_source:
 	$(PY) collect_from_source.py $(WHERE)
 
-filter: collect_from_source
+filter: collect_from_source balance
 	$(PY) filter.py $(WHERE) $(TARGET)
 
 docs:

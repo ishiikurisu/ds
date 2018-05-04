@@ -18,6 +18,7 @@ if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
     input_file = sys.argv[2]
     program_code = config['program code']
-    output_file = '.'.join(input_file.split('.')[0:-1]) + '_filtered.csv'
-    condition = lambda line: program_code in line
+    extension = '_filtered_{0}.csv'.format(program_code)
+    output_file = input_file.replace('.csv', extension)
+    condition = lambda line: program_code in line.strip().split('\t')
     filter_lines(condition, input_file, output_file)

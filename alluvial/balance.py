@@ -39,20 +39,20 @@ def extract_balance(from_file):
                     source = coords[i-1]
                     year = years[i]
                     if target != source:
-                        if target not in history:
-                            history[target] = {}
-                        if source not in history[target]:
-                            history[target][source] = {}
-                        if year not in history[target][source]:
-                            history[target][source][year] = 0
-                        history[target][source][year] += 1
+                        if source not in history:
+                            history[source] = {}
+                        if target not in history[source]:
+                            history[source][target] = {}
+                        if year not in history[source][target]:
+                            history[source][target][year] = 0
+                        history[source][target][year] += 1
                     i += 1
 
     # Turning history map into a list
-    for target in history:
-        for source in history[target]:
-            for year in history[target][source]:
-                flow = history[target][source][year]
+    for source in history:
+        for target in history[source]:
+            for year in history[source][target]:
+                flow = history[source][target][year]
                 outlet.append({
                     'target': target,
                     'source': source,
