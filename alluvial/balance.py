@@ -13,9 +13,45 @@ def extract_balance(from_file):
     - The `target` coordination
     - The `year` that flow is referentiating
     - The personnel `flow` for that year between the coordinations
+    This assumes the content from `from_file` is a CSV whose 1st and 2nd
+    columns are ID and name, while the remaining columns are the relevant years.
     """
     outlet = []
-    # TODO Implement me please
+    history = {}
+
+    # Constructing history map
+    with open(from_file, 'r', encoding='utf-8') as inlet:
+        first_line = True
+        years = []
+        limit = -1
+        for line in inlet:
+            stuff = line.strip().split('\t')
+            if first_line:
+                years = [int(y) for y in stuff[2:]]
+                limit = len(years)
+                first_line = False
+            else:
+                # Incrementing history
+                coords = stuff[2:]
+                i = 1
+                while i < limit:
+                    target = coords[i]
+                    source = coords[i-1]
+                    year = years[i]
+                    if target != source:
+                        if target not in history:
+                            history[target] = {}
+                        if source not in history[target]:
+                            history[target][source] = {}
+                        if year not in history[target][source]:
+                            history[target][source][year] = 0
+                        history[target][source][year] += 1
+                    i += 1
+
+    print(history)
+
+    # TODO Turn history map into a list
+
     return outlet
 
 def save_balance(balance, to_file):
