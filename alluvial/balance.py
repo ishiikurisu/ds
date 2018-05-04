@@ -48,9 +48,17 @@ def extract_balance(from_file):
                         history[target][source][year] += 1
                     i += 1
 
-    print(history)
-
-    # TODO Turn history map into a list
+    # Turning history map into a list
+    for target in history:
+        for source in history[target]:
+            for year in history[target][source]:
+                flow = history[target][source][year]
+                outlet.append({
+                    'target': target,
+                    'source': source,
+                    'year': year,
+                    'flow': flow,
+                })
 
     return outlet
 
