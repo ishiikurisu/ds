@@ -2,8 +2,8 @@ import sys
 import util
 
 def filter_lines(condition, input_file, output_file):
-    with open(input_file, 'r', encoding='utf8') as inlet:
-        with open(output_file, 'w', encoding='utf8') as outlet:
+    with open(input_file, 'r', encoding='utf-8') as inlet:
+        with open(output_file, 'w', encoding='utf-8') as outlet:
             first_line = True
             for line in inlet:
                 if first_line:
