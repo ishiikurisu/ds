@@ -1,5 +1,5 @@
 .PHONY: default
-default: filter_keywords
+default: balance
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -37,3 +37,6 @@ get_relevant_keywords: test_consultant
 
 filter_keywords: get_relevant_keywords
 	$(PY) filter_keywords.py $(WHERE)
+
+balance: collect_from_source
+	$(PY) balance.py $(WHERE)
