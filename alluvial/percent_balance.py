@@ -49,11 +49,19 @@ def unpack_stuff(config, inputfile):
 
     return outlet
 
+def save_stuff(stuff, to_file):
+    with open(to_file, 'w', encoding='utf-8') as outlet:
+        outlet.write('CA\tano\tsairam\tentraram\n')
+        for c in stuff: # c for committee
+            for y in stuff[c]:
+                f = stuff[c][y]
+                outlet.write('{0}\t{1}\t{2}\t{3}\n'.format(c, y, f[0], f[1]))
+
+
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
     from_file = balance.get_output(config)
     to_file = get_output(config)
 
     stuff = unpack_stuff(config, from_file)
-    print(stuff)
-    # TODO Save stuff
+    save_stuff(stuff, to_file)
