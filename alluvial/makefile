@@ -1,5 +1,5 @@
 .PHONY: default
-default: filter
+default: percent_balance
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -40,3 +40,6 @@ filter_keywords: get_relevant_keywords
 
 balance: collect_from_source
 	$(PY) balance.py $(WHERE)
+
+percent_balance: balance
+	$(PY) percent_balance.py $(WHERE)
