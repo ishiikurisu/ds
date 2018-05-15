@@ -41,5 +41,5 @@ filter_keywords: get_relevant_keywords
 balance: collect_from_source
 	$(PY) balance.py $(WHERE)
 
-percent_balance: balance
+percent_balance: balance collect_from_source
 	$(PY) percent_balance.py $(WHERE)
