@@ -74,11 +74,18 @@ def unpack_alluvial(config, from_file, out={}):
 
 def save_stuff(stuff, to_file):
     with open(to_file, 'w', encoding='utf-8') as outlet:
-        outlet.write('CA\tano\ttotal\tsairam\tentraram\n')
+        outlet.write('CA\tano\ttotal\tsairam\tentraram\t%%saida\t%%entrada\n')
         for c in stuff: # c for committee
             for y in stuff[c]:
                 f = stuff[c][y]
-                outlet.write('{0}\t{1}\t{2}\t{3}\t{4}\n'.format(c, y, f[0], f[1], f[2]))
+                outlet.write('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\n'.format(
+                    c,
+                    y,
+                    f[0],
+                    f[1],
+                    f[2],
+                    100*f[1]/f[0],
+                    100*f[2]/f[0]))
 
 
 if __name__ == '__main__':
