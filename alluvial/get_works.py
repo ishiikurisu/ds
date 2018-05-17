@@ -100,9 +100,6 @@ def unpack_works_from_all_cv(all_cv, debug=False):
 
     return outlet
 
-    cv_folder = config['working'] + config['cv dir']
-    return util.get_all_files(cv_folder)
-
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
     cv_folder = config['working'] + config['cv dir']
@@ -110,3 +107,4 @@ if __name__ == '__main__':
     works = unpack_works_from_all_cv(all_cv)
     print(works)
     # TODO Save kinds of works
+    # TODO Collect names in CVs for identifying who we are working with.
