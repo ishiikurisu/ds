@@ -93,7 +93,7 @@ def get_works_from_cv(cv, debug=False):
 
     return outlet
 
-def get_names_from_cv(cv):
+def get_name_from_cv(cv, debug):
     outlet = {}
 
     if debug: print('--- # {0}'.format(cv))
@@ -103,7 +103,7 @@ def get_names_from_cv(cv):
     except Exception as e:
         if debug: print('Problems with {0}: {1}'.format(cv, e))
         return None
-    return root.find('DADOS-GERAIS').attrib['NOME-COMPLETO']
+    return root.getchildren()[0].attrib['NOME-COMPLETO']
 
 ##################
 # MAIN FUNCTIONS #
@@ -115,7 +115,7 @@ def unpack_works_from_all_cv(all_cv, debug=False):
     for cv in all_cv:
         stuff = get_works_from_cv(cv, debug)
         if stuff is not None:
-            outlet[get_names_from_cv(cv)] = stuff
+            outlet[get_name_from_cv(cv, debug)] = stuff
 
     return outlet
 
