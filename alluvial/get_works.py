@@ -9,7 +9,7 @@ import re
 ##########################
 
 def get_complete_articles_from_cv(root, debug=False):
-    count = 0
+    outlet = []
 
     producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
     if producao_bibliografica is not None:
@@ -19,16 +19,19 @@ def get_complete_articles_from_cv(root, debug=False):
             for artigo_publicado in todos_artigos:
                 dados_basicos = artigo_publicado.find('DADOS-BASICOS-DO-ARTIGO')
                 if dados_basicos.attrib['NATUREZA'] == 'COMPLETO':
-                    count += 1
+                    try:
+                        outlet.append(int(dados_basicos.attrib['ANO-DO-ARTIGO']))
+                    except ValueError:
+                        print('oops!')
         else:
             if debug: print('Problems with {0}: no published articles'.format(cv))
     else:
         if debug: print('Problems with {0}: no bibliographic production'.format(cv))
 
-    return count
+    return outlet
 
 def get_complete_conference_articles_from_cv(root, debug=False):
-    count = 0
+    outlet = []
 
     producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
     if producao_bibliografica is not None:
@@ -38,16 +41,20 @@ def get_complete_conference_articles_from_cv(root, debug=False):
             for artigo_publicado in todos_artigos:
                 dados_basicos = artigo_publicado.find('DADOS-BASICOS-DO-TRABALHO')
                 if dados_basicos.attrib['NATUREZA'] == 'COMPLETO':
-                    count += 1
+                    try:
+                        outlet.append(int(dados_basicos.attrib['ANO-DO-TRABALHO']))
+                    except ValueError:
+                        print('oops!')
+
         else:
             if debug: print('Problems with {0}: no published articles'.format(cv))
     else:
         if debug: print('Problems with {0}: no bibliographic production'.format(cv))
 
-    return count
+    return outlet
 
 def get_book_chapters_from_cv(root, debug=False):
-    count = 0
+    outlet = []
 
     producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
     if producao_bibliografica is not None:
@@ -56,11 +63,13 @@ def get_book_chapters_from_cv(root, debug=False):
             coisas_publicadas = livros_e_capitulos.find('CAPITULOS-DE-LIVROS-PUBLICADOS')
             if coisas_publicadas is not None:
                 todos_capitulos = coisas_publicadas.findall('CAPITULO-DE-LIVRO-PUBLICADO')
-                count += len(todos_capitulos)
+                for capitulo in todos_capitulos:
+                    dados_basicos = capitulo.find('DADOS-BASICOS-DO-CAPITULO')
+                    outlet.append(int(dados_basicos.attrib['ANO']))
     else:
         if debug: print('Problems with {0}: no bibliographic production'.format(cv))
 
-    return count
+    return outlet
 
 def get_works_from_cv(cv, debug=False):
     """
