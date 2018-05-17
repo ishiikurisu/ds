@@ -27,13 +27,31 @@ def get_complete_articles_from_cv(root, debug=False):
 
     return count
 
+def get_complete_conference_articles_from_cv(root, debug=False):
+    count = 0
+
+    producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
+    if producao_bibliografica is not None:
+        artigos_publicados = producao_bibliografica.find('TRABALHOS-EM-EVENTOS')
+        todos_artigos = artigos_publicados.findall('TRABALHO-EM-EVENTOS')
+        if todos_artigos is not None:
+            for artigo_publicado in todos_artigos:
+                dados_basicos = artigo_publicado.find('DADOS-BASICOS-DO-TRABALHO')
+                if dados_basicos.attrib['NATUREZA'] == 'COMPLETO':
+                    count += 1
+        else:
+            if debug: print('Problems with {0}: no published articles'.format(cv))
+    else:
+        if debug: print('Problems with {0}: no bibliographic production'.format(cv))
+
+    return count
 
 def get_works_from_cv(cv, debug=False):
     """
     Collect all works for a cv file and store in a dict relating every year to another dict,
     indicating how many items there are in each of the following categories:
     - "complete article"
-    - "complete article in conference"
+    - "conference article"
     - "book chapter"
     """
     outlet = {}
@@ -46,6 +64,7 @@ def get_works_from_cv(cv, debug=False):
         if debug: print('Problems with {0}: {1}'.format(cv, e))
         return None
     outlet["complete article"] = get_complete_articles_from_cv(root, debug)
+    outlet["conference article"] = get_complete_conference_articles_from_cv(root, debug)
 
     return outlet
 
