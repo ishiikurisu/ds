@@ -46,6 +46,22 @@ def get_complete_conference_articles_from_cv(root, debug=False):
 
     return count
 
+def get_book_chapters_from_cv(root, debug=False):
+    count = 0
+
+    producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
+    if producao_bibliografica is not None:
+        livros_e_capitulos = producao_bibliografica.find('LIVROS-E-CAPITULOS')
+        if livros_e_capitulos is not None:
+            coisas_publicadas = livros_e_capitulos.find('CAPITULOS-DE-LIVROS-PUBLICADOS')
+            if coisas_publicadas is not None:
+                todos_capitulos = coisas_publicadas.findall('CAPITULO-DE-LIVRO-PUBLICADO')
+                count += len(todos_capitulos)
+    else:
+        if debug: print('Problems with {0}: no bibliographic production'.format(cv))
+
+    return count
+
 def get_works_from_cv(cv, debug=False):
     """
     Collect all works for a cv file and store in a dict relating every year to another dict,
@@ -65,6 +81,7 @@ def get_works_from_cv(cv, debug=False):
         return None
     outlet["complete article"] = get_complete_articles_from_cv(root, debug)
     outlet["conference article"] = get_complete_conference_articles_from_cv(root, debug)
+    outlet["book chapter"] = get_book_chapters_from_cv(root, debug)
 
     return outlet
 
