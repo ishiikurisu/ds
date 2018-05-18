@@ -21,7 +21,7 @@ def get_complete_articles_from_cv(root, debug=False):
                     try:
                         outlet.append(int(dados_basicos.attrib['ANO-DO-ARTIGO']))
                     except ValueError:
-                        print('oops!')
+                        if debug: print('oops!')
         else:
             if debug: print('Problems with {0}: no published articles'.format(cv))
     else:
@@ -43,7 +43,7 @@ def get_complete_conference_articles_from_cv(root, debug=False):
                     try:
                         outlet.append(int(dados_basicos.attrib['ANO-DO-TRABALHO']))
                     except ValueError:
-                        print('oops!')
+                        if debug: print('oops!')
 
         else:
             if debug: print('Problems with {0}: no published articles'.format(cv))
@@ -119,11 +119,15 @@ def unpack_works_from_all_cv(all_cv, debug=False):
 
     return outlet
 
-if __name__ == '__main__':
-    config = util.load_config(sys.argv[1])
+def unpack_works(config):
     cv_folder = config['working'] + config['cv dir']
     all_cv = util.get_all_files(cv_folder)
     works = unpack_works_from_all_cv(all_cv)
+    return works
+
+if __name__ == '__main__':
+    config = util.load_config(sys.argv[1])
+    works = unpack_works(config)
     print(works)
     # TODO Save kinds of works
     # TODO Collect names in CVs for identifying who we are working with.

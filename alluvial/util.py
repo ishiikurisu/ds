@@ -23,3 +23,6 @@ def fix_id(inlet):
 
 def get_all_files(src):
     return [src + f for f in listdir(src) if isfile(join(src, f))]
+
+def invert_map(m):
+    return { v: k for k, v in m.items() }

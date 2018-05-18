@@ -35,6 +35,7 @@ def get_stuff(config):
     2. a `dict` where each key is an ID and each value is another `dict`, where
     each key is a year and each value is the coordination that ID belonged to
     that year.
+    3. a `dict` telling the name of each ID.
     """
     min_year = 3000
     max_year = 1000
