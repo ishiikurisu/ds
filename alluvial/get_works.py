@@ -109,6 +109,37 @@ def get_name_from_cv(cv, debug):
 # MAIN FUNCTIONS #
 ##################
 
+def get_output(config):
+    cv_folder = config['working'] + config['cv dir']
+    return cv_folder + 'works.csv'
+
+def store_production_by_kind(config, works):
+    # counting kinds by year
+    kinds_by_year = {}
+    kinds = set()
+    for name in works:
+        for kind in works[name]:
+            for year in works[name][kind]:
+                if year not in kinds_by_year:
+                    kinds_by_year[year] = {}
+                if kind not in kinds_by_year[year]:
+                    kinds_by_year[year][kind] = 0
+                    kinds.add(kind)
+                kinds_by_year[year][kind] += 1
+
+    # saving table
+    years = sorted(list(kinds_by_year.keys()))
+    with open(get_output(config), 'w') as outlet:
+        line = 'type'
+        for year in years:
+            line += '\t{0}'.format(year)
+        outlet.write('{0}\n'.format(line))
+        for kind in kinds:
+            line = kind
+            for year in years:
+                line += '\t{0}'.format(kinds_by_year[year][kind])
+            outlet.write('{0}\n'.format(line))
+
 def unpack_works_from_all_cv(all_cv, debug=False):
     outlet = {}
 

@@ -34,10 +34,9 @@ if __name__ == '__main__':
         except KeyError:
             problems.append(name)
 
-    print(filtered)
     print("problems:")
     for name in problems:
         print('- {0}'.format(name))
 
     # Storing stuff
-    # TODO Store filtered works
+    gw.store_production_by_kind(config, filtered)
