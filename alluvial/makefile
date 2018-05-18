@@ -1,5 +1,5 @@
 .PHONY: default
-default: filter_works
+default: fics
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -11,7 +11,7 @@ endif
 collect_from_source:
 	$(PY) collect_from_source.py $(WHERE)
 
-filter: collect_from_source balance
+filter: 
 	$(PY) filter.py $(WHERE) $(TARGET)
 
 docs:
@@ -34,3 +34,6 @@ get_works:
 
 filter_works: collect_from_source
 	$(PY) filter_works.py $(WHERE)
+
+fics: collect_from_source
+	$(PY) filter_fics.py $(WHERE)

@@ -127,6 +127,7 @@ def store_production_by_kind(config, works):
                     kinds.add(kind)
                 kinds_by_year[year][kind] += 1
 
+    print(kinds_by_year)
     # saving table
     years = sorted(list(kinds_by_year.keys()))
     with open(get_output(config), 'w') as outlet:
@@ -137,7 +138,10 @@ def store_production_by_kind(config, works):
         for kind in kinds:
             line = kind
             for year in years:
-                line += '\t{0}'.format(kinds_by_year[year][kind])
+                if kind in kinds_by_year[year]:
+                    line += '\t{0}'.format(kinds_by_year[year][kind])
+                else:
+                    line += '\t0'
             outlet.write('{0}\n'.format(line))
 
 def unpack_works_from_all_cv(all_cv, debug=False):
@@ -160,5 +164,3 @@ if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
     works = unpack_works(config)
     print(works)
-    # TODO Save kinds of works
-    # TODO Collect names in CVs for identifying who we are working with.
