@@ -1,5 +1,5 @@
 .PHONY: default
-default: percent_balance
+default: get_works
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -20,26 +20,14 @@ docs:
 get-ids:
 	$(PY) get_ids.py $(TARGET) $(TARGET:.csv=.txt)
 
-get_keywords:
-	$(PY) get_keywords.py $(WHERE)
-
-consultant: collect_from_source
-	FLASK_APP=consultant.py flask run
-
 test_duplicates:
 	$(PY) test_duplicates.py $(WHERE) $(OP)
-
-test_consultant: collect_from_source get_keywords
-	$(PY) test_consultant.py $(WHERE)
-
-get_relevant_keywords: test_consultant
-	$(PY) get_relevant_keywords.py $(WHERE)
-
-filter_keywords: get_relevant_keywords
-	$(PY) filter_keywords.py $(WHERE)
 
 balance: collect_from_source
 	$(PY) balance.py $(WHERE)
 
 percent_balance: balance collect_from_source
 	$(PY) percent_balance.py $(WHERE)
+
+get_works:
+	$(PY) get_works.py $(WHERE)
