@@ -2,14 +2,23 @@ import sys
 import util
 import get_works as gw
 import collect_from_source as cfs
+import subprocess
+import filter as fltr
 
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
     works = gw.unpack_works(config)
-    years, flows, names = cfs.get_stuff(config)
+
+    # Selecting only relevant people
+    filtered = cfs.get_output(config)
+    subprocess.call(['make',
+                     'filter',
+                     'WHERE={0}'.format(sys.argv[1]),
+                     'TARGET={0}'.format(filtered)])
+    years, flows, names = cfs.load_stuff(fltr.get_output(config, filtered))
+    ids = util.invert_map(names)
 
     # Filtering work data
-    ids = util.invert_map(names)
     problems = []
     filtered = {}
     for name in works:
@@ -23,7 +32,6 @@ if __name__ == '__main__':
                 coordination = flows[current_id][year]
                 if coordination == 'CA':
                     relevant_years.add(year)
-            # BUG Why are there empty sets? Maybe the invertion is not working
 
             # filtering production years by selecting only years in committee
             for kind in works[name]:

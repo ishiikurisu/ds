@@ -32,5 +32,5 @@ percent_balance: balance collect_from_source
 get_works:
 	$(PY) get_works.py $(WHERE)
 
-filter_works: 
+filter_works: collect_from_source
 	$(PY) filter_works.py $(WHERE)

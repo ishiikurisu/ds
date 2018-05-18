@@ -13,6 +13,11 @@ def filter_lines(condition, input_file, output_file):
                     if condition(line):
                         outlet.write(line)
 
+def get_output(config, target):
+    program_code = config['program code']
+    extension = '_filtered_{0}.csv'.format(program_code)
+    output_file = target.replace('.csv', extension)
+    return output_file
 
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])

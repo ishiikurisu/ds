@@ -106,6 +106,27 @@ def save_stuff(config, years, data, names):
                 states.append(state)
             fp.write("'{0}'\t{1}\t{2}\n".format(cpf, names[cpf], '\t'.join(states)))
 
+def load_stuff(where):
+    years = []
+    flow = {}
+    names = {}
+
+    with open(where, 'r') as fp:
+        first_line = True
+        for line in fp:
+            stuff = line.strip().split('\t')
+            if first_line:
+                years = [int(y) for y in stuff[2:]]
+                first_line = False
+            else:
+                cid = stuff[0].strip('\'')
+                names[cid] = stuff[1]
+                flow[cid] = {}
+                for i, year in enumerate(years):
+                    flow[cid][year] = stuff[2+i]
+
+    return years, flow, names
+
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
     years, data, names = get_stuff(config)
