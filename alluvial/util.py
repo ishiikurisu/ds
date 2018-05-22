@@ -21,6 +21,11 @@ def fix_id(inlet):
     outlet = str(inlet)
     return ('0'*(11-len(outlet))) + outlet
 
+def fix_payment_year(inlet):
+    if len(inlet) != 4:
+        raise SyntaxError
+    return int(inlet)
+
 def get_all_files(src):
     return [src + f for f in listdir(src) if isfile(join(src, f))]
 

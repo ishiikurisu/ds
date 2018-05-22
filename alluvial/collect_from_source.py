@@ -3,10 +3,17 @@ import sys
 import util
 
 def parse_line(stuff, fields, data={}, names={}):
-    year = int(stuff[fields.index('Data Ano Pagamento')])
-    cpf = util.fix_id(stuff[fields.index('CPF')])
-    coordination = stuff[fields.index('Código Comitê Assessor')]
-    name = stuff[fields.index('Nome Beneficiário')]
+    try:
+        year = util.fix_payment_year(stuff[fields.index('Data Ano Pagamento')])
+        cpf = util.fix_id(stuff[fields.index('CPF')])
+        coordination = stuff[fields.index('Código Comitê Assessor')]
+        name = stuff[fields.index('Nome Beneficiário')]
+    except IndexError:
+        print('index error: {0}'.format(stuff))
+        return -1, data, names
+    except SyntaxError:
+        print('syntax error: {0}'.format(stuff))
+        return -1, data, names
 
     # Fact checking
     if cpf == '0'*11:
