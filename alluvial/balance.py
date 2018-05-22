@@ -35,8 +35,8 @@ def extract_balance(from_file):
                 coords = stuff[2:]
                 i = 1
                 while i < limit:
-                    target = coords[i]
-                    source = coords[i-1]
+                    target = coords[i].strip()
+                    source = coords[i-1].strip()
                     year = years[i]
                     if target != source:
                         if source not in history:

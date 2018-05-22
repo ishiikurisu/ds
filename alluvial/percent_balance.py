@@ -22,10 +22,10 @@ def unpack_balance(config, inputfile, outlet={}):
                 first_line = False
             else:
                 try:
-                    source = stuff[fields['source']]
-                    target = stuff[fields['target']]
-                    year = int(stuff[fields['year']])
-                    flow = int(stuff[fields['flow']])
+                    source = stuff[fields['source']].strip()
+                    target = stuff[fields['target']].strip()
+                    year = int(stuff[fields['year']].strip())
+                    flow = int(stuff[fields['flow']].strip())
                 except IndexError:
                     continue
 
@@ -64,11 +64,11 @@ def unpack_alluvial(config, from_file, out={}):
             else:
                 for i, committee in enumerate(stuff):
                     year = fields[i]
-                    if committee not in out:
-                        out[committee] = {}
-                    if year not in out[committee]:
-                        out[committee][year] = [0, 0, 0]
-                    out[committee][year][0] += 1
+                    if committee.strip() not in out:
+                        out[committee.strip()] = {}
+                    if year not in out[committee.strip()]:
+                        out[committee.strip()][year] = [0, 0, 0]
+                    out[committee.strip()][year][0] += 1
 
     return out
 
@@ -78,6 +78,8 @@ def save_stuff(stuff, to_file):
         for c in stuff: # c for committee
             for y in stuff[c]:
                 f = stuff[c][y]
+                if f[0] == 0:
+                    f[0] = f[2]
                 outlet.write('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\n'.format(
                     c,
                     y,
