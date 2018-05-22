@@ -118,7 +118,7 @@ def load_stuff(where):
     flow = {}
     names = {}
 
-    with open(where, 'r') as fp:
+    with open(where, 'r', encoding='utf-8') as fp:
         first_line = True
         for line in fp:
             stuff = line.strip().split('\t')

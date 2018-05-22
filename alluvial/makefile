@@ -1,5 +1,5 @@
 .PHONY: default
-default: filter
+default: filter_works
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -32,7 +32,7 @@ percent_balance: balance collect_from_source
 get_works:
 	$(PY) get_works.py $(WHERE)
 
-filter_works: collect_from_source
+filter_works: filter
 	$(PY) filter_works.py $(WHERE)
 
 fics: collect_from_source

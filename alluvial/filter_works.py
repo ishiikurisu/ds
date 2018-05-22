@@ -11,10 +11,6 @@ if __name__ == '__main__':
 
     # Selecting only relevant people
     filtered = cfs.get_output(config)
-    subprocess.call(['make',
-                     'filter',
-                     'WHERE={0}'.format(sys.argv[1]),
-                     'TARGET={0}'.format(filtered)])
     years, flows, names = cfs.load_stuff(fltr.get_output(config, filtered))
     ids = util.invert_map(names)
 
