@@ -1,5 +1,17 @@
 const fs = require("fs");
 
+if (!String.format) {
+  String.format = function(format) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    return format.replace(/{(\d+)}/g, function(match, number) {
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+  };
+}
+
 /**
  * Loads contents from a TSV string.
  * @param raw The raw contents from the file
@@ -73,12 +85,12 @@ function getTransitions(table) {
  * @return the SVG description of an alluvial diagram in these conditions
  */
 function drawAlluvial(bars, transitions) {
-	let svg = "";
+	let svg = `<svg width="1300" height="800" xmlns="http://www.w3.org/2000/svg" version="1.1">`;
 	let weight = 1300;
 	let height = 800;
 	let w = 0.95*weight;
 	let h = 0.95*weight;
-	let p = 5;
+	let p = 10;
 
 	// Calculating proportion factor
 	max_sbij = -1;
@@ -105,9 +117,25 @@ function drawAlluvial(bars, transitions) {
 	}
 	let fc = (h - sbij)/max_sbij;
 
-	// TODO Draw bars
+	// Drawing bars
+	var w0 = weight - w;
+	var dw = w / bars.length;
+	for (var i = 0; i < bars.length; i++) {
+		var h0 = height - h;
+		for (var key in bars[i]) {
+			var dh = bars[i][key] * fc;
+			svg += String.format(
+				`<line x1="{0}" y1="{1}" x2="{0}" y2="{2}" stroke="#000" stroke-width="2"/>`,
+				w0, h0, h0+dh
+			);
+			h0 += dh + p;
+		}
+		w0 += dw;
+	}
+
 	// TODO Draw transitions
 
+	svg += "</svg>"
 	return svg;
 }
 
@@ -137,8 +165,10 @@ fs.readFile(sourceFile, 'utf8', (err, contents) => {
 		transitionsPromise
 	]).then(stuff => {
 		var svg = drawAlluvial(stuff[0], stuff[1]);
-		console.log(svg);
-		// TODO Save SVG contents in file
+		// TODO Rename file
+		fs.writeFile("b/output.svg", svg, (error) => {
+			if (error) throw error;
+		});
 	}).catch(error => {
 		console.log(error);
 	});
