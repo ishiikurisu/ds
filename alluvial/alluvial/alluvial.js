@@ -165,8 +165,7 @@ fs.readFile(sourceFile, 'utf8', (err, contents) => {
 		transitionsPromise
 	]).then(stuff => {
 		var svg = drawAlluvial(stuff[0], stuff[1]);
-		// TODO Rename file
-		fs.writeFile("b/output.svg", svg, (error) => {
+		fs.writeFile(sourceFile.replace(".csv", ".svg"), svg, (error) => {
 			if (error) throw error;
 		});
 	}).catch(error => {
