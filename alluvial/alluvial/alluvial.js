@@ -8,11 +8,30 @@ function parseTsv(raw) {
 	});
 }
 
+function getBars(table) {
+	bars = [];
+
+	table.map(line => {
+		line.forEach((item, index, array) => {
+			if (bars[index] === undefined) {
+				bars[index] = { };
+			}
+			if (bars[index][item] === undefined) {
+				bars[index][item] = 0;
+			}
+			bars[index][item]++;
+		});
+	});
+
+	return bars;
+}
+
 var sourceFile = process.argv[2];
 fs.readFile(sourceFile, 'utf8', (err, contents) => {
 	if (err) throw err;
 	var table = parseTsv(contents);
-	// TODO Create list of bars in each year from table
+	var bars = getBars(table);
+	console.log(bars);
 	// TODO Create list of transistions between years from table
 	// TODO Draw graph as an alluvial diagram
 });
