@@ -1,5 +1,5 @@
 .PHONY: default
-default: percent_balance
+default: filter_works
 
 PY = python3
 ifeq ($(OS), Windows_NT)
