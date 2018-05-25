@@ -84,20 +84,21 @@ def save_stuff(config, years, data, names):
     Stores data in memory
     """
     with open(get_output(config), 'w', encoding='utf-8') as fp:
+        outside_states = list(config['states'].keys())
         fp.write('CPF\tNome\t{0}\n'.format('\t'.join(map(str, years))))
         for cpf in data:
             states = []
             appeared = False
             coordinations = data[cpf]
             for year in years:
-                state = 'never'
+                state = config['states']['never']
                 if year in coordinations:
                     state = coordinations[year]
                     appeared = True
                 elif appeared:
-                    state = 'nope'
+                    state = config['states']['nope']
 
-                if (len(state) > 2) and (state not in ['never', 'nope']):
+                if (len(state) > 2) and (state not in outside_states):
                     # XXX What if there are transitions in consecutive years?
                     next_state = str(coordinations.get(year+1))
                     previous_state = str(coordinations.get(year-1))
