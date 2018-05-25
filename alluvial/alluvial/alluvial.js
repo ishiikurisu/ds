@@ -16,7 +16,7 @@ function parseTsv(raw) {
 /**
  * Extracts the bars in the alluvial table.
  * @param table the alluvial table
- * @return the bars for each step
+ * @return the bars for each step. They are a list of maps relating each group to a their size.
  */
 function getBars(table) {
 	let bars = [];
@@ -39,7 +39,7 @@ function getBars(table) {
 /**
  * Extracts the transitions between bars in an alluvial table.
  * @param table the alluvial table
- * @return the transitions between nodes in each step
+ * @return the transitions between nodes in each step. they are a list of maps relating the source group to the target group by the size of the transition.
  */
 function getTransitions(table) {
 	let transitions = [];
@@ -74,8 +74,39 @@ function getTransitions(table) {
  */
 function drawAlluvial(bars, transitions) {
 	let svg = "";
+	let weight = 1300;
+	let height = 800;
+	let w = 0.95*weight;
+	let h = 0.95*weight;
+	let p = 5;
 
-	// TODO Draw graph as an alluvial diagram
+	// Calculating proportion factor
+	max_sbij = -1;
+	max_i = -1;
+	for (var i = 0; i < bars.length; i++) {
+		var bar = bars[i];
+		var sbij = 0;
+		var b = -1;
+
+		for (var key in bar) {
+			sbij += bar[key];
+			b++;
+		}
+		sbij += p*b;
+
+		if (max_sbij < sbij) {
+			max_sbij = sbij;
+			max_i = i;
+		}
+	}
+	var sbij = 0;
+	for (var key in bars[max_i]) {
+		sbij += bars[max_i][key];
+	}
+	let fc = (h - sbij)/max_sbij;
+
+	// TODO Draw bars
+	// TODO Draw transitions
 
 	return svg;
 }
