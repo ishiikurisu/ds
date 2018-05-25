@@ -1,15 +1,25 @@
 const fs = require("fs");
 
+/**
+ * Loads contents from a TSV string.
+ * @param raw The raw contents from the file
+ * @return the table in the string
+ */
 function parseTsv(raw) {
-	var lines = raw.split("\n");
+	let lines = raw.split("\n");
 	return lines.slice(1, lines.length).map(line => {
-		var fields = line.split("\t");
+		let fields = line.split("\t");
 		return fields.slice(2, fields.length);
 	});
 }
 
+/**
+ * Extracts the bars in the alluvial table.
+ * @param table the alluvial table
+ * @return the bars for each step
+ */
 function getBars(table) {
-	var bars = [];
+	let bars = [];
 
 	table.map(line => {
 		line.forEach((item, index, array) => {
@@ -26,11 +36,16 @@ function getBars(table) {
 	return bars;
 }
 
+/**
+ * Extracts the transitions between bars in an alluvial table.
+ * @param table the alluvial table
+ * @return the transitions between nodes in each step
+ */
 function getTransitions(table) {
-	var transitions = [];
+	let transitions = [];
 
 	table.map(line => {
-		var limit = line.length;
+		let limit = line.length;
 		for (var i = 0; i < limit-1; i++) {
 			var from = line[i];
 			var to = line[i+1];
@@ -50,22 +65,50 @@ function getTransitions(table) {
 	return transitions;
 }
 
+/**
+ * Generates a SVG description on the graph in bars and transitions
+ * as an alluvial diagram.
+ * @param bars the bars in the plot
+ * @param transitions the transitions between different bars
+ * @return the SVG description of an alluvial diagram in these conditions
+ */
 function drawAlluvial(bars, transitions) {
-	var svg = "";
+	let svg = "";
 
 	// TODO Draw graph as an alluvial diagram
-	
+
 	return svg;
 }
 
 var sourceFile = process.argv[2];
 fs.readFile(sourceFile, 'utf8', (err, contents) => {
 	if (err) throw err;
-	// IDEA Make these things run in parallel
-	var table = parseTsv(contents);
-	var bars = getBars(table);
-	var transitions = getTransitions(table);
-	var svg = drawAlluvial(bars, transitions);
-	console.log(svg);
-	// TODO Save SVG contents in file
+	let table = parseTsv(contents);
+	let barsPromise = new Promise((resolve, reject) => {
+		let bars = getBars(table);
+		if (bars === null) {
+			reject(bars);
+		} else {
+			resolve(bars);
+		}
+	});
+	let transitionsPromise = new Promise((resolve, reject) => {
+		let transitions = getTransitions(table);
+		if (transitions === null) {
+			reject(transitions);
+		} else {
+			resolve(transitions);
+		}
+	});
+
+	Promise.all([
+		barsPromise,
+		transitionsPromise
+	]).then(stuff => {
+		var svg = drawAlluvial(stuff[0], stuff[1]);
+		console.log(svg);
+		// TODO Save SVG contents in file
+	}).catch(error => {
+		console.log(error);
+	});
 });
