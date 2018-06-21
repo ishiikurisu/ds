@@ -4,10 +4,13 @@ import util
 
 def parse_line(stuff, fields, data={}, names={}):
     try:
-        year = util.fix_payment_year(stuff[fields.index('Data Ano Pagamento')])
+        payment_year = util.fix_payment_year(stuff[fields.index('Data Ano Pagamento')])
         cpf = util.fix_id(stuff[fields.index('CPF')])
         coordination = stuff[fields.index('Código Comitê Assessor')]
         name = stuff[fields.index('Nome Beneficiário')]
+        contract = stuff[fields.index('Data Término Contrato')]
+        contract_month = int(contract.split(' ')[0].split('/')[1])
+        contract_year = int(contract.split(' ')[0].split('/')[2])
     except IndexError:
         print('index error: {0}'.format(stuff))
         return -1, data, names
@@ -18,22 +21,24 @@ def parse_line(stuff, fields, data={}, names={}):
     # Fact checking
     if cpf == '0'*11:
         return -1, data, names
+    if (contract_year == payment_year) and (contract_month < 3):
+        return -1, data, names
 
     # Parsing data
     if cpf not in data:
         data[cpf] = {}
-    if year not in data[cpf]:
-        data[cpf][year] = ''
-    if coordination not in data[cpf][year]:
+    if payment_year not in data[cpf]:
+        data[cpf][payment_year] = ''
+    if coordination not in data[cpf][payment_year]:
         # There is a decision to be taken here. I can't just stack stuff
         # because I can't generate an alluvial with this kind of data.
         # What do I do?
-        data[cpf][year] += coordination
+        data[cpf][payment_year] += coordination
 
     # Parsing name
     names[cpf] = name
 
-    return year, data, names
+    return payment_year, data, names
 
 def get_stuff(config):
     """
@@ -94,6 +99,7 @@ def save_stuff(config, years, data, names):
                 state = config['states']['never']
                 if year in coordinations:
                     state = coordinations[year]
+                    # state = config['states']['inside']
                     appeared = True
                 elif appeared:
                     state = config['states']['nope']
