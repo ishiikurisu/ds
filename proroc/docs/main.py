@@ -1,4 +1,5 @@
 import sys
+import re
 import prometheeroc
 
 def load_csv(filename):
@@ -6,7 +7,7 @@ def load_csv(filename):
 
     with open(filename, 'r') as fp:
         for line in fp:
-            table.append(line.strip().split(';'))
+            table.append(re.split(r'[;\t]', line.strip()))
 
     return table
 
@@ -29,14 +30,15 @@ def get_weights_from_file(filename):
     Loads the weights from a local standard PROMETHEE-ROC CSV file saved on
     filename. If the file name is not valid, an empty list is returned.
     """
-    return [int(it) for it in load_csv(filename)[1][1:]]
+    return [float(it) for it in load_csv(filename)[1][1:]]
 
 if __name__ == '__main__':
     tablename = sys.argv[1]
     actions, criteria, table = load_table_from_file(tablename)
     weights = get_weights_from_file(tablename)
     promethee = prometheeroc.Promethee(actions, criteria)
-    promethee.set_weights(prometheeroc.roc(weights))
+    # promethee.set_weights(prometheeroc.roc(weights))
+    promethee.set_weights(weights)
     scores = promethee.recommend(table)
     best_options = sorted(zip(actions, scores), key=lambda it: it[1])
     for option in best_options:
