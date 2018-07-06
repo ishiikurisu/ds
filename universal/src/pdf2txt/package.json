@@ -1,0 +1,22 @@
+{
+  "name": "pdf2txt",
+  "version": "0.1.0",
+  "description": "Converting PDF to TXT",
+  "main": "main.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/ishiikurisu/ds"
+  },
+  "keywords": [
+    "pdf",
+    "txt"
+  ],
+  "dependencies": {
+    "pdf2json": "1.1.7"
+  },
+  "author": "www.crisjr.eng.br",
+  "license": "Unlicense"
+}
