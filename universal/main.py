@@ -47,9 +47,26 @@ def cat_csv(all_csv, to_file):
         for process in processes:
             outlet.write(process)
 
+def db2id(excel_file, process_file, to_file):
+    house_config = 'src/xls2id/house.yml'
+    config = '''
+---
+build:
+  local: true
+  commands:
+  - python main.py {0} {1} {2}
+'''.format(excel_file, process_file, to_file)
+    with open(house_config, 'w') as fp:
+        fp.write(config)
+    subprocess.call(['house', 'build', 'xls2id'])
+    os.remove(house_config)
+
 if __name__ == '__main__':
     where = sys.argv[1]
     pwd = os.path.dirname(os.path.realpath(__file__))
+    process_file = where + '/process.csv'
+    database = where + '/14-2013.xls'
+    ids = where + '/ids.txt'
 
     # Extracting process numbers
     all_pdf = ["{0}/{1}".format(where, f) for f in os.listdir(where) if (os.path.isfile(os.path.join(where, f)) and (".pdf" in f))]
@@ -60,7 +77,9 @@ if __name__ == '__main__':
         csv = txt2csv(txt)
         all_csv.append(csv)
         os.remove(txt)
-    cat_csv(all_csv, where + '/process.csv')
+    cat_csv(all_csv, process_file)
 
     # Turning process numbers into individual identifications
-    # TODO Turn process numbers into individual ids
+    print(process_file)
+    db2id(database, process_file, ids)
+    print(ids)
