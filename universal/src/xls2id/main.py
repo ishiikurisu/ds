@@ -2,10 +2,14 @@ import sys
 import pandas as pd
 
 def load_processes(process_file):
-    outlet = set()
+    outlet = list()
     with open(process_file, 'r') as fp:
+        first_line = True
         for line in fp:
-            outlet.add(line.strip())
+            if first_line:
+                first_line = False
+            else:
+                outlet.append(line.strip().split('\t'))
     return outlet
 
 def save_ids(ids, output_file):
@@ -15,23 +19,38 @@ def save_ids(ids, output_file):
             outlet.write('{0},'.format(cid))
         outlet.write('\n')
 
-def load_relevant_ids(xls, ps):
+def save_stuff(ps, output_file):
+    with open(output_file, 'w') as outlet:
+        outlet.write('p\tf\tc\tid\n')
+        for p in ps:
+            if len(p) < 4:
+                p.append(-1)
+            elif len(p) > 4:
+                p[3] = 1
+            outlet.write('{0}\t{1}\t{2}\t{3}\n'.format(p[0], p[1], p[2], p[3]))
+
+def load_relevant_ids(xls, all):
     '''
     Extracts the ids that are related to one the processes `ps` saved in that
     excel file `xls`.
     '''
-    out = []
     df = pd.read_excel(xls)
+    ps = [p[0] for p in all]
     try:
         y = 0
         while True:
             if df.iat[y, 0] in ps:
-                out.append(df.iat[y, 8])
+                id = df.iat[y, 8]
+                i = ps.index(df.iat[y, 0])
+                all[i].append(id)
             y += 1
     except IndexError:
         pass
 
-    return out
+    return all
+
+def extract_ids(stuff):
+    return [it[3] for it in stuff if len(it) >= 4]
 
 if __name__ == '__main__':
     excel_file = sys.argv[1]
@@ -39,5 +58,7 @@ if __name__ == '__main__':
     output_file = sys.argv[3]
 
     processes = load_processes(process_file)
-    ids = load_relevant_ids(excel_file, processes)
+    stuff = load_relevant_ids(excel_file, processes)
+    ids = extract_ids(stuff)
+    save_stuff(stuff, process_file)
     save_ids(ids, output_file)
