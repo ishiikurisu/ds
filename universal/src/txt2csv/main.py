@@ -1,21 +1,16 @@
 import sys
 import re
 
-def process(line):
-    regex = re.compile(r'[Rr]ecomendada')
-    if regex.search(line) is None:
-        return None
-    parts = regex.split(line)
-    maybe = parts[1][0:13]
-    return maybe if len(maybe) == 13 else None
-
 def extract_process_numbers(from_file):
     outlet = []
+    regex = re.compile(r'[Rr]ecomendada')
     with open(from_file, 'r', encoding='utf-8') as inlet:
         for line in inlet:
-            maybe = process(line)
-            if maybe is not None:
-                outlet.append(maybe)
+            if regex.search(line) is not None:
+                parts = regex.split(line)
+                maybe = parts[1][0:13]
+                if len(maybe) == 13:
+                    outlet.append(maybe)
     return outlet
 
 def save_process_numbers(stuff, to_file):
