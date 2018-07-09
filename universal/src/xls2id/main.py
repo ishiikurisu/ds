@@ -1,6 +1,13 @@
 import sys
 import pandas as pd
 
+def remove_duplicates(l):
+    o = []
+    for i in l:
+        if i not in o:
+            o.append(i)
+    return o
+
 def load_processes(process_file):
     outlet = list()
     with open(process_file, 'r') as fp:
@@ -23,6 +30,7 @@ def save_stuff(ps, output_file):
     with open(output_file, 'w') as outlet:
         outlet.write('p\tf\tc\tid\n')
         for p in ps:
+            p = remove_duplicates(p)
             if len(p) < 4:
                 p.append(-1)
             elif len(p) > 4:
@@ -46,7 +54,6 @@ def load_relevant_ids(xls, all):
             y += 1
     except IndexError:
         pass
-
     return all
 
 def extract_ids(stuff):
@@ -57,8 +64,6 @@ if __name__ == '__main__':
     process_file = sys.argv[2]
     output_file = sys.argv[3]
 
-    processes = load_processes(process_file)
-    stuff = load_relevant_ids(excel_file, processes)
-    ids = extract_ids(stuff)
-    save_stuff(stuff, process_file)
-    save_ids(ids, output_file)
+    processes = load_relevant_ids(excel_file, load_processes(process_file))
+    save_stuff(processes, process_file)
+    save_ids(extract_ids(processes), output_file)

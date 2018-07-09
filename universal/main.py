@@ -85,6 +85,7 @@ if __name__ == '__main__':
     all_csv = []
     for strip in config['strips']:
         pdf = where + strip['src']
+        print(pdf)
         txt = pdf2txt(pdf)
         csv = txt2csv(txt, strip['name'], strip['categories'])
         all_csv.append(csv)
