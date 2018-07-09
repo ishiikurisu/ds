@@ -9,7 +9,7 @@ def extract_process_numbers(from_file):
             if regex.search(line) is not None:
                 parts = regex.split(line)
                 maybe = parts[1][0:13]
-                if len(maybe) == 13:
+                if (len(maybe) == 13) and (maybe not in outlet):
                     outlet.append(maybe)
     return outlet
 
