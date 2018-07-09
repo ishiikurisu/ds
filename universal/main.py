@@ -35,9 +35,23 @@ build:
     os.remove(house_config)
     return csv
 
+def cat_csv(all_csv, to_file):
+    processes = []
+    for csv in all_csv:
+        print(csv)
+        with open(csv, 'r') as inlet:
+            for line in inlet:
+                processes.append(line)
+        os.remove(csv)
+    with open(to_file, 'w') as outlet:
+        for process in processes:
+            outlet.write(process)
+
 if __name__ == '__main__':
     where = sys.argv[1]
     pwd = os.path.dirname(os.path.realpath(__file__))
+
+    # Extracting process numbers
     all_pdf = ["{0}/{1}".format(where, f) for f in os.listdir(where) if (os.path.isfile(os.path.join(where, f)) and (".pdf" in f))]
     all_csv = []
     for pdf in all_pdf:
@@ -46,4 +60,7 @@ if __name__ == '__main__':
         csv = txt2csv(txt)
         all_csv.append(csv)
         os.remove(txt)
-    # TODO cat all csv
+    cat_csv(all_csv, where + '/process.csv')
+
+    # Turning process numbers into individual identifications
+    # TODO Turn process numbers into individual ids
