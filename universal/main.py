@@ -90,9 +90,9 @@ if __name__ == '__main__':
         csv = txt2csv(txt, strip['name'], strip['categories'])
         all_csv.append(csv)
         os.remove(txt)
-    cat_csv(all_csv, process_file)
 
     # Turning process numbers into individual identifications
     print(process_file)
-    db2id(database, process_file, ids)
+    cat_csv(all_csv, process_file)
     print(ids)
+    db2id(database, process_file, ids)

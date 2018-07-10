@@ -42,6 +42,7 @@ def load_relevant_ids(xls, all):
     Extracts the ids that are related to one the processes `ps` saved in that
     excel file `xls`.
     '''
+    # XXX Pandas don't always read the Excel file correctly!
     df = pd.read_excel(xls)
     ps = [p[0] for p in all]
     try:
