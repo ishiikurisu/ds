@@ -3,13 +3,7 @@ import os
 import os.path
 import sys
 import json
-
-def load_config(where):
-    """Loads the configuration file."""
-    config = None
-    with open(where, 'r', encoding='utf-8') as fp:
-        config = json.loads(fp.read())
-    return config
+import util
 
 def pdf2txt(pdf):
     txt = pdf.replace('pdf', 'txt')
@@ -75,7 +69,7 @@ build:
     os.remove(house_config)
 
 if __name__ == '__main__':
-    config = load_config(sys.argv[1])
+    config = util.load_config(sys.argv[1])
     where = config['pwd']
     process_file = where + config['process']
     database = where + config['database']
