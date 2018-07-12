@@ -29,8 +29,8 @@ def txt2csv(txt, strip, cats):
 build:
   local: true
   commands:
-  - python main.py {0} {1} {2} {3} {4}
-'''.format(txt, strip, cats[0], cats[1], csv)
+  - {5} main.py {0} {1} {2} {3} {4}
+'''.format(txt, strip, cats[0], cats[1], csv, util.get_python())
     with open(house_config, 'w') as fp:
         fp.write(config)
     subprocess.call(['house', 'build', 'txt2csv'])
@@ -61,8 +61,8 @@ def db2id(excel_file, process_file, to_file):
 build:
   local: true
   commands:
-  - python main.py {0} {1} {2}
-'''.format(excel_file, process_file, to_file)
+  - {3} main.py {0} {1} {2}
+'''.format(excel_file, process_file, to_file, util.get_python())
     with open(house_config, 'w') as fp:
         fp.write(config)
     subprocess.call(['house', 'build', 'xls2id'])
