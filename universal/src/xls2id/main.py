@@ -1,5 +1,6 @@
 import sys
 import pandas as pd
+import re
 
 def remove_duplicates(l):
     o = []
@@ -20,11 +21,12 @@ def load_processes(process_file):
     return outlet
 
 def save_ids(ids, output_file):
+    id_pattern = re.compile(r'[-\.]')
     with open(output_file, 'w') as outlet:
         outlet.write('cpf:')
-        for cid in ids:
-            outlet.write('{0},'.format(cid))
-        outlet.write('\n')
+        for i, cid in enumerate(ids):
+            outlet.write(('{0}' if i == 0 else ',{0}').format(id_pattern.sub('', cid)))
+        outlet.write(';\n')
 
 def save_stuff(ps, output_file):
     with open(output_file, 'w') as outlet:
