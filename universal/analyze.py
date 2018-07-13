@@ -5,6 +5,28 @@ import os
 import os.path
 import xml.etree.ElementTree
 
+def get_repeated_names(all_cv):
+    names = {}
+
+    # getting all names
+    for cv in all_cv:
+        root = xml.etree.ElementTree.parse(cv).getroot()
+        dados_gerais = root.getchildren()[0]
+        nome_completo = dados_gerais.attrib['NOME-COMPLETO']
+        if nome_completo not in names:
+            names[nome_completo] = []
+        names[nome_completo].append(cv)
+
+    # printing repeated names
+    for name in names:
+        print('---')
+        print('name: {0}'.format(name))
+        print('cv:')
+        for cv in names[name]:
+            print('- {0}'.format(cv))
+
+    return names
+
 def get_fields_from_phd(cv):
     outlet = []
 
