@@ -1,5 +1,4 @@
-import subprocess
-import os
+import house
 import os.path
 import sys
 import json
@@ -7,34 +6,24 @@ import util
 
 def pdf2txt(pdf):
     txt = pdf.replace('pdf', 'txt')
-    house_config = 'src/pdf2txt/house.yml'
-    config = '''
----
-build:
-  local: true
-  commands:
-  - node main.js {0} {1}
-'''.format(pdf, txt)
-    with open(house_config, 'w') as fp:
-        fp.write(config)
-    subprocess.call(['house', 'build', 'pdf2txt'])
-    os.remove(house_config)
+    h = house.House('pdf2txt')
+    h.local = True
+    h.add_command('node main.js {0} {1}'.format(pdf, txt))
+    h.build()
     return txt
 
 def txt2csv(txt, strip, cats):
     csv = txt.replace('txt', 'csv')
-    house_config = 'src/txt2csv/house.yml'
-    config = '''
----
-build:
-  local: true
-  commands:
-  - {5} main.py {0} {1} {2} {3} {4}
-'''.format(txt, strip, cats[0], cats[1], csv, util.get_python())
-    with open(house_config, 'w') as fp:
-        fp.write(config)
-    subprocess.call(['house', 'build', 'txt2csv'])
-    os.remove(house_config)
+    h = house.House('txt2csv')
+    h.local = True
+    command = '{5} main.py {0} {1} {2} {3} {4}'.format(txt,
+                                                       strip,
+                                                       cats[0],
+                                                       cats[1],
+                                                       csv,
+                                                       util.get_python())
+    h.add_command(command)
+    h.build()
     return csv
 
 def cat_csv(all_csv, to_file):
@@ -55,18 +44,10 @@ def cat_csv(all_csv, to_file):
             outlet.write(process)
 
 def db2id(excel_file, process_file, to_file):
-    house_config = 'src/xls2id/house.yml'
-    config = '''
----
-build:
-  local: true
-  commands:
-  - {3} main.py {0} {1} {2}
-'''.format(excel_file, process_file, to_file, util.get_python())
-    with open(house_config, 'w') as fp:
-        fp.write(config)
-    subprocess.call(['house', 'build', 'xls2id'])
-    os.remove(house_config)
+    h = house.House('xls2id')
+    h.local = True
+    h.add_command('{3} main.py {0} {1} {2}'.format(excel_file, process_file, to_file, util.get_python()))
+    h.build()
 
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])

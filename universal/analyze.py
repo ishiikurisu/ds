@@ -1,21 +1,12 @@
 import util
 import sys
-import subprocess
-import os
+import house
 
 def extract_cv_data(json_config):
-    house_config = 'src/cv-extraction/house.yml'
-    config = '''
----
-build:
-  local: true
-  commands:
-  - {0} main.py {1}
-'''.format(util.get_python(), json_config)
-    with open(house_config, 'w') as fp:
-        fp.write(config)
-    subprocess.call(['house', 'build', 'cv-extraction'])
-    os.remove(house_config)
+    h = house.House('cv-extraction')
+    h.local = True
+    h.add_command('{0} main.py {1}'.format(util.get_python(), json_config))
+    h.build()
     return json_config
 
 if __name__ == '__main__':
