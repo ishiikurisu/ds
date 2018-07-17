@@ -52,8 +52,8 @@ def get_fields_from_phd(cv):
                     if area is not None:
                         outlet.append(area)
 
-    if len(outlet) == 0:
-        outlet = None
+    # if len(outlet) == 0:
+    #     outlet = None
     return outlet
 
 def get_fields_from_book_chapters(cv):
@@ -80,7 +80,8 @@ def get_fields_from_book_chapters(cv):
                                 outlet.append(area)
 
 
-    return None if len(outlet) == 0 else outlet
+    # return None if len(outlet) == 0 else outlet
+    return outlet
 
 def get_fields_from_complete_articles(cv):
     outlet = []
@@ -105,7 +106,8 @@ def get_fields_from_complete_articles(cv):
                             if area is not None:
                                 outlet.append(area)
 
-    return None if len(outlet) == 0 else outlet
+    # return None if len(outlet) == 0 else outlet
+    return outlet
 
 def get_fields_from_conference_articles(cv):
     outlet = []
@@ -130,7 +132,8 @@ def get_fields_from_conference_articles(cv):
                             if area is not None:
                                 outlet.append(area)
 
-    return None if len(outlet) == 0 else outlet
+    # return None if len(outlet) == 0 else outlet
+    return outlet
 
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
@@ -142,17 +145,12 @@ if __name__ == '__main__':
 
     # Analyzing CV
     stuff = {}
-    invalid = []
     for cv in all_cv:
-        fields = get_fields_from_complete_articles(cv)
-        if fields is not None:
-            stuff[cv] = fields
-        else:
-            invalid.append(cv)
+        stuff[cv] = get_fields_from_complete_articles(cv)
+        stuff[cv] += get_fields_from_conference_articles(cv)
+        stuff[cv] += get_fields_from_book_chapters(cv)
+        stuff[cv] += get_fields_from_phd(cv)
 
-    # Printing relevant information from data
     print(stuff)
-    for cv in invalid:
-        print(cv + ' is invalid')
-    print('invalid: ' + str(len(invalid)) + '/' + str(len(all_cv)))
-    # TODO relate all researchers to all fields
+    # Similarity Analysis
+    # TODO Perform similarity analysis
