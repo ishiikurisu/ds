@@ -5,6 +5,10 @@ import os
 import os.path
 import xml.etree.ElementTree
 
+######################
+# CV DATA EXTRACTION #
+######################
+
 def get_repeated_names(all_cv):
     names = {}
 
@@ -135,6 +139,35 @@ def get_fields_from_conference_articles(cv):
     # return None if len(outlet) == 0 else outlet
     return outlet
 
+
+######################################
+# SIMILARITY ANALYSIS PRE-PROCESSING #
+######################################
+
+def generate_similarity_table(data, output_file):
+    # extracting all possible fields
+    fields = set()
+    for cv in data:
+        current_fields = stuff[cv]
+        for field in current_fields:
+            fields.add(field)
+    fields = list(fields)
+
+    # writting table to file
+    with open(output_file, 'w', encoding='utf-8') as fp:
+        line = 'cv\t{0}\n'.format('\t'.join(fields))
+        fp.write(line)
+        for cv in data:
+            count = [len([f for f in data[cv] if f == field]) for field in fields]
+            first_column = cv.split('/')[-1]
+            remaining_columns = '\t'.join([str(x) for x in count])
+            line = '{0}\t{1}\n'.format(first_column, remaining_columns)
+            fp.write(line)
+
+##################
+# MAIN PROCEDURE #
+##################
+
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
 
@@ -151,6 +184,7 @@ if __name__ == '__main__':
         stuff[cv] += get_fields_from_book_chapters(cv)
         stuff[cv] += get_fields_from_phd(cv)
 
-    print(stuff)
     # Similarity Analysis
-    # TODO Perform similarity analysis
+    output_file = config['pwd'] + 'cv.csv'
+    generate_similarity_table(stuff, output_file)
+    print(output_file)
