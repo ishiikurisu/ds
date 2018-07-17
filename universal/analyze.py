@@ -12,7 +12,7 @@ def extract_cv_data(json_config):
 def analyze_similarity(cv_data):
     h = house.House('similarity')
     h.local = True
-    h.add_command('{0} main.py {1} dd'.format(util.get_python, cv_data))
+    h.add_command('{0} main.py {1} dd'.format(util.get_python(), cv_data))
     h.build()
     return cv_data.replace('cv.csv', 'cv_dd.csv')
 
