@@ -19,7 +19,7 @@ def load_table(from_file):
             else:
                 stuff = line.strip().split('\t')
                 docs.append(stuff[0])
-                table.append([int(it) for it in stuff[1:]])
+                table.append([float(it) for it in stuff[1:]])
 
     table = np.matrix(table)
     return docs, terms, table
@@ -33,10 +33,8 @@ def save_table(to_file, ids, table):
         # remaining lines
         lx, ly = table.shape
         for x in range(lx):
-            values = []
-            for y in range(ly):
-                values.append(('%.5f' % table[x, y]).replace('.', ','))
-            line = '%s\t%s\n' % (ids[x], '\t'.join(values))
+            values = ['%.5f' % table[x, y] for y in range(ly)]
+            line = '%s\t%s\n' % (ids[x], '\t'.join(values).replace('.', ','))
             fp.write(line)
 
 
@@ -45,7 +43,6 @@ def save_table(to_file, ids, table):
 ###############
 
 def calculate_tfidf(tft):
-    # BUG Why is the output table always a bunch of zeros?
     tf = tft.T
     lx, ly = tf.shape
     tfidf = np.zeros([lx, ly])
@@ -53,7 +50,7 @@ def calculate_tfidf(tft):
     df = np.sum(np.asarray(tf > 0, 'i'), axis=1)
     for x in range(lx):
         for y in range(ly):
-            result = float(tf[x,y])/wd[0, y] * np.log(float(ly)/df[x])
+            result = (tf[x,y]/wd[0,y]) * np.log(float(ly)/df[x])
             tfidf[x, y] = 0 if np.isnan(result) else result
     return tfidf.T
 
