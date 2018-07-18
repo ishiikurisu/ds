@@ -1,6 +1,10 @@
 import sys
 import numpy as np
 
+#######
+# I/O #
+#######
+
 def load_table(from_file):
     docs = []
     terms = []
@@ -20,17 +24,46 @@ def load_table(from_file):
     table = np.matrix(table)
     return docs, terms, table
 
+def save_table(to_file, ids, table):
+    with open(to_file, 'w') as fp:
+        # first line
+        line = '*\t%s\n' % ('\t'.join(ids))
+        fp.write(line)
+
+        # remaining lines
+        lx, ly = table.shape
+        for x in range(lx):
+            line = ids[x]
+            for y in range(ly):
+                line += '\t%.5f' % table[x, y]
+            line += '\n'
+            fp.write(line)
+
+
+###############
+# MATHEMATICS #
+###############
+
 def calculate_tfidf(tf):
+    # BUG Why is the output table always a bunch of zeros?
     tfidf = np.zeros_like(tf)
     wd = np.sum(tf, axis=0)
     df = np.sum(np.asarray(tf > 0, 'i'), axis=1)
     lx, ly = tf.shape
     for x in range(lx):
         for y in range(ly):
-            # BUG Why is this line generating an array? it should be a number
-            tfidf[x, y] = (tf[x,y]/wd[y]) * np.log(float(ly)/df[x])
-    return np.nan_to_num(tfidf.T)
+            if df[x] == 0:
+                tfidf[x, y] = 0
+            else:
+                tfidf[x, y] = float(tf[x,y])/wd[0, y] * np.log(float(ly)/df[x])
+    return tfidf
 
+def calculate_dd(tfidf):
+    return np.dot(tfidf, tfidf.T)
+
+##################
+# MAIN PROCEDURE #
+##################
 
 if __name__ == '__main__':
     input_file = sys.argv[1]
@@ -38,11 +71,11 @@ if __name__ == '__main__':
 
     docs, terms, tf = load_table(input_file)
     tfidf = calculate_tfidf(tf)
-    print(tfidf)
 
     if operation == 'dd':
-        # TODO Implement me!
-        pass
+        doc_doc_similarity = calculate_dd(tfidf)
+        output_file = input_file.replace('.csv', '_dd.csv')
+        save_table(output_file, docs, doc_doc_similarity)
     elif operation == 'tt':
         print('not gonna happen anytime soon')
     else:
