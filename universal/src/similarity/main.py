@@ -75,6 +75,7 @@ if __name__ == '__main__':
         doc_doc_similarity = calculate_dd(tfidf)
         output_file = input_file.replace('.csv', '_dd.csv')
         save_table(output_file, docs, doc_doc_similarity)
+        print(output_file)
     elif operation == 'tt':
         print('not gonna happen anytime soon')
     else:

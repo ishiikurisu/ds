@@ -20,4 +20,3 @@ if __name__ == '__main__':
     config = sys.argv[1]
     cv_data = extract_cv_data(config)
     cv_dd = analyze_similarity(cv_data)
-    print(cv_dd)
