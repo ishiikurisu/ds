@@ -4,6 +4,7 @@ import sys
 import os
 import os.path
 import xml.etree.ElementTree
+import re
 
 ######################
 # CV DATA EXTRACTION #
@@ -159,7 +160,7 @@ def generate_similarity_table(data, output_file):
         fp.write(line)
         for cv in data:
             count = [len([f for f in data[cv] if f == field]) for field in fields]
-            first_column = cv.split('/')[-1]
+            first_column = re.split(r'[/\\]', cv)[-1]
             remaining_columns = '\t'.join([str(x) for x in count])
             line = '{0}\t{1}\n'.format(first_column, remaining_columns)
             fp.write(line)
