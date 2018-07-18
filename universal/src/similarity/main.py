@@ -27,16 +27,16 @@ def load_table(from_file):
 def save_table(to_file, ids, table):
     with open(to_file, 'w') as fp:
         # first line
-        line = '*\t%s\n' % ('\t'.join(ids))
+        line = ' \t%s\n' % '\t'.join(ids)
         fp.write(line)
 
         # remaining lines
         lx, ly = table.shape
         for x in range(lx):
-            line = ids[x]
+            values = []
             for y in range(ly):
-                line += '\t%.5f' % table[x, y]
-            line += '\n'
+                values.append(('%.5f' % table[x, y]).replace('.', ','))
+            line = '%s\t%s\n' % (ids[x], '\t'.join(values))
             fp.write(line)
 
 
@@ -44,19 +44,18 @@ def save_table(to_file, ids, table):
 # MATHEMATICS #
 ###############
 
-def calculate_tfidf(tf):
+def calculate_tfidf(tft):
     # BUG Why is the output table always a bunch of zeros?
-    tfidf = np.zeros_like(tf)
+    tf = tft.T
+    lx, ly = tf.shape
+    tfidf = np.zeros([lx, ly])
     wd = np.sum(tf, axis=0)
     df = np.sum(np.asarray(tf > 0, 'i'), axis=1)
-    lx, ly = tf.shape
     for x in range(lx):
         for y in range(ly):
-            if df[x] == 0:
-                tfidf[x, y] = 0
-            else:
-                tfidf[x, y] = float(tf[x,y])/wd[0, y] * np.log(float(ly)/df[x])
-    return tfidf
+            result = float(tf[x,y])/wd[0, y] * np.log(float(ly)/df[x])
+            tfidf[x, y] = 0 if np.isnan(result) else result
+    return tfidf.T
 
 def calculate_dd(tfidf):
     return np.dot(tfidf, tfidf.T)
