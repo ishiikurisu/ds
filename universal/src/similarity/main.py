@@ -1,5 +1,6 @@
 import sys
 import numpy as np
+import numpy.linalg as linalg
 
 #######
 # I/O #
@@ -33,7 +34,7 @@ def save_table(to_file, ids, table):
         # remaining lines
         lx, ly = table.shape
         for x in range(lx):
-            values = ['%.5f' % table[x, y] for y in range(ly)]
+            values = ['%.8f' % table[x, y] for y in range(ly)]
             line = '%s\t%s\n' % (ids[x], '\t'.join(values).replace('.', ','))
             fp.write(line)
 
@@ -55,7 +56,15 @@ def calculate_tfidf(tft):
     return tfidf.T
 
 def calculate_dd(tfidf):
-    return np.dot(tfidf, tfidf.T)
+    lx, ly = tfidf.shape
+    dd = np.zeros([lx, lx])
+    for x in range(lx):
+        for y in range(lx):
+            dx = tfidf[x, :]
+            dy = tfidf[y, :]
+            s = np.dot(dx, dy)/linalg.norm(dx)/linalg.norm(dy)
+            dd[x, y] = 0 if np.isnan(s) else s
+    return dd
 
 ##################
 # MAIN PROCEDURE #
