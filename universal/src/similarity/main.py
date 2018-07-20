@@ -63,7 +63,7 @@ def calculate_dd(tfidf):
             dx = tfidf[x, :]
             dy = tfidf[y, :]
             s = np.dot(dx, dy)/linalg.norm(dx)/linalg.norm(dy)
-            dd[x, y] = 0 if np.isnan(s) else s
+            dd[x, y] = 0 if (np.isnan(s)) or (x == y) else s
     return dd
 
 ##################
