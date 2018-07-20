@@ -140,6 +140,9 @@ def get_fields_from_conference_articles(cv):
     # return None if len(outlet) == 0 else outlet
     return outlet
 
+def get_name(cv):
+    root = xml.etree.ElementTree.parse(cv).getroot()
+    return root.getchildren()[0].attrib['NOME-COMPLETO']
 
 ######################################
 # SIMILARITY ANALYSIS PRE-PROCESSING #
@@ -149,7 +152,7 @@ def generate_similarity_table(data, output_file):
     # extracting all possible fields
     fields = set()
     for cv in data:
-        current_fields = stuff[cv]
+        current_fields = data[cv]
         for field in current_fields:
             fields.add(field)
     fields = list(fields)
@@ -158,12 +161,46 @@ def generate_similarity_table(data, output_file):
     with open(output_file, 'w', encoding='utf-8') as fp:
         line = 'cv\t{0}\n'.format('\t'.join(fields))
         fp.write(line)
+        # IDEA instead of writting the cv name, write the index
         for cv in data:
             count = [len([f for f in data[cv] if f == field]) for field in fields]
             first_column = re.split(r'[/\\]', cv)[-1]
             remaining_columns = '\t'.join([str(x) for x in count])
             line = '{0}\t{1}\n'.format(first_column, remaining_columns)
             fp.write(line)
+
+def generate_metadata_table(names, ka_data, output_file):
+    with open(output_file, 'w', encoding='utf-8') as fp:
+        fp.write('id\tnome\tareas\n')
+        for i, fullcv in enumerate(names):
+            # extracting data
+            cv = re.split(r'[/\\]', fullcv)[-1]
+            name = names[fullcv]
+            ka_stuff = {}
+            for ka in ka_data[fullcv]:
+                if ka not in ka_stuff:
+                    ka_stuff[ka] = 0
+                ka_stuff[ka] += 1
+
+            # turning data into information
+            stuff = []
+            for area in ka_stuff:
+                how_many = ka_stuff[area]
+                stuff.append([area, how_many])
+            if len(stuff) == 0:
+                ka = "vazio"
+            else:
+                stuff.sort(key=lambda u: u[1], reverse=True)
+                ka = "{0} {1}".format(stuff[0][1], stuff[0][0])
+                if len(stuff) >= 2:
+                    ka += " {0} {1}".format(stuff[1][1], stuff[1][0])
+                if len(stuff) >= 3:
+                    ka += " {0} {1}".format(stuff[2][1], stuff[2][0])
+
+            # writting information
+            line = "{0}\t{1}\t{2}\t{3}\n".format(i+1, name, cv, ka)
+            fp.write(line)
+
 
 ##################
 # MAIN PROCEDURE #
@@ -178,14 +215,21 @@ if __name__ == '__main__':
     all_cv = [p+f for f in all if '.xml' in f]
 
     # Analyzing CV
-    stuff = {}
+    ka_data = {} # knowledge area data
+    names = {}
     for cv in all_cv:
-        stuff[cv] = get_fields_from_complete_articles(cv)
-        stuff[cv] += get_fields_from_conference_articles(cv)
-        stuff[cv] += get_fields_from_book_chapters(cv)
-        stuff[cv] += get_fields_from_phd(cv)
+        names[cv] = get_name(cv)
+        ka_data[cv] = get_fields_from_complete_articles(cv)
+        ka_data[cv] += get_fields_from_conference_articles(cv)
+        ka_data[cv] += get_fields_from_book_chapters(cv)
+        ka_data[cv] += get_fields_from_phd(cv)
 
     # Similarity Analysis
-    output_file = config['pwd'] + 'cv.csv'
-    generate_similarity_table(stuff, output_file)
-    print(output_file)
+    ka_data_file = config['pwd'] + 'cv.csv'
+    generate_similarity_table(ka_data, ka_data_file)
+    print(ka_data_file)
+
+    # Metadata for further studies
+    metadata_file = config['pwd'] + 'cv_meta.csv'
+    generate_metadata_table(names, ka_data, metadata_file)
+    print(metadata_file)
