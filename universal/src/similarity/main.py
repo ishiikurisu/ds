@@ -41,8 +41,8 @@ def save_table(to_file, ids, table):
 def save_table_with_numeric_ids(to_file, cvs, table):
     with open(to_file, 'w') as fp:
         # first line
-        ids = [(str(i+1)) for i in range(len(cvs))]
-        line = ' \t%s\n' % '\t'.join([i for i in ids])
+        ids = [(str(i)) for i in range(1, len(cvs)+1)]
+        line = ' \t%s\n' % '\t'.join(ids)
         fp.write(line)
 
         # remaining lines
