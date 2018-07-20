@@ -38,6 +38,20 @@ def save_table(to_file, ids, table):
             line = '%s\t%s\n' % (ids[x], '\t'.join(values).replace('.', ','))
             fp.write(line)
 
+def save_table_with_numeric_ids(to_file, cvs, table):
+    with open(to_file, 'w') as fp:
+        # first line
+        ids = [(str(i+1)) for i in range(len(cvs))]
+        line = ' \t%s\n' % '\t'.join([i for i in ids])
+        fp.write(line)
+
+        # remaining lines
+        lx, ly = table.shape
+        for x in range(lx):
+            values = ['%.8f' % table[x, y] for y in range(ly)]
+            line = '%s\t%s\n' % (ids[x], '\t'.join(values).replace('.', ','))
+            fp.write(line)
+
 
 ###############
 # MATHEMATICS #
@@ -80,7 +94,8 @@ if __name__ == '__main__':
     if operation == 'dd':
         doc_doc_similarity = calculate_dd(tfidf)
         output_file = input_file.replace('.csv', '_dd.csv')
-        save_table(output_file, docs, doc_doc_similarity)
+        # save_table(output_file, docs, doc_doc_similarity)
+        save_table_with_numeric_ids(output_file, docs, doc_doc_similarity)
         print(output_file)
     elif operation == 'tt':
         print('not gonna happen anytime soon')
