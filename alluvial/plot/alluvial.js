@@ -120,7 +120,7 @@ function drawAlluvial(bars, transitions) {
 
 	// Drawing bars
 	var w0 = weight - w;
-	var dw = w / bars.length;
+	var dw = (w / bars.length)*fc;
 	for (var i = 0; i < bars.length; i++) {
 		var h0 = height - h;
 		for (var key in bars[i]) {
