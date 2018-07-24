@@ -10,6 +10,16 @@ import re
 # CV DATA EXTRACTION #
 ######################
 
+def get_cv_root(cv):
+    root = None
+    try:
+        root = xml.etree.ElementTree.parse(cv).getroot()
+    except Exception as e:
+        print('{0}: {1}'.format(cv, e))
+        return None
+
+    return root
+
 def get_repeated_names(all_cv):
     names = {}
 
@@ -32,15 +42,8 @@ def get_repeated_names(all_cv):
 
     return names
 
-def get_fields_from_phd(cv):
+def get_fields_from_phd(root):
     outlet = []
-
-    root = None
-    try:
-        root = xml.etree.ElementTree.parse(cv).getroot()
-    except Exception as e:
-        print('{0}: {1}'.format(cv, e))
-        return None
 
     formacao = root.getchildren()[0].find('FORMACAO-ACADEMICA-TITULACAO')
     if formacao is not None:
@@ -57,13 +60,10 @@ def get_fields_from_phd(cv):
                     if area is not None:
                         outlet.append(area)
 
-    # if len(outlet) == 0:
-    #     outlet = None
     return outlet
 
-def get_fields_from_book_chapters(cv):
+def get_fields_from_book_chapters(root):
     outlet = []
-    root = xml.etree.ElementTree.parse(cv).getroot()
 
     producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
     if producao_bibliografica is not None:
@@ -83,15 +83,10 @@ def get_fields_from_book_chapters(cv):
                             area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
                             if area is not None:
                                 outlet.append(area)
-
-
-    # return None if len(outlet) == 0 else outlet
     return outlet
 
-def get_fields_from_complete_articles(cv):
+def get_fields_from_complete_articles(root):
     outlet = []
-    root = xml.etree.ElementTree.parse(cv).getroot()
-
     producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
     if producao_bibliografica is not None:
         artigos_publicados = producao_bibliografica.find('ARTIGOS-PUBLICADOS')
@@ -110,14 +105,10 @@ def get_fields_from_complete_articles(cv):
                             area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
                             if area is not None:
                                 outlet.append(area)
-
-    # return None if len(outlet) == 0 else outlet
     return outlet
 
-def get_fields_from_conference_articles(cv):
+def get_fields_from_conference_articles(root):
     outlet = []
-    root = xml.etree.ElementTree.parse(cv).getroot()
-
     producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
     if producao_bibliografica is not None:
         artigos_publicados = producao_bibliografica.find('TRABALHOS-EM-EVENTOS')
@@ -136,24 +127,13 @@ def get_fields_from_conference_articles(cv):
                             area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
                             if area is not None:
                                 outlet.append(area)
-
-    # return None if len(outlet) == 0 else outlet
     return outlet
 
-def get_name(cv):
-    root = xml.etree.ElementTree.parse(cv).getroot()
+def get_name(root):
     return root.getchildren()[0].attrib['NOME-COMPLETO']
 
-def get_fields_from_masters(cv):
+def get_fields_from_masters(root):
     outlet = []
-
-    root = None
-    try:
-        root = xml.etree.ElementTree.parse(cv).getroot()
-    except Exception as e:
-        print('{0}: {1}'.format(cv, e))
-        return None
-
     formacao = root.getchildren()[0].find('FORMACAO-ACADEMICA-TITULACAO')
     if formacao is not None:
         doutorado = formacao.find('MESTRADO')
@@ -168,9 +148,6 @@ def get_fields_from_masters(cv):
                     area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
                     if area is not None:
                         outlet.append(area)
-
-    # if len(outlet) == 0:
-    #     outlet = None
     return outlet
 
 ######################################
@@ -247,12 +224,14 @@ if __name__ == '__main__':
     ka_data = {} # knowledge area data
     names = {}
     for cv in all_cv:
-        names[cv] = get_name(cv)
-        ka_data[cv] = get_fields_from_complete_articles(cv)
-        ka_data[cv] += get_fields_from_conference_articles(cv)
-        ka_data[cv] += get_fields_from_book_chapters(cv)
-        ka_data[cv] += get_fields_from_phd(cv)
-        ka_data[cv] += get_fields_from_masters(cv)
+        root = get_cv_root(cv)
+        if root is not None:
+            names[cv] = get_name(root)
+            ka_data[cv] = get_fields_from_complete_articles(root)
+            ka_data[cv] += get_fields_from_conference_articles(root)
+            ka_data[cv] += get_fields_from_book_chapters(root)
+            ka_data[cv] += get_fields_from_phd(root)
+            ka_data[cv] += get_fields_from_masters(root)
 
     # Similarity Analysis
     ka_data_file = config['pwd'] + 'cv.csv'
