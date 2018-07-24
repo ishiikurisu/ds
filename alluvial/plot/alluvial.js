@@ -121,9 +121,12 @@ function drawAlluvial(bars, transitions) {
 	// Drawing bars
 	var w0 = weight - w;
 	var dw = (w / bars.length)*fc;
+    var drawnBars = [ ];
 	for (var i = 0; i < bars.length; i++) {
 		var h0 = height - h;
+        drawnBars.push([ ]);
 		for (var key in bars[i]) {
+            drawnBars[i].push(key);
 			var dh = bars[i][key] * fc;
 			svg += String.format(
 				`<line x1="{0}" y1="{1}" x2="{0}" y2="{2}" stroke="#000" stroke-width="2"/>`,
@@ -135,6 +138,25 @@ function drawAlluvial(bars, transitions) {
 	}
 
 	// TODO Draw transitions
+    var w0 = weight - w;
+    for (var i = 0; i < bars.length-1; i++) {
+        var currentTransitions = transitions[i];
+        var accumulatedFrom = { };
+        var accumulatedTo = { };
+        var h0 = height - h0;
+        for (var j = 0; j < drawnBars[i].length; j++) {
+            var from = drawnBars[i][j];
+            var currentTransitionsFrom = currentTransitions[from];
+            for (var k = 0; k < drawnBars[i+1].length; k++) {
+                var to = drawnBars[i+1][k];
+                var transition = currentTransitionsFrom[to];
+                if (transition) {
+                    // TODO Draw transition rectangle
+                    // TODO Accumulate transitions' heights
+                }
+            }
+        }
+    }
 
 	svg += "</svg>"
 	return svg;
