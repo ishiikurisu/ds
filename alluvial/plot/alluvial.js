@@ -147,15 +147,23 @@ function drawAlluvial(bars, transitions) {
         for (var j = 0; j < drawnBars[i].length; j++) {
             var from = drawnBars[i][j];
             var currentTransitionsFrom = currentTransitions[from];
+            var h1 = height - h0;
             for (var k = 0; k < drawnBars[i+1].length; k++) {
                 var to = drawnBars[i+1][k];
                 var transition = currentTransitionsFrom[to];
                 if (transition) {
-                    // TODO Draw transition rectangle
+                    var dh = transition * fc;
+                    // TODO Include transition accumulation
+                    svg += String.format(
+                        `<polygon points="{0},{1} {0},{2} {3},{4} {3},{5}" stroke="#FFF" fill="#F0F0F0" stroke-width="0"/>`,
+                        w0, h0, h0+dh, w0+dw, h1, h1+dh
+                    );
                     // TODO Accumulate transitions' heights
                 }
+                h1 += p + bars[i][to] * fc;
             }
         }
+        w0 += dw;
     }
 
 	svg += "</svg>"
