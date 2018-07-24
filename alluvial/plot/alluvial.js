@@ -18,9 +18,9 @@ if (!String.format) {
  * @return the table in the string
  */
 function parseTsv(raw) {
-	let lines = raw.split("\n");
+	var lines = raw.split("\r\n");
 	return lines.slice(1, lines.length).map(line => {
-		let fields = line.split("\t");
+		var fields = line.split("\t");
 		return fields.slice(2, fields.length);
 	});
 }
@@ -31,7 +31,7 @@ function parseTsv(raw) {
  * @return the bars for each step. They are a list of maps relating each group to a their size.
  */
 function getBars(table) {
-	let bars = [];
+	var bars = [];
 
 	table.map(line => {
 		line.forEach((item, index, array) => {
@@ -54,10 +54,10 @@ function getBars(table) {
  * @return the transitions between nodes in each step. they are a list of maps relating the source group to the target group by the size of the transition.
  */
 function getTransitions(table) {
-	let transitions = [];
+	var transitions = [];
 
 	table.map(line => {
-		let limit = line.length;
+		var limit = line.length;
 		for (var i = 0; i < limit-1; i++) {
 			var from = line[i];
 			var to = line[i+1];
@@ -85,12 +85,12 @@ function getTransitions(table) {
  * @return the SVG description of an alluvial diagram in these conditions
  */
 function drawAlluvial(bars, transitions) {
-	let svg = `<svg width="1300" height="800" xmlns="http://www.w3.org/2000/svg" version="1.1">`;
-	let weight = 1300;
-	let height = 800;
-	let w = 0.95*weight;
-	let h = 0.95*weight;
-	let p = 10;
+	var svg = `<?xml version="1.0" encoding="UTF-8" ?>\n<svg width="1300" height="800" xmlns="http://www.w3.org/2000/svg" version="1.1">`;
+	var weight = 1300;
+	var height = 800;
+	var w = 0.95*weight;
+	var h = 0.95*height;
+	var p = 10;
 
 	// Calculating proportion factor
 	max_sbij = -1;
@@ -115,7 +115,8 @@ function drawAlluvial(bars, transitions) {
 	for (var key in bars[max_i]) {
 		sbij += bars[max_i][key];
 	}
-	let fc = (h - sbij)/max_sbij;
+	var fc = (h - sbij)/max_sbij;
+    fc = (fc < 0)? -fc : fc;
 
 	// Drawing bars
 	var w0 = weight - w;
@@ -142,17 +143,17 @@ function drawAlluvial(bars, transitions) {
 var sourceFile = process.argv[2];
 fs.readFile(sourceFile, 'utf8', (err, contents) => {
 	if (err) throw err;
-	let table = parseTsv(contents);
-	let barsPromise = new Promise((resolve, reject) => {
-		let bars = getBars(table);
+	var table = parseTsv(contents);
+	var barsPromise = new Promise((resolve, reject) => {
+		var bars = getBars(table);
 		if (bars === null) {
 			reject(bars);
 		} else {
 			resolve(bars);
 		}
 	});
-	let transitionsPromise = new Promise((resolve, reject) => {
-		let transitions = getTransitions(table);
+	var transitionsPromise = new Promise((resolve, reject) => {
+		var transitions = getTransitions(table);
 		if (transitions === null) {
 			reject(transitions);
 		} else {
