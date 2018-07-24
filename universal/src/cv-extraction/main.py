@@ -144,6 +144,35 @@ def get_name(cv):
     root = xml.etree.ElementTree.parse(cv).getroot()
     return root.getchildren()[0].attrib['NOME-COMPLETO']
 
+def get_fields_from_masters(cv):
+    outlet = []
+
+    root = None
+    try:
+        root = xml.etree.ElementTree.parse(cv).getroot()
+    except Exception as e:
+        print('{0}: {1}'.format(cv, e))
+        return None
+
+    formacao = root.getchildren()[0].find('FORMACAO-ACADEMICA-TITULACAO')
+    if formacao is not None:
+        doutorado = formacao.find('MESTRADO')
+        if doutorado is not None:
+            areas_do_conhecimento = doutorado.find('AREAS-DO-CONHECIMENTO')
+            if areas_do_conhecimento is not None:
+                areas_do_conhecimento = areas_do_conhecimento.getchildren()
+                for area_do_conhecimento in areas_do_conhecimento:
+                    area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
+                    if area is not None:
+                        outlet.append(area)
+                    area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
+                    if area is not None:
+                        outlet.append(area)
+
+    # if len(outlet) == 0:
+    #     outlet = None
+    return outlet
+
 ######################################
 # SIMILARITY ANALYSIS PRE-PROCESSING #
 ######################################
@@ -223,6 +252,7 @@ if __name__ == '__main__':
         ka_data[cv] += get_fields_from_conference_articles(cv)
         ka_data[cv] += get_fields_from_book_chapters(cv)
         ka_data[cv] += get_fields_from_phd(cv)
+        ka_data[cv] += get_fields_from_masters(cv)
 
     # Similarity Analysis
     ka_data_file = config['pwd'] + 'cv.csv'
