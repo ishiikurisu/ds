@@ -12,5 +12,5 @@ obtain:
 analyze:
 	$(PY) analyze.py $(CONFIG)
 
-compare:
+compare: analyze
 	$(PY) compare.py $(CONFIG)
