@@ -10,3 +10,19 @@ def load_config(where):
 
 def get_python():
     return 'python3' if os.name == 'posix' else 'python'
+
+def load_csv(filename, encoding='utf-8'):
+    table = {}
+    with open(filename, 'r', encoding=encoding) as fp:
+        first_line = True
+        for line in fp:
+            stuff = line.strip().split('\t')
+            if first_line:
+                fields = stuff
+                first_line = False
+            else:
+                for i, field in enumerate(fields):
+                    if field not in table:
+                        table[field] = []
+                    table[field].append(stuff[i])
+    return table

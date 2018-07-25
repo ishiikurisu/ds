@@ -1,5 +1,5 @@
-.PHONY: default obtain analyze
-default: analyze
+.PHONY: default obtain analyze compare
+default: compare
 
 PY = python3
 ifeq ($(OS), Windows_NT)
@@ -11,3 +11,6 @@ obtain:
 
 analyze:
 	$(PY) analyze.py $(CONFIG)
+
+compare:
+	$(PY) compare.py $(CONFIG)
