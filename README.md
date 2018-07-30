@@ -33,3 +33,8 @@ Learn Data Science:
 - http://cs109.github.io/2015/
 - http://www.fast.ai/
 - Curso de estatística inferencial do Coursera
+
+Some useful repos:
+
+- http://flowchart.js.org/
+- https://bramp.github.io/js-sequence-diagrams/
