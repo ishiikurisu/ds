@@ -65,7 +65,7 @@ def get_fields_from_phd(root):
                     if area is not None:
                         if len(area) > 0:
                             outlet.append(area)
-                    area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
+                    area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                     if area is not None:
                         if len(area) > 0:
                             outlet.append(area)
@@ -94,11 +94,11 @@ def get_fields_from_book_chapters(root):
                             if area is not None:
                                 if len(area) > 0:
                                     outlet.append(area)
-                            area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
+                            area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
                             if area is not None:
                                 if len(area) > 0:
                                     outlet.append(area)
-                            area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
+                            area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                             if area is not None:
                                 if len(area) > 0:
                                     outlet.append(area)
@@ -126,11 +126,11 @@ def get_fields_from_complete_articles(root):
                             if area is not None:
                                 if len(area) > 0:
                                     outlet.append(area)
-                            area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
+                            area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
                             if area is not None:
                                 if len(area) > 0:
                                     outlet.append(area)
-                            area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
+                            area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                             if area is not None:
                                 if len(area) > 0:
                                     outlet.append(area)
@@ -158,11 +158,11 @@ def get_fields_from_conference_articles(root):
                             if area is not None:
                                 if len(area) > 0:
                                     outlet.append(area)
-                            area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
+                            area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
                             if area is not None:
                                 if len(area) > 0:
                                     outlet.append(area)
-                            area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
+                            area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                             if area is not None:
                                 if len(area) > 0:
                                     outlet.append(area)
@@ -189,11 +189,11 @@ def get_fields_from_masters(root):
                     if area is not None:
                         if len(area) > 0:
                             outlet.append(area)
-                    area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
+                    area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
                     if area is not None:
                         if len(area) > 0:
                             outlet.append(area)
-                    area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
+                    area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                     if area is not None:
                         if len(area) > 0:
                             outlet.append(area)
