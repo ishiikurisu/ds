@@ -1,3 +1,4 @@
+# -*- coding: cp1252 -*-
 import sys
 import numpy as np
 import numpy.linalg as linalg
@@ -11,7 +12,7 @@ def load_table(from_file):
     terms = []
     table = []
 
-    with open(from_file, 'r') as fp:
+    with open(from_file, 'r', encoding='utf-8') as fp:
         first_line = True
         for line in fp:
             if first_line:
