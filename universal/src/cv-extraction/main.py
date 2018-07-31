@@ -55,20 +55,17 @@ def get_fields_from_phd(root):
                 for area_do_conhecimento in areas_do_conhecimento:
                     area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
                     if area is not None:
-                        if len(area) > 0:
-                            outlet.append(area)
+                        outlet.append(area)
                     area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
                     if area is not None:
-                        if len(area) > 0:
-                            outlet.append(area)
+                        outlet.append(area)
                     area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
                     if area is not None:
-                        if len(area) > 0:
-                            outlet.append(area)
+                        outlet.append(area)
                     area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                     if area is not None:
-                        if len(area) > 0:
-                            outlet.append(area)
+                        outlet.append(area)
+    outlet = [it for it in outlet if len(it) > 0]
     return outlet
 
 def get_fields_from_book_chapters(root):
@@ -88,20 +85,17 @@ def get_fields_from_book_chapters(root):
                         for area_do_conhecimento in areas_do_conhecimento:
                             area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
                             area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
                             area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
                             area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
+    outlet = [it for it in outlet if len(it) > 0]
     return outlet
 
 def get_fields_from_complete_articles(root):
@@ -120,20 +114,17 @@ def get_fields_from_complete_articles(root):
                         for area_do_conhecimento in areas_do_conhecimento:
                             area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
                             area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
                             area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
                             area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
+    outlet = [it for it in outlet if len(it) > 0]
     return outlet
 
 def get_fields_from_conference_articles(root):
@@ -152,20 +143,17 @@ def get_fields_from_conference_articles(root):
                         for area_do_conhecimento in areas_do_conhecimento:
                             area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
                             area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
                             area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
                             area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                             if area is not None:
-                                if len(area) > 0:
-                                    outlet.append(area)
+                                outlet.append(area)
+    outlet = [it for it in outlet if len(it) > 0]
     return outlet
 
 def get_name(root):
@@ -183,20 +171,17 @@ def get_fields_from_masters(root):
                 for area_do_conhecimento in areas_do_conhecimento:
                     area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
                     if area is not None:
-                        if len(area) > 0:
-                            outlet.append(area)
+                        outlet.append(area)
                     area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
                     if area is not None:
-                        if len(area) > 0:
-                            outlet.append(area)
+                        outlet.append(area)
                     area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
                     if area is not None:
-                        if len(area) > 0:
-                            outlet.append(area)
+                        outlet.append(area)
                     area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
                     if area is not None:
-                        if len(area) > 0:
-                            outlet.append(area)
+                        outlet.append(area)
+    outlet = [it for it in outlet if len(it) > 0]
     return outlet
 
 ######################################
