@@ -5,7 +5,6 @@ import os
 import os.path
 import xml.etree.ElementTree
 import re
-from functools import reduce
 
 ######################
 # CV DATA EXTRACTION #
@@ -279,7 +278,7 @@ if __name__ == '__main__':
 
             names[cv] = get_name(root)
             how_many[cv] = [len(it) for it in stuff]
-            ka_data[cv] = reduce(lambda x, y: x+y, stuff)
+            ka_data[cv] = sum(stuff, [])
 
     # Similarity Analysis
     ka_data_file = config['pwd'] + 'cv.csv'
