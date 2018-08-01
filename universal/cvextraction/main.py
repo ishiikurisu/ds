@@ -1,5 +1,4 @@
 # -*- coding: cp1252 -*-
-import util
 import sys
 import os
 import os.path

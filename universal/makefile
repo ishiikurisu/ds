@@ -10,7 +10,7 @@ obtain:
 	$(PY) obtain.py $(CONFIG)
 
 analyze:
-	$(PY) analyze.py $(CONFIG)
+	$(PY) analyze.py $(CONFIG) dd
 
 compare: analyze
 	$(PY) compare.py $(CONFIG)
