@@ -211,7 +211,7 @@ def generate_similarity_table(data, output_file):
 
 def generate_metadata_table(names, ka_data, output_file):
     with open(output_file, 'w', encoding='utf-8') as fp:
-        fp.write('id\tlabel\tareas\n')
+        fp.write('id\tlabel\tcv\tareas\n')
         for i, fullcv in enumerate(names):
             # extracting data
             cv = re.split(r'[/\\]', fullcv)[-1]
