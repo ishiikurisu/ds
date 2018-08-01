@@ -5,6 +5,7 @@ import os
 import os.path
 import xml.etree.ElementTree
 import re
+from functools import reduce
 
 ######################
 # CV DATA EXTRACTION #
@@ -241,6 +242,13 @@ def generate_metadata_table(names, ka_data, output_file):
             line = "{0}\t{1}\t{2}\t{3}\n".format(i+1, name, cv, ka)
             fp.write(line)
 
+def generate_stats_table(stuff, where):
+    with open(where, 'w', encoding='utf-8') as fp:
+        fp.write('cv\tartigos completos\tartigos em conferencias\tcapitulos de livros\tdoutorado\tmestrado\n')
+        for fullcv in stuff:
+            cv = re.split(r'[/\\]', fullcv)[-1]
+            data = '\t'.join([str(it) for it in stuff[fullcv]])
+            fp.write('{0}\t{1}\n'.format(cv, data))
 
 ##################
 # MAIN PROCEDURE #
@@ -257,15 +265,21 @@ if __name__ == '__main__':
     # Analyzing CV
     ka_data = {} # knowledge area data
     names = {}
+    how_many = {}
     for cv in all_cv:
         root = get_cv_root(cv)
         if root is not None:
+            stuff = [
+                get_fields_from_complete_articles(root),
+                get_fields_from_conference_articles(root),
+                get_fields_from_book_chapters(root),
+                get_fields_from_phd(root),
+                get_fields_from_masters(root)
+            ]
+
             names[cv] = get_name(root)
-            ka_data[cv] = get_fields_from_complete_articles(root)
-            ka_data[cv] += get_fields_from_conference_articles(root)
-            ka_data[cv] += get_fields_from_book_chapters(root)
-            ka_data[cv] += get_fields_from_phd(root)
-            ka_data[cv] += get_fields_from_masters(root)
+            how_many[cv] = [len(it) for it in stuff]
+            ka_data[cv] = reduce(lambda x, y: x+y, stuff)
 
     # Similarity Analysis
     ka_data_file = config['pwd'] + 'cv.csv'
@@ -276,3 +290,8 @@ if __name__ == '__main__':
     metadata_file = config['pwd'] + 'cv_meta.csv'
     generate_metadata_table(names, ka_data, metadata_file)
     print(metadata_file)
+
+    # Statistics from CV data
+    stats_file = config['pwd'] + 'stats.csv'
+    generate_stats_table(how_many, stats_file)
+    print(stats_file)

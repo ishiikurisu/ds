@@ -1,5 +1,5 @@
 .PHONY: default obtain analyze compare
-default: compare
+default: analyze
 
 PY = python3
 ifeq ($(OS), Windows_NT)
