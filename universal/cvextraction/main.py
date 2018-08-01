@@ -113,7 +113,7 @@ def get_fields_from_complete_articles(root):
         if dados_basicos.attrib['NATUREZA'] == 'COMPLETO':
             areas_do_conhecimento = artigo_publicado.find('AREAS-DO-CONHECIMENTO')
             if areas_do_conhecimento is None:
-                return outlet
+                continue
             areas_do_conhecimento = areas_do_conhecimento.getchildren()
             for area_do_conhecimento in areas_do_conhecimento:
                 area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
@@ -147,7 +147,7 @@ def get_fields_from_conference_articles(root):
         if dados_basicos.attrib['NATUREZA'] == 'COMPLETO':
             areas_do_conhecimento = artigo_publicado.find('AREAS-DO-CONHECIMENTO')
             if areas_do_conhecimento is None:
-                return outlet
+                continue
             areas_do_conhecimento = areas_do_conhecimento.getchildren()
             for area_do_conhecimento in areas_do_conhecimento:
                 area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
