@@ -1,29 +1,28 @@
-import house
 import os.path
 import sys
 import json
 import util
+import txt2csv
+import xls2id
+import subprocess
+import os
 
 def pdf2txt(pdf):
+    os.chdir('pdf2txt')
     txt = pdf.replace('pdf', 'txt')
-    h = house.House('pdf2txt')
-    h.local = True
-    h.add_command('node main.js {0} {1}'.format(pdf, txt))
-    h.build()
+    subprocess.run(['node', 'main.js', pdf, txt])
+    os.chdir('..')
     return txt
 
-def txt2csv(txt, strip, cats):
-    csv = txt.replace('txt', 'csv')
-    h = house.House('txt2csv')
-    h.local = True
-    command = '{5} main.py {0} {1} {2} {3} {4}'.format(txt,
-                                                       strip,
-                                                       cats[0],
-                                                       cats[1],
-                                                       csv,
-                                                       util.get_python())
-    h.add_command(command)
-    h.build()
+def txt_to_csv(txt, strip, cats):
+    csv = txt.replace('.txt', '.csv')
+    from_file = txt
+    strip = strip
+    p1_limit = cats[0]
+    p2_limit = cats[1]
+    to_file = csv
+    process_numbers = txt2csv.extract_process_numbers(from_file)
+    txt2csv.save_process_numbers(process_numbers, strip, p1_limit, p2_limit, to_file)
     return csv
 
 def cat_csv(all_csv, to_file):
@@ -43,11 +42,11 @@ def cat_csv(all_csv, to_file):
         for process in processes:
             outlet.write(process)
 
-def db2id(excel_file, process_file, to_file):
-    h = house.House('xls2id')
-    h.local = True
-    h.add_command('{3} main.py {0} {1} {2}'.format(excel_file, process_file, to_file, util.get_python()))
-    h.build()
+def db_to_id(excel_file, process_file, output_file):
+    processes = xls2id.load_relevant_ids(excel_file, xls2id.load_processes(process_file))
+    xls2id.save_stuff(processes, process_file)
+    xls2id.save_ids(xls2id.extract_ids(processes), output_file)
+
 
 if __name__ == '__main__':
     config = util.load_config(sys.argv[1])
@@ -62,7 +61,7 @@ if __name__ == '__main__':
         pdf = where + strip['src']
         print(pdf)
         txt = pdf2txt(pdf)
-        csv = txt2csv(txt, strip['name'], strip['categories'])
+        csv = txt_to_csv(txt, strip['name'], strip['categories'])
         all_csv.append(csv)
         os.remove(txt)
 
@@ -70,4 +69,4 @@ if __name__ == '__main__':
     print(process_file)
     cat_csv(all_csv, process_file)
     print(ids)
-    db2id(database, process_file, ids)
+    db_to_id(database, process_file, ids)
