@@ -100,58 +100,68 @@ def get_fields_from_book_chapters(root):
 def get_fields_from_complete_articles(root):
     outlet = []
     producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
-    if producao_bibliografica is not None:
-        artigos_publicados = producao_bibliografica.find('ARTIGOS-PUBLICADOS')
-        todos_artigos = artigos_publicados.findall('ARTIGO-PUBLICADO')
-        if todos_artigos is not None:
-            for artigo_publicado in todos_artigos:
-                dados_basicos = artigo_publicado.find('DADOS-BASICOS-DO-ARTIGO')
-                if dados_basicos.attrib['NATUREZA'] == 'COMPLETO':
-                    areas_do_conhecimento = artigo_publicado.find('AREAS-DO-CONHECIMENTO')
-                    if areas_do_conhecimento is not None:
-                        areas_do_conhecimento = areas_do_conhecimento.getchildren()
-                        for area_do_conhecimento in areas_do_conhecimento:
-                            area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
-                            if area is not None:
-                                outlet.append(area)
-                            area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
-                            if area is not None:
-                                outlet.append(area)
-                            area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
-                            if area is not None:
-                                outlet.append(area)
-                            area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
-                            if area is not None:
-                                outlet.append(area)
+    if producao_bibliografica is None:
+        return outlet
+    artigos_publicados = producao_bibliografica.find('ARTIGOS-PUBLICADOS')
+    if artigos_publicados is None:
+        return outlet
+    todos_artigos = artigos_publicados.findall('ARTIGO-PUBLICADO')
+    if todos_artigos is None:
+        return outlet
+    for artigo_publicado in todos_artigos:
+        dados_basicos = artigo_publicado.find('DADOS-BASICOS-DO-ARTIGO')
+        if dados_basicos.attrib['NATUREZA'] == 'COMPLETO':
+            areas_do_conhecimento = artigo_publicado.find('AREAS-DO-CONHECIMENTO')
+            if areas_do_conhecimento is None:
+                return outlet
+            areas_do_conhecimento = areas_do_conhecimento.getchildren()
+            for area_do_conhecimento in areas_do_conhecimento:
+                area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
+                if area is not None:
+                    outlet.append(area)
+                area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
+                if area is not None:
+                    outlet.append(area)
+                area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
+                if area is not None:
+                    outlet.append(area)
+                area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
+                if area is not None:
+                    outlet.append(area)
     outlet = [it for it in outlet if len(it) > 0]
     return outlet
 
 def get_fields_from_conference_articles(root):
     outlet = []
     producao_bibliografica = root.find('PRODUCAO-BIBLIOGRAFICA')
-    if producao_bibliografica is not None:
-        artigos_publicados = producao_bibliografica.find('TRABALHOS-EM-EVENTOS')
-        todos_artigos = artigos_publicados.findall('TRABALHO-EM-EVENTOS')
-        if todos_artigos is not None:
-            for artigo_publicado in todos_artigos:
-                dados_basicos = artigo_publicado.find('DADOS-BASICOS-DO-TRABALHO')
-                if dados_basicos.attrib['NATUREZA'] == 'COMPLETO':
-                    areas_do_conhecimento = artigo_publicado.find('AREAS-DO-CONHECIMENTO')
-                    if areas_do_conhecimento is not None:
-                        areas_do_conhecimento = areas_do_conhecimento.getchildren()
-                        for area_do_conhecimento in areas_do_conhecimento:
-                            area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
-                            if area is not None:
-                                outlet.append(area)
-                            area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
-                            if area is not None:
-                                outlet.append(area)
-                            area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
-                            if area is not None:
-                                outlet.append(area)
-                            area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
-                            if area is not None:
-                                outlet.append(area)
+    if producao_bibliografica is None:
+        return outlet
+    artigos_publicados = producao_bibliografica.find('TRABALHOS-EM-EVENTOS')
+    if artigos_publicados is None:
+        return outlet
+    todos_artigos = artigos_publicados.findall('TRABALHO-EM-EVENTOS')
+    if todos_artigos is None:
+        return outlet
+    for artigo_publicado in todos_artigos:
+        dados_basicos = artigo_publicado.find('DADOS-BASICOS-DO-TRABALHO')
+        if dados_basicos.attrib['NATUREZA'] == 'COMPLETO':
+            areas_do_conhecimento = artigo_publicado.find('AREAS-DO-CONHECIMENTO')
+            if areas_do_conhecimento is None:
+                return outlet
+            areas_do_conhecimento = areas_do_conhecimento.getchildren()
+            for area_do_conhecimento in areas_do_conhecimento:
+                area = area_do_conhecimento.attrib.get('NOME-GRANDE-AREA-DO-CONHECIMENTO')
+                if area is not None:
+                    outlet.append(area)
+                area = area_do_conhecimento.attrib.get('NOME-AREA-DO-CONHECIMENTO')
+                if area is not None:
+                    outlet.append(area)
+                area = area_do_conhecimento.attrib.get('NOME-DA-SUB-AREA-DO-CONHECIMENTO')
+                if area is not None:
+                    outlet.append(area)
+                area = area_do_conhecimento.attrib.get('NOME-DA-ESPECIALIDADE')
+                if area is not None:
+                    outlet.append(area)
     outlet = [it for it in outlet if len(it) > 0]
     return outlet
 
